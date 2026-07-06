@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use PhpOpenSourceSaver\JWTAuth\JWTGuard;
+use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 class AuthService
 {

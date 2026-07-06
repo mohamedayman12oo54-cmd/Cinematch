@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use PHPOpenSourceSaver\JWTAuth\Providers\Auth\Illuminate;
 use PHPOpenSourceSaver\JWTAuth\Providers\JWT\Lcobucci;
 
