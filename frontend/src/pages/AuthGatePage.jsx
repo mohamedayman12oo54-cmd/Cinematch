@@ -27,20 +27,11 @@ export default function AuthGatePage() {
     return () => clearInterval(interval);
   }, [alreadySeen]);
 
-  const posterTiles = useMemo(
-    () => Array.from({ length: 24 }, (_, i) => `https://loremflickr.com/300/450/cinema,film,noir,filmreel?lock=${i}`),
-    []
-  );
-
   const instant = alreadySeen ? 'gate--instant' : '';
 
   return (
     <div className={`gate ${instant}`}>
-      <div className="gate__collage">
-        {posterTiles.map((src, i) => (
-          <img key={i} src={src} alt="" loading="lazy" />
-        ))}
-      </div>
+      <div className="gate__bg" />
       <div className="gate__overlay" />
 
       <div className="gate__content">

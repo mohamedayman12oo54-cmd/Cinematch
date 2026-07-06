@@ -1,21 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { posterFor, fallbackPoster } from '../api/tmdb';
+import { genreGradient } from '../utils/palette';
 
 export default function TitleCard({ title, reason, rank, similarity }) {
   const navigate = useNavigate();
   const cardRef = useRef(null);
-  const [posterUrl, setPosterUrl] = useState(null);
   const [revealed, setRevealed] = useState(false);
   const [displayPct, setDisplayPct] = useState(0);
-
-  useEffect(() => {
-    let cancelled = false;
-    posterFor(title.title, title.release_year, title.type).then(url => {
-      if (!cancelled) setPosterUrl(url);
-    });
-    return () => { cancelled = true; };
-  }, [title.title, title.release_year, title.type]);
 
   // Trigger shimmer + match-percentage count-up only once the card has
   // actually finished its own entrance fade and is visible on screen —
@@ -28,8 +19,6 @@ export default function TitleCard({ title, reason, rank, similarity }) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Small buffer so this lines up with the card's own staggered
-          // fade-in finishing, instead of firing while it's still hidden.
           revealTimer = setTimeout(() => setRevealed(true), 350);
           observer.disconnect();
         }
@@ -56,12 +45,9 @@ export default function TitleCard({ title, reason, rank, similarity }) {
     return () => cancelAnimationFrame(frame);
   }, [revealed, targetPct]);
 
-  const img = posterUrl || fallbackPoster(title.title, title.genres);
-
   return (
     <div className="tc" ref={cardRef} onClick={() => navigate(`/title/${encodeURIComponent(title.title)}`)}>
-      <div className="tc__poster">
-        <img className="tc__img" src={img} alt={title.title} loading="lazy" />
+      <div className="tc__poster" style={{ background: genreGradient(title.genres) }}>
         <div className="tc__scrim" />
         {revealed && <div className="tc__shimmer" />}
         {rank && <span className="tc__rank">#{rank}</span>}

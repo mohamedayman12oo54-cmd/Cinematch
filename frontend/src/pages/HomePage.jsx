@@ -15,13 +15,31 @@ const STAGE_COPY = {
   loyal: { eyebrow: 'We know you well by now', title: 'New for you' },
 };
 
+const HEADLINE = 'Find Your Next Obsession.';
+const HEADLINE_SPLIT = 'Find Your Next '.length;
+
 export default function HomePage() {
   const { user } = useAuth();
 
+  const [headlineShown, setHeadlineShown] = useState('');
   const [headlineDone, setHeadlineDone] = useState(false);
+  const [taglineDone, setTaglineDone] = useState(false);
   const [stage, setStage] = useState(null);
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      setHeadlineShown(HEADLINE.slice(0, i));
+      if (i >= HEADLINE.length) {
+        clearInterval(interval);
+        setHeadlineDone(true);
+      }
+    }, 45);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -36,21 +54,33 @@ export default function HomePage() {
   }, [user?.email]);
 
   const copy = STAGE_COPY[stage] || STAGE_COPY.stranger;
+  const headlinePlain = headlineShown.slice(0, HEADLINE_SPLIT);
+  const headlineAccent = headlineShown.slice(HEADLINE_SPLIT);
 
   return (
     <div className="hp">
       <Header />
 
       <section className="discover-hero">
-        <TypewriterHeadline
-          text="Find Your Next Obsession"
-          className="discover-hero__headline"
-          cursorClassName="discover-hero__cursor"
-          onDone={() => setHeadlineDone(true)}
-        />
+        <h1 className="discover-hero__headline">
+          {headlinePlain}
+          <span className="discover-hero__accent">{headlineAccent}</span>
+          {!headlineDone && <span className="discover-hero__cursor" />}
+        </h1>
         <span className={`discover-hero__underline ${headlineDone ? 'discover-hero__underline--drawn' : ''}`} />
 
-        <div className={`discover-hero__search ${headlineDone ? 'discover-hero__search--visible' : ''}`}>
+        <div className="discover-hero__tagline-wrap">
+          {headlineDone && (
+            <TypewriterHeadline
+              text="8,790 titles. One search. Infinite recommendations."
+              className="discover-hero__tagline"
+              cursorClassName="discover-hero__tagline-cursor"
+              onDone={() => setTaglineDone(true)}
+            />
+          )}
+        </div>
+
+        <div className={`discover-hero__search ${taglineDone ? 'discover-hero__search--visible' : ''}`}>
           <DiscoverSearch />
         </div>
       </section>

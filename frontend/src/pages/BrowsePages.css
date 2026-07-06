@@ -340,6 +340,7 @@
 /* ================= Page body ================= */
 .bp__main {
   position: relative;
+  z-index: 1;
   max-width: 1400px;
   margin: 0 auto;
   padding: 24px 4% 80px;

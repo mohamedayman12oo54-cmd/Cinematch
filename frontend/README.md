@@ -117,20 +117,32 @@ No emoji anywhere in any of this — every icon is an inline SVG.
 
 ## Latest adjustments
 
-- **Header restructured into 3 zones**: cinema-reel icon + CINEMATCH on
-  the left, nav centered (Discover, Recommend, Trending, My List), search
-  + avatar on the right (`components/Header.jsx`).
-- **Discover (Home) hero rebuilt** to match the exact brief: "Find Your
-  Next Obsession" types itself out, a red underline draws once it's done,
-  then a wide search bar (up to 1000px) fades in below it. The earlier
-  TMDB backdrop hero banner was removed from this page.
-- **Auth pages backdrop reverted** to the simple no-photography version
-  (`components/AuthBackground.jsx`) — Splash, Gate, Login, Register,
-  Welcome Back all keep their animations/flow, just without the poster
-  image behind the login/register card.
-- Added minimal placeholder pages for `/recommend` and `/trending` so the
-  new nav links work — these are stand-ins until those pages get the
-  full treatment from the brief.
+- **Discover hero now matches the reference screenshot**: "Find Your Next
+  Obsession." types itself out with "Obsession." in red, the underline
+  draws, then "8,790 titles. One search. Infinite recommendations."
+  types out beneath it, then the wide search bar fades in.
+- **Dimmed poster-grid backdrop** behind the whole Discover page
+  (`components/DiscoverBackdrop.jsx`) — a faint, grayscale tile grid with
+  a dark overlay on top, same idea as the screenshot. It uses CineMatch's
+  own catalog titles rather than the real show names in the reference
+  image, to keep the effect without borrowing anyone's actual IP.
+- Header restructured into 3 zones: cinema-reel icon + CINEMATCH on the
+  left, nav centered (Discover, Recommend, Trending, My List), search +
+  avatar on the right (`components/Header.jsx`).
+- Auth pages backdrop reverted to the simple no-photography version.
+- Added minimal placeholder pages for `/recommend` and `/trending`.
+
+## Latest adjustments (2)
+
+- **No images anywhere in the app.** TMDB posters/backdrops are gone
+  entirely — `TitleCard`, `TitleDetailPage`, and the Auth Gate's poster
+  collage all now use pure color gradients derived from genre
+  (`utils/palette.js`) instead of photos. `api/tmdb.js` is no longer
+  called by anything live (only the still-unused `AiHero`/
+  `GlassSearchPanel` proof-of-concept from earlier references it — those
+  aren't rendered anywhere right now).
+- **Discover hero is now full-screen** (`min-height: 100vh`), black
+  background with a red radial gradient, content vertically centered.
 
 ## What's new in this pass
 
