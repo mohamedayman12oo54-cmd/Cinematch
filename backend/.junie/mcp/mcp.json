@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "C:\\Users\\SKY TOP\\.config\\herd\\bin\\php84\\php.exe",
+            "args": [
+                "C:\\Users\\SKY TOP\\Herd\\cinematch\\artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}
