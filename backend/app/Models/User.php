@@ -13,10 +13,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Override;
+use PhpOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 #[Fillable(['email', 'password'])]
 #[Hidden(['password'])]
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -58,5 +59,22 @@ class User extends Authenticatable
     public function tasteProfile(): HasOne
     {
         return $this->hasOne(TasteProfile::class);
+    }
+
+    // ======= JWTSubject =======
+
+    #[Override]
+    public function getJWTIdentifier(): mixed
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    #[Override]
+    public function getJWTCustomClaims(): array
+    {
+        return [];
     }
 }
