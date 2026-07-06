@@ -1,0 +1,122 @@
+.td-hero {
+  position: relative;
+  height: 60vh;
+  min-height: 420px;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 4% 50px;
+  overflow: hidden;
+}
+
+.td-hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.td-hero__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.55) 55%, #0a0a0a 100%),
+    linear-gradient(90deg, rgba(0,0,0,0.7) 0%, transparent 55%);
+}
+
+.td-skeleton-hero {
+  height: 60vh;
+  min-height: 420px;
+  background: linear-gradient(100deg, #141414 30%, #1e1e1e 50%, #141414 70%);
+  background-size: 300% 100%;
+  animation: sk-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes sk-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.td-hero__content {
+  position: relative;
+  z-index: 2;
+  max-width: 640px;
+  animation: td-hero-in 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes td-hero-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.td-hero__title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  letter-spacing: 0.02em;
+  margin: 0 0 14px;
+  line-height: 1.05;
+}
+
+.td-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.88rem;
+  color: #d2d2d2;
+  margin-bottom: 10px;
+}
+
+.td-hero__badge {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 3px;
+  padding: 1px 8px;
+  font-size: 0.76rem;
+}
+
+.td-hero__genres { color: #c9c9c9; font-size: 0.92rem; margin: 0 0 4px; }
+.td-hero__director { color: #8c8c8c; font-size: 0.85rem; margin: 0 0 22px; }
+
+.td-hero__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.td-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 4px;
+  padding: 11px 22px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.td-btn svg { width: 18px; height: 18px; }
+
+.td-btn--play { background: #fff; color: #000; }
+
+.td-btn--outline {
+  background: rgba(109, 109, 110, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.td-btn--active {
+  background: rgba(229, 9, 20, 0.18);
+  border-color: var(--bp-red);
+  color: #fff;
+}
+
+.td-btn:hover { transform: translateY(-2px); opacity: 0.92; }
+.td-btn:disabled { opacity: 0.6; cursor: default; transform: none; }
+
+.td-hero__hint {
+  margin-top: 16px;
+  font-size: 0.82rem;
+  color: #a3a3a3;
+}
