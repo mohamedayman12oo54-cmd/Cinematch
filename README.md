@@ -1,5 +1,3 @@
----
-
 # ✨ Why CINEMATCH?
 
 Today's streaming platforms provide millions of movies and TV shows, making it increasingly difficult for users to decide what to watch.
@@ -19,8 +17,6 @@ CINEMATCH asks:
 Using Machine Learning and Natural Language Processing, the platform analyzes the characteristics of thousands of movies and TV shows to recommend titles that truly match the user's interests.
 
 The result is a faster, smarter, and more personalized movie discovery experience.
-
----
 
 # 🌟 Project Highlights
 
