@@ -7,7 +7,7 @@ import { useToast } from '../context/ToastContext';
 import * as titlesApi from '../api/titles';
 import * as favoritesApi from '../api/favorites';
 import * as historyApi from '../api/history';
-import { posterFor, fallbackPoster } from '../api/tmdb';
+import { genreGradient } from '../utils/palette';
 import './TitleDetailPage.css';
 
 export default function TitleDetailPage() {
@@ -18,7 +18,6 @@ export default function TitleDetailPage() {
 
   const [detail, setDetail] = useState(null);
   const [recs, setRecs] = useState([]);
-  const [backdrop, setBackdrop] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [favBusy, setFavBusy] = useState(false);
@@ -37,9 +36,6 @@ export default function TitleDetailPage() {
         if (cancelled) return;
         setDetail(detailRes.data);
         setRecs(recsRes.data.results);
-        posterFor(detailRes.data.title, detailRes.data.release_year, detailRes.data.type).then(url => {
-          if (!cancelled) setBackdrop(url);
-        });
       })
       .catch(() => { if (!cancelled) setNotFound(true); })
       .finally(() => { if (!cancelled) setLoading(false); });
@@ -107,14 +103,11 @@ export default function TitleDetailPage() {
     );
   }
 
-  const img = backdrop || fallbackPoster(detail.title, detail.genres, 1600, 900);
-
   return (
     <div className="bp">
       <Header />
 
-      <section className="td-hero">
-        <img className="td-hero__img" src={img} alt={detail.title} />
+      <section className="td-hero" style={{ background: genreGradient(detail.genres, 145) }}>
         <div className="td-hero__scrim" />
 
         <div className="td-hero__content">
