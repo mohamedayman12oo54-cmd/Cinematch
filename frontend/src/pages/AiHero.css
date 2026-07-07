@@ -1,0 +1,262 @@
+.ai-hero {
+  position: relative;
+  min-height: 100vh;
+  background: #050505;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-hero__sphere-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.ai-hero__sphere-layer canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ================= Intro: logo from fog → glitch → zoom out ================= */
+.ai-hero__intro {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #050505;
+  transition: background 0.6s ease;
+}
+
+.ai-hero__intro--zoom {
+  background: transparent;
+  pointer-events: none;
+}
+
+.ai-hero__intro-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.4rem, 7vw, 4rem);
+  letter-spacing: 0.12em;
+  color: #fff;
+  filter: blur(16px);
+  opacity: 0;
+  transform: scale(1);
+  animation: logo-from-fog 0.65s ease forwards;
+}
+
+@keyframes logo-from-fog {
+  to { filter: blur(0); opacity: 1; }
+}
+
+.ai-hero__intro--glitch .ai-hero__intro-logo {
+  filter: blur(0);
+  opacity: 1;
+  animation: logo-glitch 0.8s steps(2, end) infinite;
+  text-shadow: 2px 0 #e50914, -2px 0 #00e5ff;
+}
+
+@keyframes logo-glitch {
+  0%, 100% { transform: translate(0, 0) skewX(0deg); text-shadow: 2px 0 #e50914, -2px 0 #00e5ff; }
+  20% { transform: translate(-3px, 1px) skewX(-2deg); }
+  40% { transform: translate(3px, -1px) skewX(2deg); text-shadow: -3px 0 #8b5cf6, 3px 0 #e50914; }
+  60% { transform: translate(-2px, 0) skewX(0deg); }
+  80% { transform: translate(2px, 1px) skewX(1deg); text-shadow: 3px 0 #00e5ff, -3px 0 #8b5cf6; }
+}
+
+.ai-hero__intro--zoom .ai-hero__intro-logo {
+  animation: logo-zoom-out 0.75s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes logo-zoom-out {
+  0% { transform: scale(1); opacity: 1; filter: blur(0); }
+  100% { transform: scale(2.6); opacity: 0; filter: blur(8px); }
+}
+
+/* ================= Hero content ================= */
+.ai-hero__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 4%;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.ai-hero__content--visible { opacity: 1; }
+
+.ai-hero__greeting {
+  color: #8c8c8c;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin: 0 0 14px;
+}
+
+.ai-hero__headline {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 400;
+  font-size: clamp(2rem, 5.5vw, 3.6rem);
+  letter-spacing: 0.01em;
+  color: #fff;
+  margin: 0 0 40px;
+  min-height: 1.2em;
+}
+
+.ai-hero__cursor {
+  display: inline-block;
+  width: 3px;
+  height: 0.85em;
+  background: var(--bp-red, #e50914);
+  margin-left: 4px;
+  vertical-align: -0.1em;
+  animation: cursor-blink 0.85s steps(1) infinite;
+}
+
+@keyframes cursor-blink { 50% { opacity: 0; } }
+
+.ai-hero__search-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ai-hero__search-wrap--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================= Glass search panel ================= */
+.ai-search {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+.ai-search__panel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(14px);
+  border-radius: 50px;
+  padding: 8px 8px 8px 22px;
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, padding 0.25s ease;
+}
+
+.ai-search--focused .ai-search__panel {
+  border-color: rgba(0, 229, 255, 0.5);
+  box-shadow: 0 0 0 4px rgba(0, 229, 255, 0.1), 0 20px 60px -20px rgba(139, 92, 246, 0.4);
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.ai-search__scan {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.35), transparent);
+  animation: ai-scan 0.7s ease-out;
+  pointer-events: none;
+}
+
+@keyframes ai-scan {
+  from { left: -40%; }
+  to { left: 100%; }
+}
+
+.ai-search__icon { width: 19px; height: 19px; color: #b3b3b3; flex-shrink: 0; }
+
+.ai-search__input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 1.02rem;
+  padding: 12px 0;
+  min-width: 0;
+}
+
+.ai-search--focused .ai-search__input {
+  text-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+}
+
+.ai-search__submit {
+  flex-shrink: 0;
+  background: var(--bp-red, #e50914);
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 12px 24px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.ai-search__submit:hover { transform: translateY(-1px); }
+
+/* ================= Autocomplete results ================= */
+.ai-results {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 5;
+}
+
+.ai-result {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(20, 20, 20, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  text-align: left;
+  transform-origin: top center;
+}
+
+.ai-result:hover {
+  border-color: rgba(229, 9, 20, 0.5);
+  box-shadow: 0 0 24px -8px rgba(229, 9, 20, 0.6);
+}
+
+.ai-result__poster {
+  width: 42px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.ai-result__info { display: flex; flex-direction: column; }
+.ai-result__title { font-size: 0.92rem; color: #fff; font-weight: 600; }
+.ai-result__meta { font-size: 0.76rem; color: #8c8c8c; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-hero * { animation-duration: 0.001s !important; transition-duration: 0.001s !important; }
+}
+
+@media (max-width: 640px) {
+  .ai-hero { min-height: 90vh; }
+  .ai-search__submit span { display: none; }
+}

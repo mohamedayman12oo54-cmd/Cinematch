@@ -1,0 +1,53 @@
+.lc {
+  position: relative;
+  animation: lc-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes lc-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.lc--removing {
+  animation: lc-out 0.26s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes lc-out {
+  to { opacity: 0; transform: scale(0.92); }
+}
+
+.lc__remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 5;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.15s ease, transform 0.15s ease, background 0.15s ease;
+}
+
+.lc:hover .lc__remove {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.lc__remove:hover {
+  background: var(--bp-red);
+}
+
+.lc__remove svg { width: 13px; height: 13px; }
+
+@media (hover: none) {
+  .lc__remove { opacity: 1; transform: scale(1); }
+}
