@@ -17,12 +17,16 @@
 /* ================= Discover hero ================= */
 .discover-hero {
   position: relative;
+  z-index: 1;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 90px 4% 60px;
-  background: radial-gradient(ellipse 1000px 500px at 50% 0%, rgba(229, 9, 20, 0.12), transparent 65%);
+  padding: 90px 4%;
+  background: radial-gradient(ellipse 1200px 700px at 50% 40%, rgba(229, 9, 20, 0.22), transparent 60%), #000000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .discover-hero__headline {
@@ -34,6 +38,8 @@
   margin: 0;
   min-height: 1.2em;
 }
+
+.discover-hero__accent { color: var(--bp-red, #e50914); }
 
 .discover-hero__cursor {
   display: inline-block;
@@ -51,12 +57,35 @@
   display: block;
   width: 0;
   height: 3px;
-  margin: 18px 0 40px;
+  margin: 18px 0 20px;
   background: linear-gradient(90deg, transparent, var(--bp-red, #e50914), transparent);
   transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .discover-hero__underline--drawn { width: 260px; }
+
+.discover-hero__tagline-wrap {
+  min-height: 1.6em;
+  margin-bottom: 30px;
+}
+
+.discover-hero__tagline {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: #d2d2d2;
+  margin: 0;
+}
+
+.discover-hero__tagline-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  background: var(--bp-red, #e50914);
+  margin-left: 3px;
+  vertical-align: -0.05em;
+  animation: dsc-cursor-blink 0.85s steps(1) infinite;
+}
 
 .discover-hero__search {
   width: 100%;
