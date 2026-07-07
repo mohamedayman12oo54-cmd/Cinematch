@@ -6,6 +6,7 @@ namespace App\Http\Resources\Search;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * Wraps the raw title detail array from MLClientService::getTitleDetail().
@@ -27,12 +28,13 @@ class TitleDetailResource extends JsonResource
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         $data = [
             'title' => $this->resource['title'],
             'type' => $this->resource['type'],
-            'genres' => collect(explode(',', $this->resource['genres']))
+            'genres' => collect(explode(',', (string) $this->resource['genres']))
                 ->map(fn (string $genre) => trim($genre))
                 ->filter()
                 ->values()

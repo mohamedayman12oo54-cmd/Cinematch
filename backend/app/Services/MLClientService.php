@@ -64,10 +64,10 @@ class MLClientService
             $response = $this->client()->get($uri, $query);
         } catch (ConnectionException $e) {
             if (str_contains(strtolower($e->getMessage()), 'timed out') || str_contains(strtolower($e->getMessage()), 'timeout')) {
-                throw new MlTimeoutException('The ML service took too long to respond.', previous: $e);
+                throw new MlTimeoutException('The ML service took too long to respond.', $e->getCode(), previous: $e);
             }
 
-            throw new MlConnectionException('The ML service is not available right now.', previous: $e);
+            throw new MlConnectionException('The ML service is not available right now.', $e->getCode(), previous: $e);
         }
 
         if ($response->serverError() && $response->status() !== 404) {
