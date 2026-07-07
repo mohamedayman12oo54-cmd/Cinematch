@@ -1,0 +1,173 @@
+.wb {
+  position: relative;
+  min-height: 100vh;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.wb__glow {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 70vmax;
+  height: 70vmax;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(229, 9, 20, 0.16), transparent 65%);
+  filter: blur(10px);
+  animation: wb-glow-pulse 4s ease-in-out infinite;
+}
+
+@keyframes wb-glow-pulse {
+  0%, 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+}
+
+.wb__logo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  letter-spacing: 0.1em;
+  color: #fff;
+  opacity: 0;
+  animation: wb-logo-in 0.5s ease forwards;
+  transition: top 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), font-size 0.6s ease, color 0.5s ease;
+}
+
+@keyframes wb-logo-in {
+  to { opacity: 1; }
+}
+
+.wb__logo--docked {
+  top: 30px;
+  transform: translate(-50%, 0);
+  font-size: 1.4rem;
+  color: var(--bp-red, #e50914);
+}
+
+.wb__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 6%;
+  margin-top: 40px;
+}
+
+.wb__eyebrow {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  letter-spacing: 0.14em;
+  color: #fff;
+  margin: 0 0 6px;
+}
+
+.wb__eyebrow span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: wb-fade-up 0.4s ease forwards;
+}
+
+@keyframes wb-fade-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.wb__name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 6vw, 3rem);
+  letter-spacing: 0.03em;
+  color: var(--bp-red, #e50914);
+  margin: 0 0 18px;
+  text-transform: capitalize;
+  opacity: 0;
+  animation: wb-fade-up 0.5s ease forwards;
+  animation-delay: 1.3s;
+}
+
+.wb__tagline {
+  color: #b3b3b3;
+  font-size: 1rem;
+  margin: 0 0 40px;
+  opacity: 0;
+  animation: wb-fade-up 0.5s ease forwards;
+  animation-delay: 1.5s;
+}
+
+.wb__status {
+  height: 24px;
+  margin-bottom: 16px;
+  opacity: 0;
+  animation: wb-fade-up 0.5s ease forwards;
+  animation-delay: 1.7s;
+}
+
+.wb__status-text {
+  display: inline-block;
+  color: #8c8c8c;
+  font-size: 0.85rem;
+  font-family: 'Menlo', 'Consolas', monospace;
+  animation: wb-status-in 0.3s ease;
+}
+
+@keyframes wb-status-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.wb__progress {
+  max-width: 340px;
+  margin: 0 auto 36px;
+  opacity: 0;
+  animation: wb-fade-up 0.5s ease forwards;
+  animation-delay: 1.9s;
+}
+
+.wb__progress-track {
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.wb__progress-fill {
+  height: 100%;
+  background: var(--bp-red, #e50914);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+.wb__continue {
+  background: var(--bp-red, #e50914);
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px 40px;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.92);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease;
+  box-shadow: 0 14px 36px -10px rgba(229, 9, 20, 0.7);
+}
+
+.wb__continue--visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.wb__continue:hover:not(:disabled) {
+  box-shadow: 0 18px 42px -8px rgba(229, 9, 20, 0.85);
+  transform: translateY(-2px) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wb * { animation-duration: 0.001s !important; transition-duration: 0.001s !important; }
+}
