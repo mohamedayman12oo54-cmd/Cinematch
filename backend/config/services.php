@@ -37,4 +37,9 @@ return [
         ],
     ],
 
+    'ml' => [
+        'base_url' => env('ML_BASE_URL', 'http://localhost:8000'),
+        'timeout' => (int) env('ML_TIMEOUT', 10),
+    ],
+
 ];
