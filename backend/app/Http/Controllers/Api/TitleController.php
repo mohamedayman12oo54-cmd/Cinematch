@@ -11,6 +11,7 @@ use App\Http\Controllers\Concerns\ResolvesOptionalAuthUser;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Search\RecommendationResource;
 use App\Http\Resources\Search\TitleDetailResource;
+use App\Models\User;
 use App\Services\MLClientService;
 use App\Services\UserSignalService;
 use Illuminate\Http\JsonResponse;
@@ -43,7 +44,7 @@ class TitleController extends Controller
         }
 
         $user = $this->optionalUser();
-        $userSignals = $user ? $this->userSignalService->signalsFor($user, $detail['title']) : null;
+        $userSignals = $user instanceof User ? $this->userSignalService->signalsFor($user, $detail['title']) : null;
 
         return response()->json([
             'status' => 'success',
@@ -71,7 +72,7 @@ class TitleController extends Controller
         }
 
         $user = $this->optionalUser();
-        $signalsByTitle = $user
+        $signalsByTitle = $user instanceof User
             ? $this->userSignalService->signalsForMany($user, array_column($recommendations['results'], 'title'))
             : null;
 

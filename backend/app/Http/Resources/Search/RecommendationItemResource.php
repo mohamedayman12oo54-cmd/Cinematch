@@ -6,6 +6,7 @@ namespace App\Http\Resources\Search;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * Wraps one raw recommendation item from MLClientService::getRecommendations().
@@ -27,6 +28,7 @@ class RecommendationItemResource extends JsonResource
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         $data = [
