@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="560" viewBox="0 0 1100 560">
+  <rect width="1100" height="560" fill="#1e1e2e"/>
+
+  <text x="550" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">API Contracts :- GET /api/history</text>
+  <line x1="60" y1="54" x2="1040" y2="54" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- Badge + meta -->
+  <rect x="60" y="68" width="70" height="28" rx="4" fill="#89b4fa" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="95" y="87" font-size="14" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">GET</text>
+  <text x="145" y="87" font-size="15" fill="#94e2d5" font-family="Excalifont, 'Comic Sans MS', cursive">/api/history</text>
+  <text x="60" y="112" font-size="14" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">Protected  —  auth:api  required</text>
+  <text x="60" y="132" font-size="14" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Returns all watched titles for the authenticated user, sorted newest first</text>
+
+  <!-- Response label -->
+  <text x="60" y="158" font-size="15" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Response (200) :-</text>
+
+  <!-- JSON block -->
+  <rect x="60" y="166" width="980" height="320" rx="6" fill="#11111b" stroke="#313244" stroke-width="1.2"/>
+  <text x="80" y="192" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">{</text>
+  <text x="80" y="214" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">    "status": "success",</text>
+  <text x="80" y="236" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">    "data": [</text>
+  <text x="80" y="258" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">        {</text>
+  <text x="80" y="280" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">            "id":           1,</text>
+  <text x="80" y="302" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">            "title_name":   "Better Call Saul",</text>
+  <text x="80" y="324" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">            "title_type":   "TV Show",</text>
+  <text x="80" y="346" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">            "genres":       "Crime, Drama",</text>
+  <text x="80" y="368" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">            "release_year": 2015,</text>
+  <text x="80" y="390" font-size="13" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">            "watched_at":   "2024-01-16T22:00:00Z"</text>
+  <text x="80" y="412" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">        }</text>
+  <text x="80" y="434" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">    ]</text>
+  <text x="80" y="474" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">}</text>
+
+  <line x1="50" y1="536" x2="1050" y2="536" stroke="#313244" stroke-width="0.7"/>
+  <text x="550" y="550" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">genres stored as snapshot at time of marking watched — no ML call on read</text>
+</svg>

@@ -9,35 +9,34 @@ use App\Exceptions\MlTimeoutException;
 use App\Http\Controllers\Concerns\HandlesMlErrors;
 use App\Http\Controllers\Concerns\ResolvesAuthUser;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreFavoriteRequest;
-use App\Http\Resources\FavoriteResource;
-use App\Services\FavoriteService;
+use App\Http\Requests\StoreWatchedTitleRequest;
+use App\Http\Resources\WatchedTitleResource;
+use App\Services\WatchedTitleService;
 use Illuminate\Http\JsonResponse;
 
-class FavoriteController extends Controller
+class WatchedTitleController extends Controller
 {
     use HandlesMlErrors;
     use ResolvesAuthUser;
 
-    public function __construct(private readonly FavoriteService $favoriteService) {}
+    public function __construct(private readonly WatchedTitleService $watchedTitleService) {}
 
-    // GET /api/favorites
+    // GET /api/history
     public function index(): JsonResponse
     {
-        $favorites = $this->favoriteService->getFavorites($this->user());
+        $history = $this->watchedTitleService->getHistory($this->user());
 
         return response()->json([
             'status' => 'success',
-            'data' => FavoriteResource::collection($favorites),
-            'meta' => ['total' => $favorites->count()],
+            'data' => WatchedTitleResource::collection($history),
         ]);
     }
 
-    // POST /api/favorites
-    public function store(StoreFavoriteRequest $request): JsonResponse
+    // POST /api/history
+    public function store(StoreWatchedTitleRequest $request): JsonResponse
     {
         try {
-            $result = $this->favoriteService->addFavorite(
+            $result = $this->watchedTitleService->addWatched(
                 $this->user(),
                 $request->string('title_name')->toString(),
             );
@@ -53,33 +52,33 @@ class FavoriteController extends Controller
                 ], 404),
                 'duplicate' => response()->json([
                     'status' => 'error',
-                    'message' => 'Title already in your Favorites',
+                    'message' => 'Title already in your Watch History',
                 ], 422),
             };
         }
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Added to Favorites',
-            'data' => new FavoriteResource($result['favorite']),
+            'message' => 'Marked as Watched',
+            'data' => new WatchedTitleResource($result['watchedTitle']),
         ], 201);
     }
 
-    // DELETE /api/favorites/{title_name}
+    // DELETE /api/history/{title_name}
     public function destroy(string $title_name): JsonResponse
     {
-        $removed = $this->favoriteService->removeFavorite($this->user(), $title_name);
+        $removed = $this->watchedTitleService->removeWatched($this->user(), $title_name);
 
         if (! $removed) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Title not in your Favorites',
+                'message' => 'Title not in your Watch History',
             ], 404);
         }
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Removed from Favorites',
+            'message' => 'Removed from Watch History',
         ]);
     }
 }
