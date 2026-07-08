@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="780" viewBox="0 0 1100 780">
+  <rect width="1100" height="780" fill="#1e1e2e"/>
+
+  <!-- Title -->
+  <text x="550" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">API Contracts :- POST /api/favorites</text>
+  <line x1="60" y1="54" x2="1040" y2="54" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- Badge + endpoint -->
+  <rect x="60" y="68" width="72" height="28" rx="4" fill="#a6e3a1" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="96" y="87" font-size="14" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, cursive">POST</text>
+  <text x="148" y="87" font-size="15" fill="#94e2d5" font-family="Excalifont, cursive">/api/favorites</text>
+  <text x="60" y="112" font-size="14" fill="#f38ba8" font-family="Excalifont, cursive">Protected  —  auth:api  required</text>
+
+  <!-- Request block -->
+  <text x="60" y="138" font-size="15" fill="#f9e2af" font-family="Excalifont, cursive">Request Body :-</text>
+  <rect x="60" y="146" width="980" height="66" rx="6" fill="#11111b" stroke="#313244" stroke-width="1.2"/>
+  <text x="80" y="170" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">{</text>
+  <text x="80" y="192" font-size="13" fill="#f38ba8" font-family="Excalifont, cursive">    "title_name": "Breaking Bad"</text>
+  <text x="80" y="203" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">}</text>
+
+  <!-- Response 201 label -->
+  <text x="60" y="236" font-size="15" fill="#f9e2af" font-family="Excalifont, cursive">Response (201) :-</text>
+  <rect x="60" y="244" width="980" height="274" rx="6" fill="#11111b" stroke="#313244" stroke-width="1.2"/>
+  <text x="80" y="270" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">{</text>
+  <text x="80" y="292" font-size="13" fill="#a6e3a1" font-family="Excalifont, cursive">    "status":  "success",</text>
+  <text x="80" y="314" font-size="13" fill="#a6e3a1" font-family="Excalifont, cursive">    "message": "Added to Favorites",</text>
+  <text x="80" y="336" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">    "data": {</text>
+  <text x="80" y="358" font-size="13" fill="#89b4fa" font-family="Excalifont, cursive">        "id":           1,</text>
+  <text x="80" y="380" font-size="13" fill="#89b4fa" font-family="Excalifont, cursive">        "title_name":   "Breaking Bad",</text>
+  <text x="80" y="402" font-size="13" fill="#89b4fa" font-family="Excalifont, cursive">        "title_type":   "TV Show",</text>
+  <text x="80" y="424" font-size="13" fill="#89b4fa" font-family="Excalifont, cursive">        "genres":       "Crime, Drama, Thriller",</text>
+  <text x="80" y="446" font-size="13" fill="#89b4fa" font-family="Excalifont, cursive">        "release_year": 2008,</text>
+  <text x="80" y="468" font-size="13" fill="#f9e2af" font-family="Excalifont, cursive">        "added_at":     "2024-01-15T21:00:00Z"</text>
+  <text x="80" y="490" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">    }</text>
+  <text x="80" y="508" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">}</text>
+
+  <!-- Error 422 -->
+  <text x="60" y="540" font-size="15" fill="#f38ba8" font-family="Excalifont, cursive">Error — Already exists  (422) :-</text>
+  <rect x="60" y="548" width="980" height="78" rx="6" fill="#11111b" stroke="#f38ba8" stroke-width="1.0"/>
+  <text x="80" y="572" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">{</text>
+  <text x="80" y="594" font-size="13" fill="#f38ba8" font-family="Excalifont, cursive">    "status":  "error",</text>
+  <text x="80" y="616" font-size="13" fill="#f38ba8" font-family="Excalifont, cursive">    "message": "Title already in your Favorites"</text>
+  <text x="80" y="619" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">}</text>
+
+  <!-- Error 404 -->
+  <text x="60" y="650" font-size="15" fill="#f38ba8" font-family="Excalifont, cursive">Error — Title not found in ML  (404) :-</text>
+  <rect x="60" y="658" width="980" height="78" rx="6" fill="#11111b" stroke="#f38ba8" stroke-width="1.0"/>
+  <text x="80" y="682" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">{</text>
+  <text x="80" y="704" font-size="13" fill="#f38ba8" font-family="Excalifont, cursive">    "status":  "error",</text>
+  <text x="80" y="726" font-size="13" fill="#f38ba8" font-family="Excalifont, cursive">    "message": "Title not found"</text>
+  <text x="80" y="729" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">}</text>
+
+  <!-- footer -->
+  <line x1="50" y1="758" x2="1050" y2="758" stroke="#313244" stroke-width="0.7"/>
+  <text x="550" y="772" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, cursive">Backend calls ML getTitleDetail() to fetch genres snapshot before storing</text>
+</svg>
