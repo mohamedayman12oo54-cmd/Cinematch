@@ -7,16 +7,17 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\MlConnectionException;
 use App\Exceptions\MlTimeoutException;
 use App\Http\Controllers\Concerns\HandlesMlErrors;
+use App\Http\Controllers\Concerns\ResolvesAuthUser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFavoriteRequest;
 use App\Http\Resources\FavoriteResource;
-use App\Models\User;
 use App\Services\FavoriteService;
 use Illuminate\Http\JsonResponse;
 
 class FavoriteController extends Controller
 {
     use HandlesMlErrors;
+    use ResolvesAuthUser;
 
     public function __construct(private readonly FavoriteService $favoriteService) {}
 
@@ -80,13 +81,5 @@ class FavoriteController extends Controller
             'status' => 'success',
             'message' => 'Removed from Favorites',
         ]);
-    }
-
-    private function user(): User
-    {
-        /** @var User $user */
-        $user = auth('api')->user();
-
-        return $user;
     }
 }
