@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660">
+  <rect width="1200" height="660" fill="#1e1e2e"/>
+
+  <!-- Title -->
+  <text x="600" y="44" font-size="28" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Feature Analysis :- Watched Titles</text>
+  <line x1="60" y1="55" x2="1140" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+  <text x="600" y="75" font-size="14" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">User Scenarios — from the story</text>
+
+  <!-- Scenario 1 -->
+  <rect x="50" y="90" width="1100" height="140" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.2"/>
+  <circle cx="82" cy="120" r="14" fill="#94e2d5" stroke="#cdd6f4" stroke-width="1.3"/>
+  <text x="82" y="125" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">1</text>
+  <text x="108" y="123" font-size="17" fill="#94e2d5" font-family="Excalifont, 'Comic Sans MS', cursive">Scenario 1  —  Mark as Watched</text>
+  <text x="80" y="152" font-size="14" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Ahmed finishes watching  "Better Call Saul"</text>
+  <text x="80" y="175" font-size="14" fill="#94e2d5" font-family="Excalifont, 'Comic Sans MS', cursive">  →  Clicks  ✓  "Mark As Watched"  button</text>
+  <text x="80" y="197" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">  →  Site records it:   Watched #1  →  Title: Better Call Saul</text>
+  <text x="80" y="218" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">  →  watched_at timestamp stored automatically</text>
+
+  <!-- Scenario 2 -->
+  <rect x="50" y="244" width="1100" height="130" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.2"/>
+  <circle cx="82" cy="274" r="14" fill="#f9e2af" stroke="#cdd6f4" stroke-width="1.3"/>
+  <text x="82" y="279" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">2</text>
+  <text x="108" y="277" font-size="17" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Scenario 2  —  Remove from History</text>
+  <text x="80" y="306" font-size="14" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Ahmed's younger brother watched children's movies using Ahmed's account</text>
+  <text x="80" y="328" font-size="14" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">  →  Ahmed opens his History and removes those titles</text>
+  <text x="80" y="350" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">  →  Site recalculates taste profile  —  recommendations improve</text>
+  <text x="80" y="366" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">  →  Data Isolation ensures only Ahmed sees his own History</text>
+
+  <!-- Scenario 3 -->
+  <rect x="50" y="388" width="1100" height="118" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.2"/>
+  <circle cx="82" cy="418" r="14" fill="#a6e3a1" stroke="#cdd6f4" stroke-width="1.3"/>
+  <text x="82" y="423" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">3</text>
+  <text x="108" y="421" font-size="17" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">Scenario 3  —  Browse Watch History</text>
+  <text x="80" y="450" font-size="14" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Ahmed opens his Watch History page</text>
+  <text x="80" y="472" font-size="14" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">  →  Sees all titles he has watched</text>
+  <text x="80" y="494" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">  →  Sorted newest first  ( watched_at DESC )</text>
+
+  <!-- Key difference note -->
+  <rect x="50" y="522" width="1100" height="60" rx="6" fill="#181825" stroke="#cba6f7" stroke-width="1.2"/>
+  <text x="600" y="547" font-size="14" fill="#cba6f7" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Key distinction :-   Watched  ≠  Favorite</text>
+  <text x="600" y="569" font-size="13" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Watched Titles and Favorites are completely independent systems — a title can be in one, both, or neither</text>
+
+  <!-- footer -->
+  <line x1="50" y1="636" x2="1150" y2="636" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="650" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Watched Titles Feature  —  User Scenarios</text>
+</svg>
