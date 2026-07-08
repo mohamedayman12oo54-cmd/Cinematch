@@ -7,16 +7,17 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\MlConnectionException;
 use App\Exceptions\MlTimeoutException;
 use App\Http\Controllers\Concerns\HandlesMlErrors;
+use App\Http\Controllers\Concerns\ResolvesAuthUser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreWatchedTitleRequest;
 use App\Http\Resources\WatchedTitleResource;
-use App\Models\User;
 use App\Services\WatchedTitleService;
 use Illuminate\Http\JsonResponse;
 
 class WatchedTitleController extends Controller
 {
     use HandlesMlErrors;
+    use ResolvesAuthUser;
 
     public function __construct(private readonly WatchedTitleService $watchedTitleService) {}
 
@@ -79,13 +80,5 @@ class WatchedTitleController extends Controller
             'status' => 'success',
             'message' => 'Removed from Watch History',
         ]);
-    }
-
-    private function user(): User
-    {
-        /** @var User $user */
-        $user = auth('api')->user();
-
-        return $user;
     }
 }
