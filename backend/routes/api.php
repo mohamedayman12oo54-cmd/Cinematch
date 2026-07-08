@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\TitleController;
+use App\Http\Controllers\Api\WatchedTitleController;
 use Illuminate\Support\Facades\Route;
 
 // ======= Public Auth Routes =======
@@ -22,6 +23,11 @@ Route::middleware(['auth:api', 'throttle:100,1'])->group(function (): void {
     Route::get('favorites', [FavoriteController::class, 'index']);
     Route::post('favorites', [FavoriteController::class, 'store']);
     Route::delete('favorites/{title_name}', [FavoriteController::class, 'destroy']);
+
+    // ======= Watched Titles Routes =======
+    Route::get('history', [WatchedTitleController::class, 'index']);
+    Route::post('history', [WatchedTitleController::class, 'store']);
+    Route::delete('history/{title_name}', [WatchedTitleController::class, 'destroy']);
 });
 
 // ======= Search & Discovery Routes (Public) =======
