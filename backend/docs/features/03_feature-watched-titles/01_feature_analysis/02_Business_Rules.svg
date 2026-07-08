@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <rect width="1200" height="620" fill="#1e1e2e"/>
+
+  <text x="600" y="44" font-size="28" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Business Rules :- Watched Titles</text>
+  <line x1="60" y1="55" x2="1140" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- Rule 1 -->
+  <rect x="50" y="72" width="1100" height="66" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="105" r="14" fill="#f38ba8" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="82" y="110" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">1</text>
+  <text x="108" y="99" font-size="16" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">Must be logged in</text>
+  <text x="108" y="121" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Watch History requires authentication  —  protected via auth:api middleware</text>
+  <line x1="55" y1="138" x2="1145" y2="138" stroke="#313244" stroke-width="0.6"/>
+
+  <!-- Rule 2 -->
+  <rect x="50" y="146" width="1100" height="74" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="183" r="14" fill="#f9e2af" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="82" y="188" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">2</text>
+  <text x="108" y="177" font-size="16" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">No duplicate titles in Watch History</text>
+  <text x="108" y="199" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Cannot mark the same title as Watched twice  →  UNIQUE(user_id, title_name) in DB</text>
+  <text x="108" y="213" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Returns 422 if duplicate detected</text>
+  <line x1="55" y1="220" x2="1145" y2="220" stroke="#313244" stroke-width="0.6"/>
+
+  <!-- Rule 3 -->
+  <rect x="50" y="228" width="1100" height="74" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="265" r="14" fill="#94e2d5" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="82" y="270" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">3</text>
+  <text x="108" y="259" font-size="16" fill="#94e2d5" font-family="Excalifont, 'Comic Sans MS', cursive">Genres snapshot from ML</text>
+  <text x="108" y="281" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">When marking as Watched  →  Backend calls ML: getTitleDetail("Better Call Saul")</text>
+  <text x="108" y="297" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Genres stored at time of marking  —  no ML call needed on future reads</text>
+  <line x1="55" y1="302" x2="1145" y2="302" stroke="#313244" stroke-width="0.6"/>
+
+  <!-- Rule 4 -->
+  <rect x="50" y="310" width="1100" height="66" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="343" r="14" fill="#a6e3a1" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="82" y="348" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">4</text>
+  <text x="108" y="337" font-size="16" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">Genres travel with the Watched entry</text>
+  <text x="108" y="359" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">genres stored in DB — passed along to Home Personalization signals without extra ML calls</text>
+  <line x1="55" y1="376" x2="1145" y2="376" stroke="#313244" stroke-width="0.6"/>
+
+  <!-- Rule 5 -->
+  <rect x="50" y="384" width="1100" height="66" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="417" r="14" fill="#fab387" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="82" y="422" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">5</text>
+  <text x="108" y="411" font-size="16" fill="#fab387" font-family="Excalifont, 'Comic Sans MS', cursive">Sorted newest first</text>
+  <text x="108" y="433" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">History list ordered by watched_at DESC  —  most recently watched appears first</text>
+  <line x1="55" y1="450" x2="1145" y2="450" stroke="#313244" stroke-width="0.6"/>
+
+  <!-- Rule 6 -->
+  <rect x="50" y="458" width="530" height="66" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="491" r="14" fill="#cba6f7" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="82" y="496" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">6</text>
+  <text x="108" y="485" font-size="16" fill="#cba6f7" font-family="Excalifont, 'Comic Sans MS', cursive">Data Isolation</text>
+  <text x="108" y="507" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">User sees only their own Watch History</text>
+
+  <!-- Rule 7 -->
+  <rect x="620" y="458" width="530" height="66" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="652" cy="491" r="14" fill="#89b4fa" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="652" y="496" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">7</text>
+  <text x="678" y="485" font-size="16" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">Watched  ≠  Favorite</text>
+  <text x="678" y="507" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Completely independent systems — no overlap</text>
+
+  <line x1="50" y1="592" x2="1150" y2="592" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="607" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Watched Titles Feature  —  Business Rules</text>
+</svg>
