@@ -184,3 +184,61 @@ test('marking a title as watched returns 503 when the ML service is unreachable'
         'message' => 'Service not available right now',
     ]);
 });
+
+// === REMOVE FROM HISTORY TESTS ===
+
+test('an authenticated user can remove a title from their watch history', function () {
+    $user = User::factory()->create();
+    WatchedTitle::create([
+        'user_id' => $user->id,
+        'title_name' => 'Better Call Saul',
+        'title_type' => 'tv_show',
+        'genres' => 'Crime, Drama',
+        'release_year' => 2015,
+        'watched_at' => now(),
+    ]);
+
+    $response = $this->withToken(auth('api')->login($user))->deleteJson('/api/history/Better Call Saul');
+
+    $response->assertStatus(200)->assertJson([
+        'status' => 'success',
+        'message' => 'Removed from Watch History',
+    ]);
+
+    $this->assertDatabaseMissing('watched_titles', ['user_id' => $user->id, 'title_name' => 'Better Call Saul']);
+});
+
+test('removing a title not in watch history returns 404', function () {
+    $user = User::factory()->create();
+
+    $response = $this->withToken(auth('api')->login($user))->deleteJson('/api/history/Better Call Saul');
+
+    $response->assertStatus(404)->assertJson([
+        'status' => 'error',
+        'message' => 'Title not in your Watch History',
+    ]);
+});
+
+test('a user cannot remove a title from another users watch history', function () {
+    $user = User::factory()->create();
+    $otherUser = User::factory()->create();
+    WatchedTitle::create([
+        'user_id' => $otherUser->id,
+        'title_name' => 'Better Call Saul',
+        'title_type' => 'tv_show',
+        'genres' => 'Crime, Drama',
+        'release_year' => 2015,
+        'watched_at' => now(),
+    ]);
+
+    $response = $this->withToken(auth('api')->login($user))->deleteJson('/api/history/Better Call Saul');
+
+    $response->assertStatus(404);
+    $this->assertDatabaseHas('watched_titles', ['user_id' => $otherUser->id, 'title_name' => 'Better Call Saul']);
+});
+
+test('a guest cannot remove a title from watch history', function () {
+    $response = $this->deleteJson('/api/history/Better Call Saul');
+
+    $response->assertStatus(401);
+});
