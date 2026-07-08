@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="480" viewBox="0 0 1100 480">
+  <rect width="1100" height="480" fill="#1e1e2e"/>
+
+  <!-- Title -->
+  <text x="550" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">API Contracts :- DELETE /api/favorites/{title_name}</text>
+  <line x1="60" y1="54" x2="1040" y2="54" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- Badge + endpoint -->
+  <rect x="60" y="68" width="90" height="28" rx="4" fill="#f38ba8" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="105" y="87" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, cursive">DELETE</text>
+  <text x="165" y="87" font-size="15" fill="#94e2d5" font-family="Excalifont, cursive">/api/favorites/{title_name}</text>
+  <text x="60" y="112" font-size="14" fill="#f38ba8" font-family="Excalifont, cursive">Protected  —  auth:api  required</text>
+  <text x="60" y="132" font-size="14" fill="#6c7086" font-family="Excalifont, cursive">Removes the specified title from the authenticated user's Favorites</text>
+
+  <!-- Response 200 -->
+  <text x="60" y="160" font-size="15" fill="#f9e2af" font-family="Excalifont, cursive">Response (200) :-</text>
+  <rect x="60" y="168" width="980" height="100" rx="6" fill="#11111b" stroke="#313244" stroke-width="1.2"/>
+  <text x="80" y="194" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">{</text>
+  <text x="80" y="216" font-size="13" fill="#a6e3a1" font-family="Excalifont, cursive">    "status":  "success",</text>
+  <text x="80" y="238" font-size="13" fill="#a6e3a1" font-family="Excalifont, cursive">    "message": "Removed from Favorites"</text>
+  <text x="80" y="259" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">}</text>
+
+  <!-- Error 404 -->
+  <text x="60" y="294" font-size="15" fill="#f38ba8" font-family="Excalifont, cursive">Error — Not in your Favorites  (404) :-</text>
+  <rect x="60" y="302" width="980" height="100" rx="6" fill="#11111b" stroke="#f38ba8" stroke-width="1.0"/>
+  <text x="80" y="328" font-size="13" fill="#cdd6f4" font-family="Excalidraw, cursive">{</text>
+  <text x="80" y="350" font-size="13" fill="#f38ba8" font-family="Excalifont, cursive">    "status":  "error",</text>
+  <text x="80" y="372" font-size="13" fill="#f38ba8" font-family="Excalifont, cursive">    "message": "Title not in your Favorites"</text>
+  <text x="80" y="393" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">}</text>
+
+  <!-- note -->
+  <rect x="60" y="414" width="980" height="40" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <text x="550" y="439" font-size="13" fill="#6c7086" text-anchor="middle" font-family="Excalifont, cursive">Scoped delete — user can only remove their own entries  (WHERE user_id = auth user)</text>
+
+  <!-- footer -->
+  <line x1="50" y1="462" x2="1050" y2="462" stroke="#313244" stroke-width="0.7"/>
+  <text x="550" y="474" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, cursive">Favorites Feature  —  DELETE Endpoint</text>
+</svg>

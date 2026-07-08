@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="580" viewBox="0 0 1100 580">
+  <rect width="1100" height="580" fill="#1e1e2e"/>
+
+  <!-- Title -->
+  <text x="550" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">API Contracts :- GET /api/favorites</text>
+  <line x1="60" y1="54" x2="1040" y2="54" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- Badge + endpoint -->
+  <rect x="60" y="68" width="72" height="28" rx="4" fill="#89b4fa" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="96" y="87" font-size="14" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, cursive">GET</text>
+  <text x="148" y="87" font-size="15" fill="#94e2d5" font-family="Excalifont, cursive">/api/favorites</text>
+  <text x="60" y="112" font-size="14" fill="#a6e3a1" font-family="Excalifont, cursive">Protected  —  auth:api  required</text>
+  <text x="60" y="132" font-size="14" fill="#f9e2af" font-family="Excalifont, cursive">Returns all favorites for the authenticated user, sorted newest first</text>
+
+  <!-- Response 200 label -->
+  <text x="60" y="158" font-size="15" fill="#f9e2af" font-family="Excalifont, cursive">Response (200) :-</text>
+
+  <!-- JSON block -->
+  <rect x="60" y="166" width="980" height="340" rx="6" fill="#11111b" stroke="#313244" stroke-width="1.2"/>
+
+  <text x="80" y="194" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">{</text>
+  <text x="80" y="216" font-size="13" fill="#a6e3a1" font-family="Excalifont, cursive">    "status": "success",</text>
+  <text x="80" y="238" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">    "data": [</text>
+  <text x="80" y="260" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">        {</text>
+  <text x="80" y="282" font-size="13" fill="#89b4fa" font-family="Excalifont, cursive">            "id":           1,</text>
+  <text x="80" y="304" font-size="13" fill="#89b4fa" font-family="Excalifont, cursive">            "title_name":   "Breaking Bad",</text>
+  <text x="80" y="326" font-size="13" fill="#89b4fa" font-family="Excalifont, cursive">            "title_type":   "TV Show",</text>
+  <text x="80" y="348" font-size="13" fill="#89b4fa" font-family="Excalifont, cursive">            "genres":       "Crime, Drama, Thriller",</text>
+  <text x="80" y="370" font-size="13" fill="#89b4fa" font-family="Excalifont, cursive">            "release_year": 2008,</text>
+  <text x="80" y="392" font-size="13" fill="#f9e2af" font-family="Excalifont, cursive">            "added_at":     "2024-01-15T21:00:00Z"</text>
+  <text x="80" y="414" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">        }</text>
+  <text x="80" y="436" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">    ],</text>
+  <text x="80" y="458" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">    "meta": {</text>
+  <text x="80" y="480" font-size="13" fill="#94e2d5" font-family="Excalifont, cursive">        "total": 5</text>
+  <text x="80" y="498" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">    }</text>
+  <text x="80" y="496" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive"></text>
+
+  <text x="80" y="498" font-size="13" fill="#cdd6f4" font-family="Excalifont, cursive">}</text>
+
+  <!-- footer -->
+  <line x1="50" y1="558" x2="1050" y2="558" stroke="#313244" stroke-width="0.7"/>
+  <text x="550" y="572" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, cursive">genres stored as snapshot at time of adding — no ML call on read</text>
+</svg>

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\TitleController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,11 @@ Route::middleware(['auth:api', 'throttle:100,1'])->group(function (): void {
     Route::post('auth/logout', [AuthController::class, 'logout']);
     Route::post('auth/refresh', [AuthController::class, 'refresh']);
     Route::get('auth/me', [AuthController::class, 'me']);
+
+    // ======= Favorites Routes =======
+    Route::get('favorites', [FavoriteController::class, 'index']);
+    Route::post('favorites', [FavoriteController::class, 'store']);
+    Route::delete('favorites/{title_name}', [FavoriteController::class, 'destroy']);
 });
 
 // ======= Search & Discovery Routes (Public) =======
