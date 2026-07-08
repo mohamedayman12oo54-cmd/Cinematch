@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="740" viewBox="0 0 1200 740">
+  <defs>
+    <style>
+      @font-face { font-family: 'Excalifont'; src: url('/home/claude/project/Excalifont-Full.ttf'); }
+      text { font-family: 'Excalifont', 'Comic Sans MS', cursive; }
+    </style>
+  </defs>
+
+  <!-- BG -->
+  <rect width="1200" height="740" fill="#1e1e2e"/>
+
+  <!-- Title -->
+  <text x="600" y="46" font-size="28" fill="#89b4fa" text-anchor="middle">Feature Analysis :- Favorites</text>
+  <line x1="60" y1="56" x2="1140" y2="56" stroke="#89b4fa" stroke-width="1.5" stroke-dasharray="none"/>
+  <text x="600" y="76" font-size="14" fill="#6c7086" text-anchor="middle">User Scenarios — from the story</text>
+
+  <!-- Scenario 1 -->
+  <rect x="50" y="92" width="1100" height="130" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.2"/>
+  <circle cx="82" cy="120" r="14" fill="#94e2d5" stroke="#cdd6f4" stroke-width="1.3"/>
+  <text x="82" y="125" font-size="13" fill="#1e1e2e" text-anchor="middle">1</text>
+  <text x="108" y="123" font-size="17" fill="#94e2d5">Scenario 1  —  Add to Favorites</text>
+  <text x="80" y="151" font-size="14" fill="#cdd6f4">Ahmed opens the "Breaking Bad" page</text>
+  <text x="80" y="173" font-size="14" fill="#94e2d5">  →  Clicks the ❤ "Add To Favorites" button</text>
+  <text x="80" y="195" font-size="13" fill="#6c7086">  →  Site writes first line in Ahmed's list:   Favorite #1 → Title: Breaking Bad</text>
+
+  <!-- Scenario 2 -->
+  <rect x="50" y="234" width="1100" height="140" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.2"/>
+  <circle cx="82" cy="262" r="14" fill="#f9e2af" stroke="#cdd6f4" stroke-width="1.3"/>
+  <text x="82" y="267" font-size="13" fill="#1e1e2e" text-anchor="middle">2</text>
+  <text x="108" y="265" font-size="17" fill="#f9e2af">Scenario 2  —  Remove Favorite</text>
+  <text x="80" y="293" font-size="14" fill="#cdd6f4">Ahmed changed his mind</text>
+  <text x="80" y="315" font-size="14" fill="#f9e2af">  →  Clicks Remove button or toggle ❤  again</text>
+  <text x="80" y="337" font-size="14" fill="#94e2d5">  →  Site removes the Favorite</text>
+  <text x="80" y="357" font-size="13" fill="#6c7086">  →  Recommendations recalculated</text>
+
+  <!-- Scenario 3 -->
+  <rect x="50" y="386" width="1100" height="118" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.2"/>
+  <circle cx="82" cy="414" r="14" fill="#a6e3a1" stroke="#cdd6f4" stroke-width="1.3"/>
+  <text x="82" y="419" font-size="13" fill="#1e1e2e" text-anchor="middle">3</text>
+  <text x="108" y="417" font-size="17" fill="#a6e3a1">Scenario 3  —  Browse Favorites</text>
+  <text x="80" y="445" font-size="14" fill="#cdd6f4">Ahmed opens his Favorites list</text>
+  <text x="80" y="467" font-size="14" fill="#a6e3a1">  →  Sees all titles he added</text>
+  <text x="80" y="489" font-size="13" fill="#6c7086">  →  Sorted newest first  ( added_at DESC )</text>
+
+  <!-- Scenario 4 -->
+  <rect x="50" y="516" width="1100" height="132" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.2"/>
+  <circle cx="82" cy="544" r="14" fill="#cba6f7" stroke="#cdd6f4" stroke-width="1.3"/>
+  <text x="82" y="549" font-size="13" fill="#1e1e2e" text-anchor="middle">4</text>
+  <text x="108" y="547" font-size="17" fill="#cba6f7">Scenario 4  —  The Elder Brother</text>
+  <text x="80" y="575" font-size="14" fill="#cdd6f4">Ahmed's brother picks fewer movies</text>
+  <text x="80" y="597" font-size="14" fill="#cba6f7">  →  Shares his Favorites with Ahmed</text>
+  <text x="80" y="619" font-size="14" fill="#a6e3a1">  →  Site calculates score per account</text>
+  <text x="80" y="641" font-size="13" fill="#6c7086">  →  Data Isolation — each user sees only their own Favorites</text>
+
+  <!-- footer line -->
+  <line x1="50" y1="716" x2="1150" y2="716" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="732" font-size="13" fill="#6c7086" text-anchor="middle">Favorites Feature  —  User Scenarios</text>
+</svg>
