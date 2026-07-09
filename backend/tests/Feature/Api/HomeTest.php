@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Exceptions\MlConnectionException;
+use App\Exceptions\MlTimeoutException;
 use App\Models\Favorite;
 use App\Models\User;
 use App\Models\WatchedTitle;
@@ -530,4 +532,85 @@ test('a title appearing across multiple seeds outranks a title appearing once, r
     // single-appearance 0.95 being higher than either individual Narcos score.
     expect($titles[0])->toBe('Narcos');
     expect($titles)->toEqual(['Narcos', 'Zodiac', 'Taboo']);
+});
+
+// === ML UNAVAILABLE / INVALID RESPONSE TESTS ===
+
+test('home still returns 200 with an empty popular section when ML is completely unreachable for a guest', function () {
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyTitleDetails')->once()->andThrow(new MlConnectionException);
+    });
+
+    $response = $this->getJson('/api/home');
+
+    $response->assertStatus(200)->assertJson([
+        'status' => 'success',
+        'data' => [
+            'stage' => 'stranger',
+            'sections' => [['type' => 'popular', 'title' => 'Popular on Netflix', 'items' => []]],
+        ],
+    ]);
+});
+
+test('home still returns 200 and degrades gracefully when ML is completely unreachable for a personalized user', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')->once()->andThrow(new MlConnectionException);
+        $mock->shouldReceive('getManyTitleDetails')->once()->andThrow(new MlConnectionException);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $response->assertStatus(200)->assertJson(['status' => 'success', 'data' => ['stage' => 'explorer']]);
+    expect($response->json('data.sections'))->toHaveCount(1);
+    expect($response->json('data.sections.0'))->toMatchArray(['type' => 'popular', 'items' => []]);
+});
+
+test('home still returns 200 when the ML service times out', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')->once()->andThrow(new MlTimeoutException);
+        $mock->shouldReceive('getManyTitleDetails')->once()->andThrow(new MlTimeoutException);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $response->assertStatus(200)->assertJson(['status' => 'success', 'data' => ['stage' => 'explorer']]);
+});
+
+test('a malformed ML recommendation response missing the results key is handled without error', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->andReturn(['Breaking Bad' => ['query' => 'Breaking Bad', 'matched_title' => 'Breaking Bad', 'total' => 0]]);
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $response->assertStatus(200);
+    expect($response->json('data.sections'))->toHaveCount(1);
+    expect($response->json('data.sections.0.type'))->toBe('popular');
+});
+
+test('a null title-detail entry from ML is dropped from the popular section', function () {
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([
+            'Breaking Bad' => homeTitleDetail('Breaking Bad'),
+            'Stranger Things' => null,
+        ]);
+    });
+
+    $response = $this->getJson('/api/home');
+
+    $titles = collect($response->json('data.sections.0.items'))->pluck('title');
+    expect($titles)->toContain('Breaking Bad');
+    expect($titles)->not->toContain('Stranger Things');
 });
