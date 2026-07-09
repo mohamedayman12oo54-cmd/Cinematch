@@ -55,7 +55,7 @@ class HomeService
      */
     public function getHome(?User $user): array
     {
-        if ($user === null) {
+        if (! $user instanceof User) {
             return ['stage' => 'stranger', 'sections' => [$this->getPopularSection(collect(), collect())]];
         }
 

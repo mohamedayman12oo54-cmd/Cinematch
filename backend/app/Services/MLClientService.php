@@ -132,7 +132,7 @@ class MLClientService
             // The whole pool is unreachable — every pending title degrades
             // to null rather than failing the caller (Home must never 5xx
             // just because the ML service happens to be down).
-            foreach ($pending as $title => $cacheKey) {
+            foreach (array_keys($pending) as $title) {
                 $results[$title] = null;
             }
 
