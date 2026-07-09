@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
-use App\Exceptions\MlConnectionException;
-use App\Exceptions\MlTimeoutException;
-use App\Http\Controllers\Concerns\HandlesMlErrors;
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Concerns\ResolvesAuthUser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFavoriteRequest;
@@ -16,7 +14,6 @@ use Illuminate\Http\JsonResponse;
 
 class FavoriteController extends Controller
 {
-    use HandlesMlErrors;
     use ResolvesAuthUser;
 
     public function __construct(private readonly FavoriteService $favoriteService) {}
@@ -26,43 +23,28 @@ class FavoriteController extends Controller
     {
         $favorites = $this->favoriteService->getFavorites($this->user());
 
-        return response()->json([
-            'status' => 'success',
-            'data' => FavoriteResource::collection($favorites),
-            'meta' => ['total' => $favorites->count()],
-        ]);
+        return ApiResponse::success(
+            FavoriteResource::collection($favorites),
+            extra: ['meta' => ['total' => $favorites->count()]],
+        );
     }
 
     // POST /api/favorites
     public function store(StoreFavoriteRequest $request): JsonResponse
     {
-        try {
-            $result = $this->favoriteService->addFavorite(
-                $this->user(),
-                $request->string('title_name')->toString(),
-            );
-        } catch (MlTimeoutException|MlConnectionException $e) {
-            return $this->mlErrorResponse($e);
-        }
+        $result = $this->favoriteService->addFavorite(
+            $this->user(),
+            $request->string('title_name')->toString(),
+        );
 
         if (! $result['success']) {
             return match ($result['reason']) {
-                'not_found' => response()->json([
-                    'status' => 'error',
-                    'message' => 'Title not found',
-                ], 404),
-                'duplicate' => response()->json([
-                    'status' => 'error',
-                    'message' => 'Title already in your Favorites',
-                ], 422),
+                'not_found' => ApiResponse::error('Title not found', 404),
+                'duplicate' => ApiResponse::error('Title already in your Favorites', 422),
             };
         }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Added to Favorites',
-            'data' => new FavoriteResource($result['favorite']),
-        ], 201);
+        return ApiResponse::created(new FavoriteResource($result['favorite']), 'Added to Favorites');
     }
 
     // DELETE /api/favorites/{title_name}
@@ -71,15 +53,9 @@ class FavoriteController extends Controller
         $removed = $this->favoriteService->removeFavorite($this->user(), $title_name);
 
         if (! $removed) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Title not in your Favorites',
-            ], 404);
+            return ApiResponse::error('Title not in your Favorites', 404);
         }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Removed from Favorites',
-        ]);
+        return ApiResponse::success(message: 'Removed from Favorites');
     }
 }

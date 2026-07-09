@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Concerns\ResolvesOptionalAuthUser;
 use App\Http\Controllers\Controller;
 use App\Services\HomeService;
@@ -18,9 +19,6 @@ class HomeController extends Controller
     // GET /api/home
     public function __invoke(): JsonResponse
     {
-        return response()->json([
-            'status' => 'success',
-            'data' => $this->homeService->getHome($this->optionalUser()),
-        ]);
+        return ApiResponse::success($this->homeService->getHome($this->optionalUser()));
     }
 }
