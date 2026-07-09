@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
@@ -21,11 +22,10 @@ class AuthController extends Controller
     {
         $result = $this->authService->register($request->validated());
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Account created',
-            'data' => $this->tokenPayload($result['user'], $result['stage'], $result['token']),
-        ], 201);
+        return ApiResponse::created(
+            $this->tokenPayload($result['user'], $result['stage'], $result['token']),
+            'Account created',
+        );
     }
 
     // POST /api/auth/login
@@ -34,16 +34,10 @@ class AuthController extends Controller
         $result = $this->authService->login($request->validated());
 
         if (! $result['success']) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Invalid credentials',
-            ], 401);
+            return ApiResponse::error('Invalid credentials', 401);
         }
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $this->tokenPayload($result['user'], $result['stage'], $result['token']),
-        ]);
+        return ApiResponse::success($this->tokenPayload($result['user'], $result['stage'], $result['token']));
     }
 
     // POST /api/auth/logout
@@ -51,10 +45,7 @@ class AuthController extends Controller
     {
         $this->authService->logout();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Successfully logged out',
-        ]);
+        return ApiResponse::success(message: 'Successfully logged out');
     }
 
     // POST /api/auth/refresh
@@ -65,10 +56,7 @@ class AuthController extends Controller
 
         $result = $this->authService->refresh($user);
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $this->tokenPayload($result['user'], $result['stage'], $result['token']),
-        ]);
+        return ApiResponse::success($this->tokenPayload($result['user'], $result['stage'], $result['token']));
     }
 
     // GET /api/auth/me
@@ -79,12 +67,7 @@ class AuthController extends Controller
 
         $result = $this->authService->me($user);
 
-        return response()->json([
-            'status' => 'success',
-            'data' => [
-                'user' => UserResource::make($result['user'], $result['stage']),
-            ],
-        ]);
+        return ApiResponse::success(['user' => UserResource::make($result['user'], $result['stage'])]);
     }
 
     /**

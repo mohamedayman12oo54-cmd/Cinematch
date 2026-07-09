@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
-use App\Exceptions\MlConnectionException;
-use App\Exceptions\MlTimeoutException;
-use App\Http\Controllers\Concerns\HandlesMlErrors;
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Concerns\ResolvesAuthUser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreWatchedTitleRequest;
@@ -16,7 +14,6 @@ use Illuminate\Http\JsonResponse;
 
 class WatchedTitleController extends Controller
 {
-    use HandlesMlErrors;
     use ResolvesAuthUser;
 
     public function __construct(private readonly WatchedTitleService $watchedTitleService) {}
@@ -26,42 +23,25 @@ class WatchedTitleController extends Controller
     {
         $history = $this->watchedTitleService->getHistory($this->user());
 
-        return response()->json([
-            'status' => 'success',
-            'data' => WatchedTitleResource::collection($history),
-        ]);
+        return ApiResponse::success(WatchedTitleResource::collection($history));
     }
 
     // POST /api/history
     public function store(StoreWatchedTitleRequest $request): JsonResponse
     {
-        try {
-            $result = $this->watchedTitleService->addWatched(
-                $this->user(),
-                $request->string('title_name')->toString(),
-            );
-        } catch (MlTimeoutException|MlConnectionException $e) {
-            return $this->mlErrorResponse($e);
-        }
+        $result = $this->watchedTitleService->addWatched(
+            $this->user(),
+            $request->string('title_name')->toString(),
+        );
 
         if (! $result['success']) {
             return match ($result['reason']) {
-                'not_found' => response()->json([
-                    'status' => 'error',
-                    'message' => 'Title not found',
-                ], 404),
-                'duplicate' => response()->json([
-                    'status' => 'error',
-                    'message' => 'Title already in your Watch History',
-                ], 422),
+                'not_found' => ApiResponse::error('Title not found', 404),
+                'duplicate' => ApiResponse::error('Title already in your Watch History', 422),
             };
         }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Marked as Watched',
-            'data' => new WatchedTitleResource($result['watchedTitle']),
-        ], 201);
+        return ApiResponse::created(new WatchedTitleResource($result['watchedTitle']), 'Marked as Watched');
     }
 
     // DELETE /api/history/{title_name}
@@ -70,15 +50,9 @@ class WatchedTitleController extends Controller
         $removed = $this->watchedTitleService->removeWatched($this->user(), $title_name);
 
         if (! $removed) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Title not in your Watch History',
-            ], 404);
+            return ApiResponse::error('Title not in your Watch History', 404);
         }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Removed from Watch History',
-        ]);
+        return ApiResponse::success(message: 'Removed from Watch History');
     }
 }
