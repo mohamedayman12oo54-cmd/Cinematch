@@ -208,3 +208,113 @@ test('signalCount of exactly four keeps the user in the explorer stage', functio
 
     $response->assertStatus(200)->assertJson(['status' => 'success', 'data' => ['stage' => 'explorer']]);
 });
+
+// === REGULAR TESTS ===
+
+test('a regular user sees personalized, because-you-watched, and popular sections in order', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+    makeFavorite($user, 'Peaky Blinders', now()->subMinute());
+    makeFavorite($user, 'The Witcher', now()->subMinutes(2));
+    makeWatched($user, 'Mindhunter', now());
+    makeWatched($user, 'Ozark', now()->subMinute());
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Breaking Bad', 'Peaky Blinders', 'The Witcher'], 10)
+            ->andReturn([
+                'Breaking Bad' => homeMlRecommendation('Breaking Bad', [homeMlItem('Better Call Saul', 0.98)]),
+                'Peaky Blinders' => homeMlRecommendation('Peaky Blinders', [homeMlItem('Taboo', 0.87)]),
+                'The Witcher' => homeMlRecommendation('The Witcher', [homeMlItem('Dark', 0.9)]),
+            ]);
+
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Mindhunter'], 10)
+            ->andReturn(['Mindhunter' => homeMlRecommendation('Mindhunter', [homeMlItem('Zodiac', 0.96, 'Movie', 2007)])]);
+
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([
+            'Narcos' => homeTitleDetail('Narcos'),
+        ]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $response->assertStatus(200)->assertJson(['status' => 'success', 'data' => ['stage' => 'regular']]);
+
+    expect($response->json('data.sections'))->toHaveCount(3);
+    expect($response->json('data.sections.0.type'))->toBe('personalized');
+    expect($response->json('data.sections.0.title'))->toBe('Handpicked For You');
+    expect($response->json('data.sections.1'))->toMatchArray([
+        'type' => 'because_you_watched',
+        'title' => 'Because You Watched Mindhunter',
+        'seed_title' => 'Mindhunter',
+    ]);
+    expect($response->json('data.sections.1.items.0.title'))->toBe('Zodiac');
+    expect($response->json('data.sections.2.type'))->toBe('popular');
+});
+
+test('signalCount of exactly five moves the user into the regular stage', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+    makeWatched($user, 'Ozark', now());
+    makeWatched($user, 'Dark', now()->subMinute());
+    makeWatched($user, 'Narcos', now()->subMinutes(2));
+    makeWatched($user, 'The Witcher', now()->subMinutes(3));
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')->twice()->andReturn([]);
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $response->assertStatus(200)->assertJson(['status' => 'success', 'data' => ['stage' => 'regular']]);
+});
+
+test('a regular user with no favorites omits the personalized section', function () {
+    $user = User::factory()->create();
+    makeWatched($user, 'Mindhunter', now());
+    makeWatched($user, 'Ozark', now()->subMinute());
+    makeWatched($user, 'Dark', now()->subMinutes(2));
+    makeWatched($user, 'Narcos', now()->subMinutes(3));
+    makeWatched($user, 'The Witcher', now()->subMinutes(4));
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Mindhunter'], 10)
+            ->andReturn(['Mindhunter' => homeMlRecommendation('Mindhunter', [homeMlItem('Zodiac', 0.96)])]);
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    expect($response->json('data.sections'))->toHaveCount(2);
+    expect($response->json('data.sections.0.type'))->toBe('because_you_watched');
+    expect($response->json('data.sections.1.type'))->toBe('popular');
+});
+
+test('a regular user with no watched titles omits the because-you-watched section', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+    makeFavorite($user, 'Peaky Blinders', now()->subMinute());
+    makeFavorite($user, 'The Witcher', now()->subMinutes(2));
+    makeFavorite($user, 'Ozark', now()->subMinutes(3));
+    makeFavorite($user, 'Dark', now()->subMinutes(4));
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Breaking Bad', 'Peaky Blinders', 'The Witcher'], 10)
+            ->andReturn(['Breaking Bad' => homeMlRecommendation('Breaking Bad', [homeMlItem('Better Call Saul', 0.98)])]);
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    expect($response->json('data.sections'))->toHaveCount(2);
+    expect($response->json('data.sections.0.type'))->toBe('personalized');
+    expect($response->json('data.sections.1.type'))->toBe('popular');
+});
