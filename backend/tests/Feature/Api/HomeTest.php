@@ -614,3 +614,67 @@ test('a null title-detail entry from ML is dropped from the popular section', fu
     expect($titles)->toContain('Breaking Bad');
     expect($titles)->not->toContain('Stranger Things');
 });
+
+// === RESPONSE STRUCTURE TESTS ===
+
+test('the stranger response matches the documented json structure', function () {
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([
+            'Breaking Bad' => homeTitleDetail('Breaking Bad', 'TV Show', 2008),
+        ]);
+    });
+
+    $response = $this->getJson('/api/home');
+
+    $response->assertStatus(200)->assertJsonStructure([
+        'status',
+        'data' => [
+            'stage',
+            'sections' => [
+                '*' => ['type', 'title', 'items' => ['*' => ['title', 'type', 'release_year', 'similarity_score']]],
+            ],
+        ],
+    ]);
+
+    expect($response->json('data.sections.0'))->not->toHaveKey('seed_title');
+});
+
+test('a because_you_watched section carries a seed_title field that a personalized section does not', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+    makeFavorite($user, 'Peaky Blinders', now()->subMinute());
+    makeFavorite($user, 'The Witcher', now()->subMinutes(2));
+    makeWatched($user, 'Mindhunter', now());
+    makeWatched($user, 'Ozark', now()->subMinute());
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Breaking Bad', 'Peaky Blinders', 'The Witcher'], 10)
+            ->andReturn(['Breaking Bad' => homeMlRecommendation('Breaking Bad', [homeMlItem('Better Call Saul', 0.98)])]);
+
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Mindhunter'], 10)
+            ->andReturn(['Mindhunter' => homeMlRecommendation('Mindhunter', [homeMlItem('Zodiac', 0.96, 'Movie', 2007)])]);
+
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $response->assertJsonStructure([
+        'data' => [
+            'sections' => [
+                '*' => ['type', 'title', 'items'],
+            ],
+        ],
+    ]);
+
+    $personalized = collect($response->json('data.sections'))->firstWhere('type', 'personalized');
+    $becauseYouWatched = collect($response->json('data.sections'))->firstWhere('type', 'because_you_watched');
+
+    expect($personalized)->not->toHaveKey('seed_title');
+    expect($becauseYouWatched)->toHaveKey('seed_title');
+    expect($becauseYouWatched['seed_title'])->toBe('Mindhunter');
+});
