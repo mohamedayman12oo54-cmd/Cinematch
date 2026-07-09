@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780">
+  <rect width="1200" height="780" fill="#1e1e2e"/>
+
+  <!-- Title -->
+  <text x="600" y="44" font-size="28" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Implementation Tree :- Security Hardening</text>
+  <line x1="60" y1="55" x2="1140" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+  <text x="600" y="74" font-size="14" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Build order — each item is independent and can be added one by one</text>
+
+  <!-- Item 1: ApiResponse Helper -->
+  <rect x="50" y="88" width="1100" height="76" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="126" r="14" fill="#94e2d5" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="82" y="131" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">1</text>
+  <text x="108" y="120" font-size="17" fill="#94e2d5" font-family="Excalifont, 'Comic Sans MS', cursive">ApiResponse Helper</text>
+  <text x="480" y="120" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">app/Helpers/ApiResponse.php</text>
+  <line x1="82" y1="140" x2="82" y2="156" stroke="#94e2d5" stroke-width="0.6"/>
+  <line x1="82" y1="148" x2="102" y2="148" stroke="#94e2d5" stroke-width="0.6"/>
+  <text x="110" y="153" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Unified success/error JSON structure for every response across the entire API</text>
+
+  <!-- Item 2: Global Exception Handler -->
+  <rect x="50" y="176" width="1100" height="76" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="214" r="14" fill="#f38ba8" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="82" y="219" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">2</text>
+  <text x="108" y="208" font-size="17" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">Global Exception Handler</text>
+  <text x="480" y="208" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">app/Exceptions/Handler.php</text>
+  <line x1="82" y1="228" x2="82" y2="244" stroke="#f38ba8" stroke-width="0.6"/>
+  <line x1="82" y1="236" x2="102" y2="236" stroke="#f38ba8" stroke-width="0.6"/>
+  <text x="110" y="241" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">All unhandled exceptions return clean JSON errors — no raw stack traces exposed to client</text>
+
+  <!-- Item 3: Rate Limiting -->
+  <rect x="50" y="264" width="1100" height="152" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="292" r="14" fill="#f9e2af" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="82" y="297" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">3</text>
+  <text x="108" y="286" font-size="17" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Rate Limiting  ( 3 levels )</text>
+  <text x="480" y="286" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">routes/api.php</text>
+
+  <line x1="82" y1="306" x2="82" y2="408" stroke="#f9e2af" stroke-width="0.6"/>
+
+  <line x1="82" y1="318" x2="102" y2="318" stroke="#f9e2af" stroke-width="0.6"/>
+  <text x="110" y="323" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">/auth/login</text>
+  <text x="380" y="323" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">→  throttle:5,1</text>
+  <text x="560" y="323" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">5 attempts per minute — prevent brute force</text>
+
+  <line x1="82" y1="342" x2="102" y2="342" stroke="#f9e2af" stroke-width="0.6"/>
+  <text x="110" y="347" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">/auth/register</text>
+  <text x="380" y="347" font-size="13" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">→  throttle:10,1</text>
+  <text x="560" y="347" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">10 attempts per minute — prevent spam accounts</text>
+
+  <line x1="82" y1="366" x2="102" y2="366" stroke="#f9e2af" stroke-width="0.6"/>
+  <text x="110" y="371" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Public routes</text>
+  <text x="380" y="371" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">→  throttle:60,1</text>
+  <text x="560" y="371" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">60 requests per minute — open but limited</text>
+
+  <line x1="82" y1="390" x2="102" y2="390" stroke="#f9e2af" stroke-width="0.6"/>
+  <text x="110" y="395" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Protected routes</text>
+  <text x="380" y="395" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">→  throttle:100,1</text>
+  <text x="560" y="395" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">100 requests per minute — authenticated users get higher limit</text>
+
+  <!-- Item 4: CORS -->
+  <rect x="50" y="428" width="1100" height="76" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="466" r="14" fill="#cba6f7" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="82" y="471" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">4</text>
+  <text x="108" y="460" font-size="17" fill="#cba6f7" font-family="Excalifont, 'Comic Sans MS', cursive">CORS Configuration</text>
+  <text x="440" y="460" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">config/cors.php</text>
+  <line x1="82" y1="480" x2="82" y2="496" stroke="#cba6f7" stroke-width="0.6"/>
+  <line x1="82" y1="488" x2="102" y2="488" stroke="#cba6f7" stroke-width="0.6"/>
+  <text x="110" y="493" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Allow only trusted origins — block unauthorized cross-origin requests from unknown domains</text>
+
+  <!-- Item 5: N+1 Review -->
+  <rect x="50" y="516" width="1100" height="76" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="554" r="14" fill="#fab387" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="82" y="559" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">5</text>
+  <text x="108" y="548" font-size="17" fill="#fab387" font-family="Excalifont, 'Comic Sans MS', cursive">N+1 Query Review</text>
+  <line x1="82" y1="568" x2="82" y2="584" stroke="#fab387" stroke-width="0.6"/>
+  <line x1="82" y1="576" x2="102" y2="576" stroke="#fab387" stroke-width="0.6"/>
+  <text x="110" y="581" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">HomeService  —  audit all queries, add eager loading where needed  ( Parallel Calls + Cache )</text>
+
+  <!-- Item 6: Tests -->
+  <rect x="50" y="604" width="1100" height="100" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="632" r="14" fill="#89b4fa" stroke="#cdd6f4" stroke-width="1.2"/>
+  <text x="82" y="637" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">6</text>
+  <text x="108" y="626" font-size="17" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">Tests</text>
+  <text x="260" y="626" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">tests/Feature/Api/</text>
+
+  <line x1="82" y1="646" x2="82" y2="696" stroke="#89b4fa" stroke-width="0.6"/>
+
+  <line x1="82" y1="656" x2="102" y2="656" stroke="#89b4fa" stroke-width="0.6"/>
+  <text x="110" y="661" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">RateLimitTest</text>
+  <text x="380" y="661" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  verify throttle limits trigger 429 on excess requests</text>
+
+  <line x1="82" y1="678" x2="102" y2="678" stroke="#89b4fa" stroke-width="0.6"/>
+  <text x="110" y="683" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">ExceptionHandlerTest</text>
+  <text x="380" y="683" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  verify all errors return JSON shape, no raw stack traces</text>
+
+  <!-- Footer -->
+  <line x1="50" y1="722" x2="1150" y2="722" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="738" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Security Hardening Feature  —  Implementation Tree</text>
+</svg>
