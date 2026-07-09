@@ -318,3 +318,88 @@ test('a regular user with no watched titles omits the because-you-watched sectio
     expect($response->json('data.sections.0.type'))->toBe('personalized');
     expect($response->json('data.sections.1.type'))->toBe('popular');
 });
+
+// === LOYAL TESTS ===
+
+test('a loyal user sees personalized (last 5), because-you-loved (top favorite), and new-for-you sections', function () {
+    $user = User::factory()->create();
+    // Newest first: Fav1 .. Fav10. The last 5 (Fav6..Fav10) are the "extra"
+    // favorites used for New For You; Fav10 is the oldest = all-time top favorite.
+    for ($i = 1; $i <= 10; $i++) {
+        makeFavorite($user, "Fav{$i}", now()->subMinutes($i));
+    }
+    for ($i = 1; $i <= 10; $i++) {
+        makeWatched($user, "Watched{$i}", now()->subMinutes($i));
+    }
+
+    $lastFiveSeeds = ['Fav1', 'Fav2', 'Fav3', 'Fav4', 'Fav5'];
+    $extraSeeds = ['Fav6', 'Fav7', 'Fav8', 'Fav9', 'Fav10'];
+
+    $this->mock(MLClientService::class, function ($mock) use ($lastFiveSeeds, $extraSeeds) {
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with($lastFiveSeeds, 10)
+            ->andReturn(['Fav1' => homeMlRecommendation('Fav1', [homeMlItem('Handpicked Result', 0.9)])]);
+
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Fav10'], 10)
+            ->andReturn(['Fav10' => homeMlRecommendation('Fav10', [homeMlItem('Loved Result', 0.85)])]);
+
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with($extraSeeds, 10)
+            ->andReturn(['Fav6' => homeMlRecommendation('Fav6', [homeMlItem('New Result', 0.8)])]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $response->assertStatus(200)->assertJson(['status' => 'success', 'data' => ['stage' => 'loyal']]);
+
+    expect($response->json('data.sections'))->toHaveCount(3);
+    expect($response->json('data.sections.0'))->toMatchArray(['type' => 'personalized', 'title' => 'Handpicked For You']);
+    expect($response->json('data.sections.0.items.0.title'))->toBe('Handpicked Result');
+    expect($response->json('data.sections.1'))->toMatchArray([
+        'type' => 'because_you_loved',
+        'title' => 'Because You Loved Fav10',
+        'seed_title' => 'Fav10',
+    ]);
+    expect($response->json('data.sections.1.items.0.title'))->toBe('Loved Result');
+    expect($response->json('data.sections.2'))->toMatchArray(['type' => 'new_for_you', 'title' => 'New For You']);
+    expect($response->json('data.sections.2.items.0.title'))->toBe('New Result');
+});
+
+test('a loyal users new-for-you section falls back to popular seeds without enough extra favorites', function () {
+    $user = User::factory()->create();
+    for ($i = 1; $i <= 5; $i++) {
+        makeFavorite($user, "Fav{$i}", now()->subMinutes($i));
+    }
+    for ($i = 1; $i <= 15; $i++) {
+        makeWatched($user, "Watched{$i}", now()->subMinutes($i));
+    }
+
+    $fallbackSeeds = ['Breaking Bad', 'Stranger Things', 'The Crown'];
+
+    $this->mock(MLClientService::class, function ($mock) use ($fallbackSeeds) {
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Fav1', 'Fav2', 'Fav3', 'Fav4', 'Fav5'], 10)
+            ->andReturn([]);
+
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Fav5'], 10)
+            ->andReturn([]);
+
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with($fallbackSeeds, 10)
+            ->andReturn(['Breaking Bad' => homeMlRecommendation('Breaking Bad', [homeMlItem('Fallback Result', 0.7)])]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $response->assertStatus(200);
+    expect($response->json('data.sections.0.type'))->toBe('new_for_you');
+    expect($response->json('data.sections.0.items.0.title'))->toBe('Fallback Result');
+});
