@@ -403,3 +403,131 @@ test('a loyal users new-for-you section falls back to popular seeds without enou
     expect($response->json('data.sections.0.type'))->toBe('new_for_you');
     expect($response->json('data.sections.0.items.0.title'))->toBe('Fallback Result');
 });
+
+// === FILTERING TESTS ===
+
+test('a favorited title is excluded from a personalized section', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+    makeFavorite($user, 'Narcos', now()->subMinute());
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Breaking Bad'], 10)
+            ->andReturn(['Breaking Bad' => homeMlRecommendation('Breaking Bad', [
+                homeMlItem('Better Call Saul', 0.98),
+                homeMlItem('Narcos', 0.95),
+            ])]);
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $titles = collect($response->json('data.sections.0.items'))->pluck('title');
+    expect($titles)->toContain('Better Call Saul');
+    expect($titles)->not->toContain('Narcos');
+});
+
+test('a watched title is excluded from a personalized section', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+    makeWatched($user, 'Narcos', now());
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Breaking Bad'], 10)
+            ->andReturn(['Breaking Bad' => homeMlRecommendation('Breaking Bad', [
+                homeMlItem('Better Call Saul', 0.98),
+                homeMlItem('Narcos', 0.95),
+            ])]);
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $titles = collect($response->json('data.sections.0.items'))->pluck('title');
+    expect($titles)->toContain('Better Call Saul');
+    expect($titles)->not->toContain('Narcos');
+});
+
+test('a watched title is excluded from the popular section', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+    makeWatched($user, 'Ozark', now());
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')->once()->andReturn([]);
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([
+            'Ozark' => homeTitleDetail('Ozark'),
+            'Dark' => homeTitleDetail('Dark'),
+        ]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $popular = collect($response->json('data.sections'))->firstWhere('type', 'popular');
+    $titles = collect($popular['items'])->pluck('title');
+    expect($titles)->toContain('Dark');
+    expect($titles)->not->toContain('Ozark');
+});
+
+test('empty ML recommendation results omit the personalized section entirely', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Breaking Bad'], 10)
+            ->andReturn(['Breaking Bad' => homeMlRecommendation('Breaking Bad', [])]);
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    expect($response->json('data.sections'))->toHaveCount(1);
+    expect($response->json('data.sections.0.type'))->toBe('popular');
+});
+
+// === RANKING TESTS ===
+
+test('a title appearing across multiple seeds outranks a title appearing once, regardless of raw score', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+    makeFavorite($user, 'Peaky Blinders', now()->subMinute());
+    makeFavorite($user, 'The Witcher', now()->subMinutes(2));
+    makeWatched($user, 'Mindhunter', now());
+    makeWatched($user, 'Ozark', now()->subMinute());
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Breaking Bad', 'Peaky Blinders', 'The Witcher'], 10)
+            ->andReturn([
+                'Breaking Bad' => homeMlRecommendation('Breaking Bad', [
+                    homeMlItem('Narcos', 0.99),
+                    homeMlItem('Taboo', 0.5),
+                ]),
+                'Peaky Blinders' => homeMlRecommendation('Peaky Blinders', [
+                    homeMlItem('Zodiac', 0.95),
+                ]),
+                'The Witcher' => homeMlRecommendation('The Witcher', [
+                    homeMlItem('Narcos', 0.8),
+                ]),
+            ]);
+
+        $mock->shouldReceive('getManyRecommendations')->once()->with(['Mindhunter'], 10)->andReturn([]);
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $titles = collect($response->json('data.sections.0.items'))->pluck('title')->values()->all();
+
+    // Narcos appears from 2 seeds (avg 0.895) → ranks first despite Zodiac's
+    // single-appearance 0.95 being higher than either individual Narcos score.
+    expect($titles[0])->toBe('Narcos');
+    expect($titles)->toEqual(['Narcos', 'Zodiac', 'Taboo']);
+});
