@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780">
+  <rect width="1200" height="780" fill="#1e1e2e"/>
+  <text x="600" y="44" font-size="28" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Fix 1 :- Parallel HTTP Calls</text>
+  <line x1="60" y1="55" x2="1140" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+  <text x="600" y="74" font-size="14" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">The fastest solution for MVP  —  Laravel Http::pool()</text>
+
+  <!-- Problem: Sequential -->
+  <rect x="50" y="88" width="530" height="330" rx="6" fill="#11111b" stroke="#f38ba8" stroke-width="1.3"/>
+  <text x="315" y="111" font-size="16" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">✗  Sequential  —  slow</text>
+  <line x1="70" y1="119" x2="570" y2="119" stroke="#f38ba8" stroke-width="0.7"/>
+
+  <text x="80" y="143" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">// Each call waits for the previous one to finish</text>
+  <rect x="70" y="152" width="490" height="192" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <text x="88" y="174" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">foreach ($seeds as $seed) {</text>
+  <text x="88" y="196" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">    $results[] = $this-&gt;mlClient</text>
+  <text x="88" y="216" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">                      -&gt;getRecommendations($seed);</text>
+  <text x="88" y="236" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">    // 50ms ... 50ms ... 50ms = 150ms</text>
+  <text x="88" y="258" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">}</text>
+
+  <!-- Timeline sequential -->
+  <text x="88" y="290" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Timeline:</text>
+  <rect x="88" y="300" width="80" height="20" rx="2" fill="#f38ba8" fill-opacity="0.3" stroke="#f38ba8" stroke-width="0.7"/>
+  <text x="128" y="314" font-size="10" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">call 1</text>
+  <rect x="176" y="300" width="80" height="20" rx="2" fill="#f38ba8" fill-opacity="0.3" stroke="#f38ba8" stroke-width="0.7"/>
+  <text x="216" y="314" font-size="10" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">call 2</text>
+  <rect x="264" y="300" width="80" height="20" rx="2" fill="#f38ba8" fill-opacity="0.3" stroke="#f38ba8" stroke-width="0.7"/>
+  <text x="304" y="314" font-size="10" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">call 3</text>
+  <rect x="352" y="300" width="80" height="20" rx="2" fill="#f38ba8" fill-opacity="0.3" stroke="#f38ba8" stroke-width="0.7"/>
+  <text x="392" y="314" font-size="10" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">call 4</text>
+  <rect x="440" y="300" width="80" height="20" rx="2" fill="#f38ba8" fill-opacity="0.3" stroke="#f38ba8" stroke-width="0.7"/>
+  <text x="480" y="314" font-size="10" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">call 5</text>
+
+  <rect x="70" y="330" width="490" height="36" rx="4" fill="#181825" stroke="#f38ba8" stroke-width="0.8"/>
+  <text x="315" y="352" font-size="13" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">5 × 50ms  =  250ms  total wait  ✗</text>
+
+  <!-- Solution: Parallel -->
+  <rect x="620" y="88" width="530" height="330" rx="6" fill="#11111b" stroke="#a6e3a1" stroke-width="1.3"/>
+  <text x="885" y="111" font-size="16" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Parallel  —  fast</text>
+  <line x1="640" y1="119" x2="1140" y2="119" stroke="#a6e3a1" stroke-width="0.7"/>
+
+  <text x="640" y="143" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">// All calls fire at the same time</text>
+  <rect x="630" y="152" width="490" height="192" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <text x="648" y="174" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">$responses = Http::pool(fn($pool) =&gt;</text>
+  <text x="648" y="194" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">    collect($seeds)-&gt;map(fn($seed) =&gt;</text>
+  <text x="648" y="214" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">        $pool-&gt;get("$this-&gt;baseUrl/recommend",</text>
+  <text x="648" y="234" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">            ['title' =&gt; $seed,  'n' =&gt; 10]</text>
+  <text x="648" y="254" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">        )</text>
+  <text x="648" y="274" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">    )-&gt;toArray()</text>
+  <text x="648" y="296" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">);</text>
+  <text x="648" y="316" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">// 5 calls at the same time = max(50ms) ≈ 50ms  ✅</text>
+
+  <!-- Timeline parallel -->
+  <text x="640" y="352" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Timeline:</text>
+  <rect x="640" y="362" width="80" height="20" rx="2" fill="#a6e3a1" fill-opacity="0.3" stroke="#a6e3a1" stroke-width="0.7"/>
+  <text x="680" y="376" font-size="10" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">call 1</text>
+  <rect x="640" y="384" width="80" height="20" rx="2" fill="#a6e3a1" fill-opacity="0.3" stroke="#a6e3a1" stroke-width="0.7"/>
+  <text x="680" y="398" font-size="10" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">call 2</text>
+  <rect x="640" y="406" width="80" height="20" rx="2" fill="#a6e3a1" fill-opacity="0.3" stroke="#a6e3a1" stroke-width="0.7"/>
+  <text x="680" y="420" font-size="10" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">call 3</text>
+
+  <rect x="630" y="352" width="490" height="36" rx="4" fill="#181825" stroke="#a6e3a1" stroke-width="0.8"/>
+  <text x="885" y="374" font-size="13" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">max(50ms)  ≈  50ms  total  ✅</text>
+
+  <!-- Results comparison -->
+  <rect x="50" y="436" width="1100" height="110" rx="6" fill="#11111b" stroke="#313244" stroke-width="1.1"/>
+  <text x="600" y="459" font-size="15" fill="#cdd6f4" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Results :-</text>
+  <line x1="70" y1="467" x2="1130" y2="467" stroke="#313244" stroke-width="0.7"/>
+  <text x="300" y="493" font-size="14" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Sequential:   5 × 50ms  =  250ms</text>
+  <line x1="580" y1="474" x2="580" y2="530" stroke="#313244" stroke-width="0.8"/>
+  <text x="850" y="493" font-size="14" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Parallel:   max(50ms)  =  ≈ 50ms  ✅</text>
+  <text x="300" y="519" font-size="13" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Each call blocks the next</text>
+  <text x="850" y="519" font-size="13" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">All calls run simultaneously  —  5× faster</text>
+
+  <!-- Golden rule -->
+  <rect x="50" y="562" width="1100" height="158" rx="6" fill="#181825" stroke="#f9e2af" stroke-width="1.2"/>
+  <text x="600" y="585" font-size="15" fill="#f9e2af" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Golden Rule :- HTTP calls in interviews</text>
+  <line x1="70" y1="593" x2="1130" y2="593" stroke="#f9e2af" stroke-width="0.7"/>
+  <text x="80" y="617" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Every HTTP call  =  network round-trip  =  latency</text>
+  <text x="80" y="641" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">1.  If parallel is possible  →  always use it</text>
+  <text x="80" y="663" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">2.  If data is static  →  Cache it</text>
+  <text x="80" y="685" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">3.  If external calls are unavoidable  →  reduce count as much as possible</text>
+  <text x="80" y="707" font-size="13" fill="#94e2d5" font-family="Excalifont, 'Comic Sans MS', cursive">Interview answer:  "How do you handle multiple external service calls?"  →  Parallel + Caching + Graceful Degradation</text>
+
+  <line x1="50" y1="736" x2="1150" y2="736" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="752" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Home Feature  —  Fix 1: Parallel HTTP Calls</text>
+</svg>
