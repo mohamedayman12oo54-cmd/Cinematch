@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+  <rect width="1200" height="760" fill="#1e1e2e"/>
+  <text x="600" y="44" font-size="28" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Performance :- The Problem in Numbers</text>
+  <line x1="60" y1="55" x2="1140" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+  <text x="600" y="74" font-size="14" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Home Feature  —  why naive implementation is slow</text>
+
+  <!-- LEFT: The Numbers -->
+  <rect x="50" y="88" width="530" height="360" rx="6" fill="#11111b" stroke="#f38ba8" stroke-width="1.3"/>
+  <text x="315" y="111" font-size="16" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">The Problem in Numbers :-</text>
+  <line x1="70" y1="119" x2="570" y2="119" stroke="#f38ba8" stroke-width="0.7"/>
+
+  <text x="80" y="145" font-size="14" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Loyal User  —  5 seeds:</text>
+
+  <text x="80" y="175" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">HTTP calls to ML :-</text>
+  <line x1="100" y1="188" x2="100" y2="240" stroke="#cdd6f4" stroke-width="0.6"/>
+  <line x1="100" y1="196" x2="118" y2="196" stroke="#cdd6f4" stroke-width="0.6"/>
+  <text x="126" y="201" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Personalized Section</text>
+  <text x="400" y="201" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">→  5 calls</text>
+  <line x1="100" y1="214" x2="118" y2="214" stroke="#cdd6f4" stroke-width="0.6"/>
+  <text x="126" y="219" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Because You Loved</text>
+  <text x="400" y="219" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">→  1 call</text>
+  <line x1="100" y1="232" x2="118" y2="232" stroke="#cdd6f4" stroke-width="0.6"/>
+  <text x="126" y="237" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Popular Section</text>
+  <text x="400" y="237" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">→  1 call</text>
+
+  <rect x="80" y="252" width="430" height="32" rx="4" fill="#181825" stroke="#f38ba8" stroke-width="0.8"/>
+  <text x="295" y="272" font-size="13" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">= 7 HTTP calls in a single request  ✗</text>
+
+  <text x="80" y="310" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Each call ≈ 50ms  ( network round-trip )</text>
+  <text x="80" y="332" font-size="14" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">7 × 50ms  =  350ms wait time</text>
+
+  <line x1="70" y1="354" x2="570" y2="354" stroke="#313244" stroke-width="0.6"/>
+  <text x="80" y="376" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">+ 2 DB queries for Preload</text>
+  <text x="80" y="398" font-size="14" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">= Total: ≈ 350ms+  per Home request  ✗</text>
+
+  <!-- RIGHT: Why is this a problem -->
+  <rect x="620" y="88" width="530" height="360" rx="6" fill="#11111b" stroke="#fab387" stroke-width="1.3"/>
+  <text x="885" y="111" font-size="16" fill="#fab387" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Why is this a problem :-</text>
+  <line x1="640" y1="119" x2="1140" y2="119" stroke="#fab387" stroke-width="0.7"/>
+
+  <rect x="640" y="132" width="490" height="96" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <text x="660" y="154" font-size="14" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">HTTP call to ML  ≠  DB query</text>
+  <text x="660" y="178" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">DB query:    ≈  5ms    ( on Server, no network )</text>
+  <text x="660" y="200" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">HTTP call:   ≈  50ms   ( Network round-trip )</text>
+  <text x="660" y="218" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">10× slower than a local DB query</text>
+
+  <text x="640" y="252" font-size="13" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Sequential execution :-</text>
+  <rect x="640" y="260" width="490" height="80" rx="4" fill="#181825" stroke="#f38ba8" stroke-width="0.7"/>
+  <text x="660" y="282" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">7 calls × 50ms  =  350ms</text>
+  <text x="660" y="302" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">each call waits for the previous one to finish</text>
+  <text x="660" y="322" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">one slow ML response = the whole page waits</text>
+
+  <rect x="640" y="356" width="490" height="76" rx="4" fill="#181825" stroke="#f38ba8" stroke-width="1.0"/>
+  <text x="885" y="380" font-size="14" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Result :-  Home page is slow for the User</text>
+  <text x="885" y="402" font-size="13" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">350ms+ per request is unacceptable for a home page</text>
+  <text x="885" y="420" font-size="13" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">each concurrent user multiplies the ML load</text>
+
+  <!-- Solutions preview -->
+  <rect x="50" y="466" width="1100" height="240" rx="6" fill="#11111b" stroke="#a6e3a1" stroke-width="1.3"/>
+  <text x="600" y="489" font-size="16" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Solutions overview :-</text>
+  <line x1="70" y1="497" x2="1130" y2="497" stroke="#a6e3a1" stroke-width="0.7"/>
+
+  <!-- Solution cards -->
+  <rect x="70" y="510" width="310" height="176" rx="4" fill="#181825" stroke="#89b4fa" stroke-width="1.0"/>
+  <text x="225" y="532" font-size="14" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Fix 1 — Parallel Calls</text>
+  <text x="225" y="556" font-size="12" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Fastest  (MVP)</text>
+  <text x="85" y="578" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">All seeds sent at once via Http::pool()</text>
+  <text x="85" y="598" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">5 calls in parallel = max(50ms) ≈ 50ms</text>
+  <text x="85" y="618" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">vs. sequential 5 × 50ms = 250ms</text>
+  <text x="85" y="646" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Result: 350ms → ≈ 100ms</text>
+  <text x="85" y="664" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Laravel Http::pool() built-in</text>
+
+  <rect x="430" y="510" width="310" height="176" rx="4" fill="#181825" stroke="#94e2d5" stroke-width="1.0"/>
+  <text x="585" y="532" font-size="14" fill="#94e2d5" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Fix 2 — Caching  (24h)</text>
+  <text x="585" y="556" font-size="12" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Best long-term  (MVP)</text>
+  <text x="445" y="578" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">ML results cached after first call</text>
+  <text x="445" y="598" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Same recommendations served from cache</text>
+  <text x="445" y="618" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Cache key: "ml:recommendations:{title}:{n}"</text>
+  <text x="445" y="646" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Result: 50ms first → ≈ 1ms after</text>
+  <text x="445" y="664" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Cache::remember() built-in Laravel</text>
+
+  <rect x="790" y="510" width="310" height="176" rx="4" fill="#181825" stroke="#cba6f7" stroke-width="1.0"/>
+  <text x="945" y="532" font-size="14" fill="#cba6f7" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Fix 3 — Lazy Loading  ★</text>
+  <text x="945" y="556" font-size="12" fill="#fab387" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">★  Future Feature</text>
+  <text x="805" y="578" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Return structure fast from /api/home</text>
+  <text x="805" y="598" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Frontend requests each section separately</text>
+  <text x="805" y="618" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">GET /api/home/sections/personalized</text>
+  <text x="805" y="638" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">GET /api/home/sections/because-you-watched</text>
+  <text x="805" y="658" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Better UX — page loads progressively</text>
+
+  <line x1="50" y1="730" x2="1150" y2="730" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="748" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Home Feature  —  Performance Problem</text>
+</svg>
