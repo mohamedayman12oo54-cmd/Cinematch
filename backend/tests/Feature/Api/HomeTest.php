@@ -142,3 +142,69 @@ test('an invalid or expired token degrades home to the guest experience', functi
         'data' => ['stage' => 'stranger'],
     ]);
 });
+
+// === EXPLORER TESTS ===
+
+test('an explorer with one favorite sees a personalized section seeded from it, plus popular', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')
+            ->once()
+            ->with(['Breaking Bad'], 10)
+            ->andReturn(['Breaking Bad' => homeMlRecommendation('Breaking Bad', [
+                homeMlItem('Better Call Saul', 0.98),
+            ])]);
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([
+            'Narcos' => homeTitleDetail('Narcos'),
+        ]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $response->assertStatus(200)->assertJson(['status' => 'success', 'data' => ['stage' => 'explorer']]);
+
+    expect($response->json('data.sections'))->toHaveCount(2);
+    expect($response->json('data.sections.0'))->toMatchArray([
+        'type' => 'personalized',
+        'title' => 'Based on Your Favorites',
+    ]);
+    expect($response->json('data.sections.0.items.0.title'))->toBe('Better Call Saul');
+    expect($response->json('data.sections.1.type'))->toBe('popular');
+});
+
+test('an explorer with signals only from watched titles sees only the popular section', function () {
+    $user = User::factory()->create();
+    makeWatched($user, 'Narcos', now());
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')->never();
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([
+            'Breaking Bad' => homeTitleDetail('Breaking Bad'),
+        ]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $response->assertStatus(200)->assertJson(['status' => 'success', 'data' => ['stage' => 'explorer']]);
+    expect($response->json('data.sections'))->toHaveCount(1);
+    expect($response->json('data.sections.0.type'))->toBe('popular');
+});
+
+test('signalCount of exactly four keeps the user in the explorer stage', function () {
+    $user = User::factory()->create();
+    makeFavorite($user, 'Breaking Bad', now());
+    makeFavorite($user, 'Narcos', now()->subMinute());
+    makeWatched($user, 'Ozark', now());
+    makeWatched($user, 'Dark', now()->subMinute());
+
+    $this->mock(MLClientService::class, function ($mock) {
+        $mock->shouldReceive('getManyRecommendations')->once()->andReturn([]);
+        $mock->shouldReceive('getManyTitleDetails')->once()->andReturn([]);
+    });
+
+    $response = $this->withToken(auth('api')->login($user))->getJson('/api/home');
+
+    $response->assertStatus(200)->assertJson(['status' => 'success', 'data' => ['stage' => 'explorer']]);
+});
