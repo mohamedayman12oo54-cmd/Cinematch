@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="480" viewBox="0 0 1100 480">
+  <rect width="1100" height="480" fill="#1e1e2e"/>
+  <text x="550" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">filterSeenTitles() :- Why results are pre-filtered</text>
+  <line x1="60" y1="55" x2="1040" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+  <text x="550" y="75" font-size="14" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Titles the user already knows are excluded from ML results before returning</text>
+
+  <!-- Rule 1 -->
+  <rect x="50" y="90" width="1000" height="86" rx="6" fill="#11111b" stroke="#f9e2af" stroke-width="1.2"/>
+  <circle cx="82" cy="118" r="14" fill="#f9e2af" stroke="#cdd6f4" stroke-width="1.1"/>
+  <text x="82" y="123" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">1</text>
+  <text x="108" y="116" font-size="15" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">watched_titles — recency signal</text>
+  <text x="108" y="138" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">User's watched titles are taken newest first  →  watched recently = stronger signal of current taste</text>
+  <text x="108" y="159" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">These titles are removed from results  →  no point recommending what was already watched</text>
+
+  <!-- Rule 2 -->
+  <rect x="50" y="190" width="1000" height="86" rx="6" fill="#11111b" stroke="#94e2d5" stroke-width="1.2"/>
+  <circle cx="82" cy="218" r="14" fill="#94e2d5" stroke="#cdd6f4" stroke-width="1.1"/>
+  <text x="82" y="223" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">2</text>
+  <text x="108" y="216" font-size="15" fill="#94e2d5" font-family="Excalifont, 'Comic Sans MS', cursive">favorites — familiarity signal</text>
+  <text x="108" y="238" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">User's favorites are taken newest first  →  user already loves these titles</text>
+  <text x="108" y="259" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Removed from results  →  user is familiar with them, no need to suggest again</text>
+
+  <!-- Rule 3 -->
+  <rect x="50" y="290" width="1000" height="86" rx="6" fill="#11111b" stroke="#cba6f7" stroke-width="1.2"/>
+  <circle cx="82" cy="318" r="14" fill="#cba6f7" stroke="#cdd6f4" stroke-width="1.1"/>
+  <text x="82" y="323" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">3</text>
+  <text x="108" y="316" font-size="15" fill="#cba6f7" font-family="Excalifont, 'Comic Sans MS', cursive">Merge deduplication</text>
+  <text x="108" y="338" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">After merging results from multiple seeds  →  same title may appear from different seeds</text>
+  <text x="108" y="359" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Each title shown once  →  ranked by appearance count + average similarity_score</text>
+
+  <!-- Summary -->
+  <rect x="50" y="392" width="1000" height="46" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <text x="550" y="412" font-size="13" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Final output:  truly new recommendations the user has not yet seen or saved</text>
+  <text x="550" y="430" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Ensures every section on the Home page adds value</text>
+
+  <line x1="50" y1="456" x2="1050" y2="456" stroke="#313244" stroke-width="0.7"/>
+  <text x="550" y="470" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Home Feature  —  Filter Seen Titles</text>
+</svg>
