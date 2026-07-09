@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\TitleController;
 use App\Http\Controllers\Api\WatchedTitleController;
@@ -35,4 +36,9 @@ Route::middleware('throttle:60,1')->group(function (): void {
     Route::get('search', SearchController::class);
     Route::get('titles/{title}', [TitleController::class, 'show']);
     Route::get('recommendations/{title}', [TitleController::class, 'recommendations']);
+});
+
+// ======= Home Routes (Public) =======
+Route::middleware('throttle:60,1')->group(function (): void {
+    Route::get('home', HomeController::class);
 });
