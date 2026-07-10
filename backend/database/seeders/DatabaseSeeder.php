@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -11,15 +12,16 @@ class DatabaseSeeder extends Seeder
     use WithoutModelEvents;
 
     /**
-     * Seed the application's database.
+     * Seed the application's database with the API/Postman testing dataset.
+     *
+     * See docs/testing/TEST_DATASET.md for the full persona breakdown.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            UserSeeder::class,
+            FavoriteSeeder::class,
+            WatchedTitleSeeder::class,
         ]);
     }
 }
