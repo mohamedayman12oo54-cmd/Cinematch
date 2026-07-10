@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+  <rect width="1200" height="760" fill="#1e1e2e"/>
+  <text x="600" y="44" font-size="28" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Personalization Logic :- Seed Selection &amp; Merge</text>
+  <line x1="60" y1="55" x2="1140" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- Seed selection -->
+  <rect x="50" y="70" width="1100" height="260" rx="6" fill="#11111b" stroke="#94e2d5" stroke-width="1.3"/>
+  <text x="600" y="93" font-size="17" fill="#94e2d5" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">How seed titles are selected from Favorites</text>
+  <line x1="70" y1="100" x2="1130" y2="100" stroke="#94e2d5" stroke-width="0.8"/>
+
+  <text x="80" y="126" font-size="14" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Rule:  take the last N Favorites  ( newest first by added_at )</text>
+  <text x="80" y="148" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Newest = reflects current taste change  →  more important than old Favorites</text>
+
+  <!-- Stage N table -->
+  <rect x="80" y="164" width="500" height="140" rx="4" fill="#181825" stroke="#313244" stroke-width="1.0"/>
+  <text x="330" y="186" font-size="14" fill="#f9e2af" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">N changes by Stage :-</text>
+  <line x1="90" y1="193" x2="570" y2="193" stroke="#f9e2af" stroke-width="0.7"/>
+  <text x="100" y="215" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Explorer</text>
+  <text x="300" y="215" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">→  last  1  Favorite</text>
+  <text x="100" y="241" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Regular</text>
+  <text x="300" y="241" font-size="13" fill="#fab387" font-family="Excalifont, 'Comic Sans MS', cursive">→  last  3  Favorites</text>
+  <text x="100" y="267" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Loyal</text>
+  <text x="300" y="267" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">→  last  5  Favorites  ( weighted by recency )</text>
+  <text x="100" y="293" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Stranger / Guest  →  no seeds  →  popular only</text>
+
+  <text x="640" y="186" font-size="14" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">ML call per seed :-</text>
+  <text x="640" y="210" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">getRecommendations("Breaking Bad", n=10)</text>
+  <text x="640" y="232" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  [Better Call Saul(0.98), Narcos(0.95) ...]</text>
+  <text x="640" y="256" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">getRecommendations("Mindhunter", n=10)</text>
+  <text x="640" y="278" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  [Zodiac(0.96), Se7en(0.94), Narcos(0.91) ...]</text>
+  <text x="640" y="300" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">→  results are then merged together</text>
+
+  <!-- Merge logic -->
+  <rect x="50" y="346" width="1100" height="260" rx="6" fill="#11111b" stroke="#cba6f7" stroke-width="1.3"/>
+  <text x="600" y="369" font-size="17" fill="#cba6f7" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">mergeAndRankResults() — how duplicates are handled</text>
+  <line x1="70" y1="376" x2="1130" y2="376" stroke="#cba6f7" stroke-width="0.8"/>
+
+  <text x="80" y="402" font-size="14" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Example — ML returns for 3 seeds:</text>
+  <text x="80" y="424" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Breaking Bad    →   [Better Call Saul(0.98),  Narcos(0.95),  Ozark(0.93)]</text>
+  <text x="80" y="444" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Mindhunter      →   [Zodiac(0.96),  Se7en(0.94),  Narcos(0.91)]</text>
+  <text x="80" y="464" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Peaky Blinders  →   [Narcos(0.89),  Taboo(0.87),  Ozark(0.85)]</text>
+
+  <text x="80" y="496" font-size="14" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">After Merge  →  Narcos appeared 3 times  →  higher weight  →  rises to top</text>
+  <text x="400" y="496" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive"></text>
+
+  <text x="80" y="526" font-size="14" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Ranking formula :-</text>
+  <line x1="100" y1="540" x2="100" y2="580" stroke="#f9e2af" stroke-width="0.7"/>
+  <line x1="100" y1="548" x2="120" y2="548" stroke="#f9e2af" stroke-width="0.7"/>
+  <text x="128" y="553" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">appearance count  ( more times = more important )</text>
+  <line x1="100" y1="570" x2="120" y2="570" stroke="#f9e2af" stroke-width="0.7"/>
+  <text x="128" y="575" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">average similarity_score across all appearances</text>
+
+  <text x="80" y="600" font-size="13" fill="#94e2d5" font-family="Excalifont, 'Comic Sans MS', cursive">Result:  Narcos → Ozark → Better Call Saul → Zodiac → Se7en → ...</text>
+
+  <line x1="50" y1="734" x2="1150" y2="734" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="748" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Home Feature  —  Personalization Logic</text>
+</svg>

@@ -3,24 +3,42 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\TitleController;
+use App\Http\Controllers\Api\WatchedTitleController;
 use Illuminate\Support\Facades\Route;
 
 // ======= Public Auth Routes =======
-Route::post('auth/register', [AuthController::class, 'register'])->middleware('throttle:10,1');
-Route::post('auth/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
+Route::post('auth/register', [AuthController::class, 'register'])->middleware('throttle:register');
+Route::post('auth/login', [AuthController::class, 'login'])->middleware('throttle:login');
 
 // ======= Protected Auth Routes =======
-Route::middleware(['auth:api', 'throttle:100,1'])->group(function (): void {
+Route::middleware(['auth:api', 'throttle:protected'])->group(function (): void {
     Route::post('auth/logout', [AuthController::class, 'logout']);
     Route::post('auth/refresh', [AuthController::class, 'refresh']);
     Route::get('auth/me', [AuthController::class, 'me']);
+
+    // ======= Favorites Routes =======
+    Route::get('favorites', [FavoriteController::class, 'index']);
+    Route::post('favorites', [FavoriteController::class, 'store']);
+    Route::delete('favorites/{title_name}', [FavoriteController::class, 'destroy']);
+
+    // ======= Watched Titles Routes =======
+    Route::get('history', [WatchedTitleController::class, 'index']);
+    Route::post('history', [WatchedTitleController::class, 'store']);
+    Route::delete('history/{title_name}', [WatchedTitleController::class, 'destroy']);
 });
 
 // ======= Search & Discovery Routes (Public) =======
-Route::middleware('throttle:60,1')->group(function (): void {
+Route::middleware('throttle:public')->group(function (): void {
     Route::get('search', SearchController::class);
     Route::get('titles/{title}', [TitleController::class, 'show']);
     Route::get('recommendations/{title}', [TitleController::class, 'recommendations']);
+});
+
+// ======= Home Routes (Public) =======
+Route::middleware('throttle:public')->group(function (): void {
+    Route::get('home', HomeController::class);
 });
