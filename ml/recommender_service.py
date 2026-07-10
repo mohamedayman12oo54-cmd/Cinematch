@@ -241,7 +241,7 @@ class RecommenderService:
             "rating"      : row["rating"],
             "country"     : row["country"],
             "release_year": int(row["release_year"]),
-            "director"    : row["director"],
+            "director": row["director"] if row["director"] else "Not Given",
         }
 
 
