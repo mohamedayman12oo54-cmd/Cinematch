@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520">
+  <rect width="1200" height="520" fill="#1e1e2e"/>
+  <text x="600" y="44" font-size="28" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">API Contracts Summary :- What is covered</text>
+  <line x1="60" y1="55" x2="1140" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- 15 endpoints box -->
+  <rect x="50" y="72" width="530" height="400" rx="6" fill="#11111b" stroke="#a6e3a1" stroke-width="1.4"/>
+  <text x="315" y="96" font-size="16" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">✅  15 Endpoints documented :-</text>
+  <line x1="70" y1="104" x2="570" y2="104" stroke="#a6e3a1" stroke-width="0.7"/>
+
+  <!-- endpoint list -->
+  <text x="80" y="130" font-size="13" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Auth  ( 5 ):</text>
+  <text x="80" y="150" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">POST /auth/register  ·  POST /auth/login  ·  POST /auth/logout</text>
+  <text x="80" y="168" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">POST /auth/refresh  ·  GET /auth/me</text>
+
+  <text x="80" y="196" font-size="13" fill="#94e2d5" font-family="Excalifont, 'Comic Sans MS', cursive">Search &amp; Discovery  ( 3 ):</text>
+  <text x="80" y="216" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">GET /search?q=  ·  GET /titles/{title}  ·  GET /recommendations/{title}</text>
+
+  <text x="80" y="244" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">Favorites  ( 3 ):</text>
+  <text x="80" y="264" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">GET /favorites  ·  POST /favorites  ·  DELETE /favorites/{title_name}</text>
+
+  <text x="80" y="292" font-size="13" fill="#fab387" font-family="Excalifont, 'Comic Sans MS', cursive">Watch History  ( 3 ):</text>
+  <text x="80" y="312" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">GET /history  ·  POST /history  ·  DELETE /history/{title_name}</text>
+
+  <text x="80" y="340" font-size="13" fill="#cba6f7" font-family="Excalifont, 'Comic Sans MS', cursive">Home  ( 1 ):</text>
+  <text x="80" y="360" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">GET /home</text>
+
+  <rect x="70" y="378" width="480" height="76" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <text x="80" y="400" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Each endpoint has :-</text>
+  <text x="80" y="420" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Method + URL  ·  Auth requirement  ·  Request body</text>
+  <text x="80" y="440" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Success response  ·  Error cases</text>
+
+  <!-- Right: what else is covered -->
+  <rect x="620" y="72" width="530" height="400" rx="6" fill="#11111b" stroke="#f9e2af" stroke-width="1.4"/>
+  <text x="885" y="96" font-size="16" fill="#f9e2af" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Also covered :-</text>
+  <line x1="640" y1="104" x2="1140" y2="104" stroke="#f9e2af" stroke-width="0.7"/>
+
+  <rect x="640" y="118" width="490" height="60" rx="4" fill="#181825" stroke="#a6e3a1" stroke-width="0.8"/>
+  <text x="660" y="140" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Business Rules for Frontend</text>
+  <text x="660" y="160" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">6 rules covering state, token management, error handling</text>
+
+  <rect x="640" y="192" width="490" height="60" rx="4" fill="#181825" stroke="#a6e3a1" stroke-width="0.8"/>
+  <text x="660" y="214" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Stage System documented</text>
+  <text x="660" y="234" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">stranger / explorer / regular / loyal + signalCount thresholds</text>
+
+  <rect x="640" y="266" width="490" height="60" rx="4" fill="#181825" stroke="#a6e3a1" stroke-width="0.8"/>
+  <text x="660" y="288" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Graceful Degradation documented</text>
+  <text x="660" y="308" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">ML down → 503 + fallback  |  rate limit → 429 + retry_after</text>
+
+  <rect x="640" y="340" width="490" height="60" rx="4" fill="#181825" stroke="#a6e3a1" stroke-width="0.8"/>
+  <text x="660" y="362" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Response Format consistent</text>
+  <text x="660" y="382" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">All endpoints use same JSON shape via ApiResponse Helper</text>
+
+  <line x1="50" y1="488" x2="1150" y2="488" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="504" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">API Contracts  —  Summary</text>
+</svg>

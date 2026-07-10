@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820">
+  <rect width="1200" height="820" fill="#1e1e2e"/>
+  <text x="600" y="44" font-size="28" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Business Rules :- For Frontend</text>
+  <line x1="60" y1="55" x2="1140" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- Rule 1 -->
+  <rect x="50" y="72" width="1100" height="96" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="120" r="14" fill="#94e2d5"/><text x="82" y="125" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">1</text>
+  <text x="108" y="100" font-size="16" fill="#94e2d5" font-family="Excalifont, 'Comic Sans MS', cursive">user_signals — detect login state</text>
+  <line x1="108" y1="108" x2="1130" y2="108" stroke="#313244" stroke-width="0.5"/>
+  <text x="130" y="130" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">null</text>
+  <text x="220" y="130" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  not logged in  ( Guest )  —  hide action buttons</text>
+  <text x="130" y="152" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">{object}</text>
+  <text x="220" y="152" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  logged in  —  show Add to Favorites + Mark as Watched buttons</text>
+
+  <!-- Rule 2 -->
+  <rect x="50" y="180" width="1100" height="106" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="233" r="14" fill="#a6e3a1"/><text x="82" y="238" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">2</text>
+  <text x="108" y="210" font-size="16" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">is_favorite + is_watched — independent flags</text>
+  <line x1="108" y1="218" x2="1130" y2="218" stroke="#313244" stroke-width="0.5"/>
+  <text x="130" y="240" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">is_favorite: true   +   is_watched: false   →  valid combination</text>
+  <text x="130" y="262" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">is_favorite: false  +   is_watched: true    →  valid combination</text>
+  <text x="130" y="278" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Both can be true simultaneously — Favorites and Watch History are independent systems</text>
+
+  <!-- Rule 3 -->
+  <rect x="50" y="298" width="1100" height="96" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="346" r="14" fill="#f9e2af"/><text x="82" y="351" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">3</text>
+  <text x="108" y="324" font-size="16" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Home sections — empty state handling</text>
+  <line x1="108" y1="332" x2="1130" y2="332" stroke="#313244" stroke-width="0.5"/>
+  <text x="130" y="354" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">items: []      →  hide that section  ( do not render empty section )</text>
+  <text x="130" y="376" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">sections: []   →  show Empty State UI  ( "Start exploring to get recommendations" )</text>
+
+  <!-- Rule 4 -->
+  <rect x="50" y="406" width="1100" height="116" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="464" r="14" fill="#fab387"/><text x="82" y="469" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">4</text>
+  <text x="108" y="432" font-size="16" fill="#fab387" font-family="Excalifont, 'Comic Sans MS', cursive">Stage-based UI</text>
+  <line x1="108" y1="440" x2="1130" y2="440" stroke="#313244" stroke-width="0.5"/>
+  <text x="130" y="462" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">stranger</text>
+  <text x="260" y="462" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  show Search bar + Popular titles</text>
+  <text x="130" y="484" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">explorer</text>
+  <text x="260" y="484" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  show light Personalized section + Popular</text>
+  <text x="130" y="506" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">regular</text>
+  <text x="260" y="506" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  show all Sections</text>
+  <text x="130" y="522" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">loyal</text>
+  <text x="260" y="522" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  show all Sections + more items per section</text>
+
+  <!-- Rule 5 -->
+  <rect x="50" y="534" width="1100" height="106" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="587" r="14" fill="#cba6f7"/><text x="82" y="592" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">5</text>
+  <text x="108" y="560" font-size="16" fill="#cba6f7" font-family="Excalifont, 'Comic Sans MS', cursive">Token Management</text>
+  <line x1="108" y1="568" x2="1130" y2="568" stroke="#313244" stroke-width="0.5"/>
+  <text x="130" y="590" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">expires_in: 3600  ( 1 hour )  —  store token and expiry time on login</text>
+  <text x="130" y="612" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">On 401  →  call POST /api/auth/refresh automatically</text>
+  <text x="130" y="632" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">If refresh fails  →  clear token, Logout, Redirect to Login page</text>
+
+  <!-- Rule 6 -->
+  <rect x="50" y="652" width="1100" height="116" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="710" r="14" fill="#f38ba8"/><text x="82" y="715" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">6</text>
+  <text x="108" y="678" font-size="16" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">Error Handling</text>
+  <line x1="108" y1="686" x2="1130" y2="686" stroke="#313244" stroke-width="0.5"/>
+  <text x="130" y="708" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">503  →  show "Service unavailable, try again later"  ( ML is down — Graceful Degradation )</text>
+  <text x="130" y="730" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">429  →  show "Too many attempts, retry in {retry_after} seconds"</text>
+  <text x="130" y="752" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">401  →  Redirect to Login</text>
+  <text x="130" y="760" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">404  →  show Not Found UI</text>
+
+  <line x1="50" y1="784" x2="1150" y2="784" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="800" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">API Contracts  —  Business Rules for Frontend</text>
+</svg>
