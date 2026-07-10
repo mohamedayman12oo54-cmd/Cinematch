@@ -1,26 +1,27 @@
+.bp { --td-accent: #e50914; }
+
+/* ================= Hero (full screen) ================= */
 .td-hero {
   position: relative;
-  height: 60vh;
-  min-height: 420px;
+  height: 100vh;
+  min-height: 560px;
   display: flex;
   align-items: flex-end;
-  padding: 0 4% 50px;
+  padding: 0 4% 60px;
   overflow: hidden;
 }
 
-.td-hero__img {
+.td-hero__bg {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  inset: -10% 0 -10%;
+  will-change: transform;
 }
 
 .td-hero__scrim {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.55) 55%, #0a0a0a 100%),
+    linear-gradient(180deg, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.55) 55%, #141414 100%),
     linear-gradient(90deg, rgba(0,0,0,0.7) 0%, transparent 55%);
 }
 
@@ -40,7 +41,7 @@
 .td-hero__content {
   position: relative;
   z-index: 2;
-  max-width: 640px;
+  max-width: 680px;
   animation: td-hero-in 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -51,11 +52,38 @@
 
 .td-hero__title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-size: clamp(2.6rem, 7vw, 4.6rem);
   letter-spacing: 0.02em;
-  margin: 0 0 14px;
-  line-height: 1.05;
+  margin: 0 0 16px;
+  line-height: 1;
 }
+
+.td-hero__score-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+
+.td-score-badge {
+  background: rgba(229, 9, 20, 0.16);
+  border: 1px solid rgba(229, 9, 20, 0.45);
+  color: #ff4b53;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.td-score-badge--ai { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); color: #fff; }
+
+.td-hero__genre-caps { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+
+.td-genre-cap {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 0.78rem;
+  color: #d2d2d2;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.td-genre-cap:hover { border-color: var(--td-accent); color: #fff; }
 
 .td-hero__meta {
   display: flex;
@@ -63,7 +91,7 @@
   gap: 12px;
   font-size: 0.88rem;
   color: #d2d2d2;
-  margin-bottom: 10px;
+  margin-bottom: 22px;
 }
 
 .td-hero__badge {
@@ -73,15 +101,7 @@
   font-size: 0.76rem;
 }
 
-.td-hero__genres { color: #c9c9c9; font-size: 0.92rem; margin: 0 0 4px; }
-.td-hero__director { color: #8c8c8c; font-size: 0.85rem; margin: 0 0 22px; }
-
-.td-hero__actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 20px;
-}
+.td-hero__actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
 .td-btn {
   display: flex;
@@ -115,8 +135,194 @@
 .td-btn:hover { transform: translateY(-2px); opacity: 0.92; }
 .td-btn:disabled { opacity: 0.6; cursor: default; transform: none; }
 
-.td-hero__hint {
-  margin-top: 16px;
-  font-size: 0.82rem;
-  color: #a3a3a3;
+.td-hero__hint { margin-top: 16px; font-size: 0.82rem; color: #a3a3a3; }
+
+/* ================= Body sections ================= */
+.td-body { position: relative; max-width: 1100px; margin: 0 auto; padding: 10px 4% 80px; }
+
+.td-section { margin-bottom: 54px; }
+
+.td-section__title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 18px;
+  color: #fff;
+}
+
+.td-overview { color: #d2d2d2; font-size: 1rem; line-height: 1.7; max-width: 760px; }
+
+.td-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.td-info-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.td-info-card span { display: block; font-size: 0.7rem; color: #8c8c8c; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+.td-info-card strong { font-size: 0.98rem; color: #fff; }
+
+/* ---- AI recommendation score ---- */
+.td-score-layout { display: flex; align-items: center; gap: 40px; flex-wrap: wrap; }
+
+.td-score-ring { position: relative; width: 120px; height: 120px; flex-shrink: 0; }
+.td-score-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+
+.td-score-ring__track { fill: none; stroke: rgba(255, 255, 255, 0.1); stroke-width: 8; }
+
+.td-score-ring__fill {
+  fill: none;
+  stroke: var(--td-accent);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.td-score-ring__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.7rem;
+  color: #fff;
+}
+
+.td-reasons { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 220px; }
+
+.td-reasons li { display: flex; align-items: center; gap: 10px; color: #d2d2d2; font-size: 0.92rem; }
+.td-reasons svg { width: 16px; height: 16px; color: #46d369; flex-shrink: 0; }
+
+/* ---- Cast ---- */
+.td-cast-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 18px; }
+
+.td-cast-card { text-align: center; }
+
+.td-cast-avatar {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--td-accent) 30%, #1a1a1a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.td-cast-name { font-size: 0.85rem; font-weight: 600; margin: 0; color: #fff; }
+.td-cast-role { font-size: 0.72rem; color: #8c8c8c; margin: 2px 0 0; }
+
+/* ---- Trailer ---- */
+.td-trailer {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.td-trailer__play {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  color: #141414;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 20px 50px -14px rgba(0, 0, 0, 0.6);
+}
+
+.td-trailer__play svg { width: 28px; height: 28px; margin-left: 3px; }
+.td-trailer__play:hover { transform: scale(1.08); }
+
+/* ---- Gallery ---- */
+.td-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.td-gallery__tile {
+  aspect-ratio: 16 / 10;
+  border-radius: 8px;
+  transition: transform 0.25s ease;
+}
+
+.td-gallery__tile:hover { transform: scale(1.04); }
+
+/* ---- Similar movies row spacing ---- */
+.td-similar { margin-bottom: 54px; }
+
+/* ---- Reviews ---- */
+.td-reviews { display: flex; flex-direction: column; gap: 14px; }
+
+.td-review-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.td-review-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+
+.td-review-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--td-accent);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.td-review-name { font-size: 0.88rem; font-weight: 600; color: #fff; flex: 1; }
+.td-review-stars { display: flex; gap: 2px; color: #f5c518; }
+.td-review-stars svg { width: 14px; height: 14px; }
+.td-review-comment { color: #b3b3b3; font-size: 0.88rem; line-height: 1.6; margin: 0; }
+
+/* ---- AI summary ---- */
+.td-ai-summary {
+  background: rgba(229, 9, 20, 0.06);
+  border: 1px solid rgba(229, 9, 20, 0.25);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 40px;
+}
+
+.td-ai-summary__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #ff4b53;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+}
+
+.td-ai-summary__text { color: #d2d2d2; font-size: 0.95rem; line-height: 1.7; margin: 0; }
+
+.td-footer { text-align: center; color: #8c8c8c; font-size: 0.92rem; padding: 20px 0; }
+
+@media (max-width: 640px) {
+  .td-gallery { grid-template-columns: repeat(2, 1fr); }
+  .td-score-layout { flex-direction: column; align-items: flex-start; }
 }
