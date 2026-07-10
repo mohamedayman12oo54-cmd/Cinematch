@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1036" viewBox="0 0 1200 1036">
+  <rect width="1200" height="1036" fill="#1e1e2e"/>
+  <text x="600" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">GET /titles/{title}</text>
+  <line x1="60" y1="55" x2="1140" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+  <text x="600" y="72" font-size="15" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Get full title details — user_signals added for authenticated users</text>
+  <rect x="50" y="88" width="1100" height="46" rx="6" fill="#11111b" stroke="#313244" stroke-width="1.1"/>
+  <rect x="68" y="96" width="90" height="30" rx="4" fill="#89b4fa" stroke="#89b4fa" stroke-width="0"/>
+  <text x="113" y="116" font-size="14" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">GET</text>
+  <text x="172" y="115" font-size="13" fill="#a6e3a1" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">Public  —  no auth required</text>
+  <text x="1120" y="115" font-size="13" fill="#fab387" text-anchor="end" font-family="Excalifont, 'Comic Sans MS', cursive">Rate Limit: 60/minute</text>
+  <rect x="50" y="148" width="1100" height="314" rx="6" fill="#11111b" stroke="#94e2d5" stroke-width="1.2"/>
+  <text x="70" y="170" font-size="15" fill="#94e2d5" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">Response  ( 200 )  —  Guest  ( not authenticated ) :-</text>
+  <line x1="70" y1="178" x2="1130" y2="178" stroke="#94e2d5" stroke-width="0.7"/>
+  <rect x="70" y="184" width="1060" height="268" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <text x="88" y="204" font-size="13" fill="#cdd6f4" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">{</text>
+  <text x="88" y="224" font-size="13" fill="#a6e3a1" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">    "status": "success",</text>
+  <text x="88" y="244" font-size="13" fill="#cdd6f4" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">    "data": {</text>
+  <text x="88" y="264" font-size="13" fill="#89b4fa" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">        "title":        "Breaking Bad",</text>
+  <text x="88" y="284" font-size="13" fill="#89b4fa" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">        "type":         "TV Show",</text>
+  <text x="88" y="304" font-size="13" fill="#89b4fa" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">        "genres":       ["Crime", "Drama", "Thriller"],</text>
+  <text x="88" y="324" font-size="13" fill="#89b4fa" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">        "rating":       "TV-MA",</text>
+  <text x="88" y="344" font-size="13" fill="#89b4fa" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">        "country":      "United States",</text>
+  <text x="88" y="364" font-size="13" fill="#89b4fa" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">        "release_year": 2008,</text>
+  <text x="88" y="384" font-size="13" fill="#89b4fa" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">        "director":     "Vince Gilligan",</text>
+  <text x="88" y="404" font-size="13" fill="#6c7086" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">        "user_signals": null</text>
+  <text x="88" y="424" font-size="13" fill="#cdd6f4" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">    }</text>
+  <text x="88" y="444" font-size="13" fill="#cdd6f4" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">}</text>
+  <rect x="50" y="476" width="1100" height="254" rx="6" fill="#11111b" stroke="#a6e3a1" stroke-width="1.2"/>
+  <text x="70" y="498" font-size="15" fill="#a6e3a1" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">Response  ( 200 )  —  Authenticated User :-</text>
+  <line x1="70" y1="506" x2="1130" y2="506" stroke="#a6e3a1" stroke-width="0.7"/>
+  <rect x="70" y="512" width="1060" height="208" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <text x="88" y="532" font-size="13" fill="#cdd6f4" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">{</text>
+  <text x="88" y="552" font-size="13" fill="#a6e3a1" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">    "status": "success",</text>
+  <text x="88" y="572" font-size="13" fill="#cdd6f4" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">    "data": {</text>
+  <text x="88" y="592" font-size="13" fill="#6c7086" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">        "title": "Breaking Bad",  ...</text>
+  <text x="88" y="612" font-size="13" fill="#f9e2af" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">        "user_signals": {</text>
+  <text x="88" y="632" font-size="13" fill="#f9e2af" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">            "is_favorite": true,</text>
+  <text x="88" y="652" font-size="13" fill="#f9e2af" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">            "is_watched":  false</text>
+  <text x="88" y="672" font-size="13" fill="#cdd6f4" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">        }</text>
+  <text x="88" y="692" font-size="13" fill="#cdd6f4" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">    }</text>
+  <text x="88" y="712" font-size="13" fill="#cdd6f4" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">}</text>
+  <rect x="50" y="744" width="1100" height="146" rx="6" fill="#11111b" stroke="#f38ba8" stroke-width="1.2"/>
+  <text x="70" y="766" font-size="15" fill="#f38ba8" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">Error Cases :-</text>
+  <line x1="70" y1="774" x2="1130" y2="774" stroke="#f38ba8" stroke-width="0.7"/>
+  <rect x="70" y="780" width="1060" height="42" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <rect x="80" y="786" width="60" height="30" rx="4" fill="#f38ba8" stroke="transparent" stroke-width="0"/>
+  <text x="110" y="805" font-size="14" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">404</text>
+  <text x="152" y="798" font-size="14" fill="#f38ba8" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">Not Found</text>
+  <text x="152" y="816" font-size="12" fill="#6c7086" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">Title does not exist in ML dataset</text>
+  <rect x="70" y="830" width="1060" height="42" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <rect x="80" y="836" width="60" height="30" rx="4" fill="#cba6f7" stroke="transparent" stroke-width="0"/>
+  <text x="110" y="855" font-size="14" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">503</text>
+  <text x="152" y="848" font-size="14" fill="#cba6f7" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">ML Service Unavailable</text>
+  <text x="152" y="866" font-size="12" fill="#6c7086" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">ML model is down — Graceful Degradation active</text>
+  <rect x="50" y="904" width="1100" height="88" rx="6" fill="#181825" stroke="#313244" stroke-width="0.9"/>
+  <text x="70" y="926" font-size="14" fill="#6c7086" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">Notes :-</text>
+  <line x1="70" y1="934" x2="1130" y2="934" stroke="#313244" stroke-width="0.5"/>
+  <text x="80" y="954" font-size="12" fill="#6c7086" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">→  user_signals is null for Guest  —  {is_favorite, is_watched} for Authenticated</text>
+  <text x="80" y="976" font-size="12" fill="#6c7086" text-anchor="start" font-family="Excalifont, 'Comic Sans MS', cursive">→  is_favorite and is_watched are independent  —  both can be true simultaneously</text>
+  <line x1="50" y1="1016" x2="1150" y2="1016" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="1030" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">API Contracts  —  GET /titles/{title}</text>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="340" viewBox="0 0 1100 340">
+  <rect width="1100" height="340" fill="#1e1e2e"/>
+  <text x="550" y="44" font-size="28" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Base Information :- Cinematch API</text>
+  <line x1="60" y1="55" x2="1040" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <rect x="50" y="72" width="1000" height="220" rx="6" fill="#11111b" stroke="#313244" stroke-width="1.2"/>
+
+  <!-- Row 1 -->
+  <rect x="70" y="92" width="200" height="30" rx="4" fill="#181825"/>
+  <text x="90" y="112" font-size="14" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Project</text>
+  <text x="310" y="112" font-size="15" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Cinematch</text>
+
+  <!-- Row 2 -->
+  <rect x="70" y="132" width="200" height="30" rx="4" fill="#181825"/>
+  <text x="90" y="152" font-size="14" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Version</text>
+  <text x="310" y="152" font-size="15" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">1.0</text>
+
+  <!-- Row 3 -->
+  <rect x="70" y="172" width="200" height="30" rx="4" fill="#181825"/>
+  <text x="90" y="192" font-size="14" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Base URL</text>
+  <text x="310" y="192" font-size="15" fill="#94e2d5" font-family="Excalifont, 'Comic Sans MS', cursive">http://localhost:8000/api</text>
+
+  <!-- Row 4 -->
+  <rect x="70" y="212" width="200" height="30" rx="4" fill="#181825"/>
+  <text x="90" y="232" font-size="14" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Auth</text>
+  <text x="310" y="232" font-size="15" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Bearer Token  ( JWT )</text>
+  <text x="680" y="232" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  required on all protected endpoints</text>
+
+  <!-- Row 5 -->
+  <rect x="70" y="252" width="200" height="30" rx="4" fill="#181825"/>
+  <text x="90" y="272" font-size="14" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Content-Type</text>
+  <text x="310" y="272" font-size="15" fill="#cba6f7" font-family="Excalifont, 'Comic Sans MS', cursive">application/json</text>
+  <text x="680" y="272" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  all requests and responses</text>
+
+  <line x1="60" y1="308" x2="1040" y2="308" stroke="#313244" stroke-width="0.7"/>
+  <text x="550" y="324" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">API Contracts  —  Base Information</text>
+</svg>
