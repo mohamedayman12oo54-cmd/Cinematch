@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="560" viewBox="0 0 1100 560">
+  <rect width="1100" height="560" fill="#1e1e2e"/>
+  <text x="550" y="44" font-size="28" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">HTTP Status Codes :- Cinematch API</text>
+  <line x1="60" y1="55" x2="1040" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+  <text x="550" y="74" font-size="14" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">All possible status codes returned by the API</text>
+
+  <!-- Codes table -->
+  <rect x="50" y="88" width="1000" height="418" rx="6" fill="#11111b" stroke="#313244" stroke-width="1.2"/>
+
+  <!-- 200 -->
+  <rect x="70" y="104" width="80" height="36" rx="4" fill="#a6e3a1" fill-opacity="0.2" stroke="#a6e3a1" stroke-width="1.0"/>
+  <text x="110" y="127" font-size="15" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">200</text>
+  <text x="180" y="127" font-size="15" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">→  OK</text>
+  <text x="420" y="127" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Standard success — GET, DELETE, PUT</text>
+  <line x1="70" y1="140" x2="1030" y2="140" stroke="#313244" stroke-width="0.5"/>
+
+  <!-- 201 -->
+  <rect x="70" y="150" width="80" height="36" rx="4" fill="#a6e3a1" fill-opacity="0.2" stroke="#a6e3a1" stroke-width="1.0"/>
+  <text x="110" y="173" font-size="15" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">201</text>
+  <text x="180" y="173" font-size="15" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">→  Created</text>
+  <text x="420" y="173" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Resource created — POST (register, add favorite, mark watched)</text>
+  <line x1="70" y1="186" x2="1030" y2="186" stroke="#313244" stroke-width="0.5"/>
+
+  <!-- 401 -->
+  <rect x="70" y="196" width="80" height="36" rx="4" fill="#f38ba8" fill-opacity="0.2" stroke="#f38ba8" stroke-width="1.0"/>
+  <text x="110" y="219" font-size="15" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">401</text>
+  <text x="180" y="219" font-size="15" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">→  Unauthenticated</text>
+  <text x="420" y="219" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Token missing, invalid, or expired  —  Login required</text>
+  <line x1="70" y1="232" x2="1030" y2="232" stroke="#313244" stroke-width="0.5"/>
+
+  <!-- 403 -->
+  <rect x="70" y="242" width="80" height="36" rx="4" fill="#f38ba8" fill-opacity="0.2" stroke="#f38ba8" stroke-width="1.0"/>
+  <text x="110" y="265" font-size="15" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">403</text>
+  <text x="180" y="265" font-size="15" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">→  Forbidden</text>
+  <text x="420" y="265" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Authenticated but not authorized  —  not allowed to perform this action</text>
+  <line x1="70" y1="278" x2="1030" y2="278" stroke="#313244" stroke-width="0.5"/>
+
+  <!-- 404 -->
+  <rect x="70" y="288" width="80" height="36" rx="4" fill="#f9e2af" fill-opacity="0.2" stroke="#f9e2af" stroke-width="1.0"/>
+  <text x="110" y="311" font-size="15" fill="#f9e2af" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">404</text>
+  <text x="180" y="311" font-size="15" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">→  Not Found</text>
+  <text x="420" y="311" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Title not found in ML dataset, or resource does not exist</text>
+  <line x1="70" y1="324" x2="1030" y2="324" stroke="#313244" stroke-width="0.5"/>
+
+  <!-- 422 -->
+  <rect x="70" y="334" width="80" height="36" rx="4" fill="#fab387" fill-opacity="0.2" stroke="#fab387" stroke-width="1.0"/>
+  <text x="110" y="357" font-size="15" fill="#fab387" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">422</text>
+  <text x="180" y="357" font-size="15" fill="#fab387" font-family="Excalifont, 'Comic Sans MS', cursive">→  Validation Error</text>
+  <text x="420" y="357" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Request body failed validation — errors object contains field details</text>
+  <line x1="70" y1="370" x2="1030" y2="370" stroke="#313244" stroke-width="0.5"/>
+
+  <!-- 429 -->
+  <rect x="70" y="380" width="80" height="36" rx="4" fill="#fab387" fill-opacity="0.2" stroke="#fab387" stroke-width="1.0"/>
+  <text x="110" y="403" font-size="15" fill="#fab387" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">429</text>
+  <text x="180" y="403" font-size="15" fill="#fab387" font-family="Excalifont, 'Comic Sans MS', cursive">→  Rate Limit Exceeded</text>
+  <text x="420" y="403" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Too many requests — response includes retry_after in seconds</text>
+  <line x1="70" y1="416" x2="1030" y2="416" stroke="#313244" stroke-width="0.5"/>
+
+  <!-- 503 -->
+  <rect x="70" y="426" width="80" height="36" rx="4" fill="#cba6f7" fill-opacity="0.2" stroke="#cba6f7" stroke-width="1.0"/>
+  <text x="110" y="449" font-size="15" fill="#cba6f7" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">503</text>
+  <text x="180" y="449" font-size="15" fill="#cba6f7" font-family="Excalifont, 'Comic Sans MS', cursive">→  ML Service Unavailable</text>
+  <text x="420" y="449" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">ML model is down — Graceful Degradation returns fallback data</text>
+  <line x1="70" y1="462" x2="1030" y2="462" stroke="#313244" stroke-width="0.5"/>
+
+  <!-- 500 -->
+  <rect x="70" y="472" width="80" height="36" rx="4" fill="#f38ba8" fill-opacity="0.2" stroke="#f38ba8" stroke-width="1.0"/>
+  <text x="110" y="495" font-size="15" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">500</text>
+  <text x="180" y="495" font-size="15" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">→  Server Error</text>
+  <text x="420" y="495" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Unexpected server error — handled by Global Exception Handler</text>
+
+  <line x1="50" y1="524" x2="1050" y2="524" stroke="#313244" stroke-width="0.7"/>
+  <text x="550" y="540" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">API Contracts  —  HTTP Status Codes</text>
+</svg>
