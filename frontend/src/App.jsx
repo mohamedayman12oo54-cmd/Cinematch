@@ -9,7 +9,7 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import HomePage from './pages/HomePage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import TitleDetailPage from './pages/TitleDetailPage';
-import FavoritesPage from './pages/FavoritesPage';
+import MyListPage from './pages/MyListPage';
 import HistoryPage from './pages/HistoryPage';
 import RecommendPage from './pages/RecommendPage';
 import TrendingPage from './pages/TrendingPage';
@@ -54,7 +54,7 @@ export default function App() {
       <Route path="/trending" element={<ProtectedRoute><TrendingPage /></ProtectedRoute>} />
       <Route path="/search" element={<ProtectedRoute><SearchResultsPage /></ProtectedRoute>} />
       <Route path="/title/:title" element={<ProtectedRoute><TitleDetailPage /></ProtectedRoute>} />
-      <Route path="/favorites" element={<ProtectedRoute><FavoritesPage /></ProtectedRoute>} />
+      <Route path="/favorites" element={<ProtectedRoute><MyListPage /></ProtectedRoute>} />
       <Route path="/history" element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
 
       <Route path="*" element={<AuthPage />} />

@@ -135,3 +135,19 @@ export function mockIsWatched(email, title) {
   const all = read(HISTORY_KEY, {});
   return (all[email] || []).some(h => h.title === title);
 }
+
+const AI_SEARCH_KEY = 'cinematch_mock_ai_searches';
+
+export function mockAiSearchHistory(email) {
+  const all = read(AI_SEARCH_KEY, {});
+  return all[email] || [];
+}
+
+export function mockSaveAiSearch(email, query) {
+  const all = read(AI_SEARCH_KEY, {});
+  const list = all[email] || [];
+  list.unshift({ query, searched_at: new Date().toISOString() });
+  all[email] = list.slice(0, 8);
+  write(AI_SEARCH_KEY, all);
+  return all[email];
+}
