@@ -144,6 +144,99 @@ No emoji anywhere in any of this — every icon is an inline SVG.
 - **Discover hero is now full-screen** (`min-height: 100vh`), black
   background with a red radial gradient, content vertically centered.
 
+## Recommend page — full build
+
+`pages/RecommendPage.jsx` replaces the earlier placeholder with the real
+conversational AI assistant flow from the brief:
+
+- A large glass-effect textarea (not a plain input) for a free-text
+  request, a decorative voice-search button, and suggestion chips that
+  scale and turn red on hover.
+- Pressing **Generate Recommendations** (or Enter) runs a loading
+  sequence that cycles through "Analyzing your request...", "Searching
+  movie database...", "Ranking best matches...", "Generating
+  recommendations..." every 500ms with a red spinner.
+- An **"AI Understood Your Request"** box parses the free-text query
+  (`api/aiRecommend.js` → `analyzeRequest()`) into Genre / Mood / Ending /
+  Release Preference — genuinely reads the words in the request (e.g.
+  "without horror" excludes horror titles, "after 2015" sets a Modern
+  Movies preference) rather than being static.
+- Result cards fly in one after another (opacity → scale → blur →
+  normal), each with an AI Match % badge, a "Recommended because"
+  checklist, and Watch Trailer / Save / Details actions. A "no exact
+  match" state and a "Recent AI Searches" history row (persisted per
+  account) round it out.
+- Posters here are the same genre-based color gradients as the rest of
+  the app — no images, per the no-photography direction.
+
+This is a mock NLP layer, obviously — swap `analyzeRequest()` for a real
+call to your FastAPI/LLM endpoint once it exists; the shape it returns
+(`understood` + `results`) is what the UI already expects.
+
+## Trending page — full build
+
+`pages/TrendingPage.jsx` replaces the placeholder with the brief's "Top
+10 countdown" experience:
+
+- A rapid on-load countdown overlay (10 → 1) before the page reveals,
+  the "wow" touch called out in the brief.
+- A hero banner for the #1 title (genre-color background, no photos)
+  with an "#1 WORLDWIDE" badge, and glass stat cards for IMDb / Netflix
+  Score / AI Score (`api/trending.js` fabricates stable per-title
+  numbers — there's no real trending signal yet).
+- Region tabs (Global / USA / Egypt / Korea / Japan) that reshuffle the
+  ranking, a search box scoped to the trending list, a Top 10 list with
+  large rank numerals, "Trending Movies" / "Trending TV Shows" rows
+  (reusing `TitleCard`), a "Rising Fast" section, and a simple Weekly
+  Chart showing last week's rank vs. this week's.
+- `api/trending.js` is clearly a mock — wire it to a real trending
+  endpoint (or compute it from watch/favorite counts) whenever that
+  exists; every consumer already expects the same shape.
+
+## My List page — full build
+
+`pages/MyListPage.jsx` (still served at `/favorites`) replaces the plain
+list with the brief's "personal cinema collection":
+
+- Hero with a live saved-title count badge, search-inside-collection,
+  a sort dropdown (Newest Added / Oldest / Alphabetical / Year), and
+  All / Movies / TV Shows tabs.
+- A 5-column grid where cards "shelve in" staggered on load, each with a
+  Saved badge and four hover actions (Play, Details, Rate, Remove) via
+  the new `components/MyListCard.jsx`. Remove dissolves the card
+  (scale + blur + fade) instead of just vanishing.
+- **Dynamic ambient lighting**: hovering a card tints the whole page's
+  background glow to that title's genre color
+  (`utils/palette.js` → `genreAccent()`) — the closest thing to the
+  brief's "extract colors from the poster" idea while staying entirely
+  photo-free.
+- A "Recently Added" row, four count-up Collection Stats (Movies Saved,
+  TV Shows, Favorite Genre, Hours of Content — all computed from your
+  actual saved titles, not fake numbers), and a proper empty state with
+  an "Explore Movies" link back to Discover.
+
+## Movie Details page — the cinematic upgrade
+
+`pages/TitleDetailPage.jsx` is now the flagship page the brief describes
+("the most premium page in the whole project"):
+
+- Full-screen (100vh) hero with a subtle scroll parallax, IMDb / Rotten
+  Tomatoes / AI Match badges, genre capsules, and Watch Trailer / Add to
+  My List / Share / Mark as Watched actions — Favorite and Watched still
+  work exactly as before, this is purely a visual upgrade.
+- Overview, a Movie Information glass-card grid (release year, runtime,
+  language, country, director, studio), an animated AI Match ring with
+  "Why We Recommend It" reasons, a Cast section, a Trailer placeholder,
+  a 4-tile Screenshot gallery, "You May Also Like" (the existing
+  recommendations row), Reviews, and an AI Summary card.
+- All of it — cast avatars, trailer/gallery tiles, review avatars, even
+  the whole page's accent color — comes from `utils/enrich.js` and
+  `utils/palette.js`'s genre-based color system, so it's fully populated
+  and on-brand without a single photo or a real content API. Everything
+  in `enrich.js` is seeded from the title so it's stable across reloads;
+  swap each function for a real API call once your backend has cast,
+  reviews, runtime, etc.
+
 ## What's new in this pass
 
 - **All auth pages, not just login/register**: Forgot Password

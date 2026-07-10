@@ -1,0 +1,224 @@
+.db {
+  position: relative;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 1000px 500px at 20% 0%, rgba(229, 9, 20, 0.08), transparent 60%),
+    #141414;
+  color: #fff;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.db__main { max-width: 1200px; margin: 0 auto; padding: 40px 4% 90px; }
+
+/* ================= Hero ================= */
+.db__hero {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.db__avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid #e50914;
+  background: rgba(229, 9, 20, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  flex-shrink: 0;
+}
+
+.db__hero-text { flex: 1; min-width: 200px; }
+.db__welcome { color: #d2d2d2; font-size: 1rem; margin: 0; }
+.db__name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); color: #e50914; margin: 2px 0; text-transform: capitalize; }
+.db__member-since { color: #8c8c8c; font-size: 0.85rem; margin: 0; }
+
+.db__hero-actions { display: flex; gap: 10px; }
+
+.db-btn {
+  background: #e50914;
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.db-btn:hover { background: #f6121d; transform: translateY(-2px); }
+
+.db-btn--outline {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #d2d2d2;
+}
+
+.db-btn--outline:hover { border-color: #fff; color: #fff; background: none; }
+
+/* ================= Quick stats ================= */
+.db__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 46px;
+}
+
+.db__stat-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 22px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.db__stat-card:hover { transform: translateY(-3px); }
+
+.db__stat-value { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: #fff; }
+.db__stat-label { display: block; font-size: 0.78rem; color: #8c8c8c; margin-top: 4px; }
+
+/* ================= Sections ================= */
+.db__section { margin-bottom: 46px; }
+.db__section-title { font-size: 1.15rem; font-weight: 700; margin: 0 0 16px; }
+
+/* ---- Continue watching ---- */
+.db-continue-card {
+  flex: 0 0 auto;
+  width: 200px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+}
+
+.db-continue-card__poster { width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; margin-bottom: 8px; }
+.db-continue-card__title { font-size: 0.85rem; font-weight: 600; color: #fff; margin: 0 0 6px; }
+.db-continue-card__bar { height: 3px; border-radius: 2px; background: rgba(255, 255, 255, 0.15); overflow: hidden; }
+.db-continue-card__fill { height: 100%; background: #e50914; }
+
+/* ---- Favorite genres ---- */
+.db__chips { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.db__chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #d2d2d2;
+  font-size: 0.85rem;
+  padding: 8px 18px;
+  border-radius: 30px;
+  transition: all 0.15s ease;
+}
+
+.db__chip:hover { background: rgba(229, 9, 20, 0.15); border-color: #e50914; color: #fff; }
+
+/* ---- Cinema DNA ---- */
+.db__dna-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 30px;
+}
+
+.db__dna-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 20px; }
+
+.db__dna-bars { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+.db__dna-row { display: flex; align-items: center; gap: 12px; }
+.db__dna-label { width: 90px; flex-shrink: 0; font-size: 0.82rem; color: #d2d2d2; }
+.db__dna-track { flex: 1; height: 8px; border-radius: 4px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+.db__dna-fill { height: 100%; background: linear-gradient(90deg, #e50914, #ff4b53); border-radius: 4px; transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+
+.db__dna-message { color: #b3b3b3; font-size: 0.92rem; line-height: 1.6; margin: 0 0 20px; }
+
+.db__dna-next {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 18px;
+}
+
+.db__dna-next span { font-size: 0.78rem; color: #8c8c8c; text-transform: uppercase; letter-spacing: 0.04em; }
+
+.db__dna-next button {
+  background: none;
+  border: none;
+  color: #e50914;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.db__dna-next button:hover { text-decoration: underline; }
+
+/* ---- Timeline ---- */
+.db__timeline { display: flex; flex-direction: column; gap: 16px; }
+.db__timeline-group { display: flex; gap: 20px; }
+.db__timeline-label { width: 100px; flex-shrink: 0; color: #8c8c8c; font-size: 0.82rem; padding-top: 4px; }
+.db__timeline-items { display: flex; flex-wrap: wrap; gap: 10px; flex: 1; }
+
+.db__timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 6px 14px 6px 10px;
+  color: #d2d2d2;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.db__timeline-item:hover { border-color: rgba(229, 9, 20, 0.4); color: #fff; }
+.db__timeline-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ---- Achievements ---- */
+.db__achievements {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.db__badge {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 22px 14px;
+  opacity: 0.45;
+  transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.db__badge--unlocked { opacity: 1; border-color: rgba(229, 9, 20, 0.35); }
+.db__badge--unlocked:hover { transform: translateY(-3px); box-shadow: 0 16px 34px -16px rgba(229, 9, 20, 0.5); }
+
+.db__badge-icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 10px;
+  color: #e50914;
+}
+
+.db__badge-icon svg { width: 100%; height: 100%; }
+.db__badge-label { font-size: 0.85rem; font-weight: 700; margin: 0 0 2px; color: #fff; }
+.db__badge-desc { font-size: 0.72rem; color: #8c8c8c; margin: 0; }
+
+.db__footer { text-align: center; color: #8c8c8c; font-size: 0.9rem; padding: 30px 0 0; }
+
+@media (max-width: 640px) {
+  .db__hero { flex-direction: column; align-items: flex-start; }
+  .db__timeline-group { flex-direction: column; gap: 8px; }
+}
