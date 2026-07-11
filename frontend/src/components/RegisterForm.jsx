@@ -42,7 +42,8 @@ export default function RegisterForm({ onSubmit, onSwitchToLogin, entrance }) {
       setSuccess(true);
     } catch (err) {
       const apiMessage = err?.errors ? Object.values(err.errors)[0]?.[0] : err?.message;
-      setFormError(apiMessage || "We couldn't create your account. Please try again.");
+      const base = apiMessage || "We couldn't create your account. Please try again.";
+      setFormError(err?.retry_after ? `${base} (${err.retry_after}s)` : base);
       triggerShake();
     } finally {
       setLoading(false);
