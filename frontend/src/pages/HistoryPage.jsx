@@ -9,7 +9,7 @@ import './BrowsePages.css';
 import './ListPages.css';
 
 export default function HistoryPage() {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const { showToast } = useToast();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,12 +17,19 @@ export default function HistoryPage() {
 
   useEffect(() => {
     let cancelled = false;
-    historyApi.listHistory(user.email).then(res => {
-      if (!cancelled) {
-        setItems(res.data);
-        setLoading(false);
-      }
-    });
+    historyApi.listHistory(user.email)
+      .then(res => {
+        if (!cancelled) {
+          setItems(res.data);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setItems([]);
+          setLoading(false);
+        }
+      });
     return () => { cancelled = true; };
   }, [user.email]);
 
@@ -30,6 +37,7 @@ export default function HistoryPage() {
     setRemovingTitle(t);
     await historyApi.removeHistoryEntry(user.email, t);
     showToast('تم حذف العنصر من السجل');
+    refreshUser();
     setTimeout(() => {
       setItems(items => items.filter(i => i.title !== t));
       setRemovingTitle(null);

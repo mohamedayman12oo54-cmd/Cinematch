@@ -1,8 +1,20 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { genreGradient } from '../utils/palette';
+import { posterFor } from '../api/tmdb';
 
 export default function MyListCard({ item, onRemove, onRate, onHoverGenre }) {
   const navigate = useNavigate();
+  const [posterUrl, setPosterUrl] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setPosterUrl(null);
+    posterFor(item.title, item.release_year, item.type).then(url => {
+      if (!cancelled) setPosterUrl(url);
+    });
+    return () => { cancelled = true; };
+  }, [item.title, item.release_year, item.type]);
 
   return (
     <div
@@ -11,7 +23,14 @@ export default function MyListCard({ item, onRemove, onRate, onHoverGenre }) {
       onMouseLeave={() => onHoverGenre?.(null)}
       onClick={() => navigate(`/title/${encodeURIComponent(item.title)}`)}
     >
-      <div className="mlc__poster" style={{ background: genreGradient(item.genres) }}>
+      <div
+        className="mlc__poster"
+        style={{
+          background: posterUrl
+            ? `linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.55)), url(${posterUrl}) center/cover no-repeat`
+            : genreGradient(item.genres),
+        }}
+      >
         <span className="mlc__saved-badge">Saved</span>
         <div className="mlc__poster-label">{item.title}</div>
 
