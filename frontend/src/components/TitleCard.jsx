@@ -1,12 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { genreGradient } from '../utils/palette';
+import { posterFor } from '../api/tmdb';
 
 export default function TitleCard({ title, reason, rank, similarity }) {
   const navigate = useNavigate();
   const cardRef = useRef(null);
   const [revealed, setRevealed] = useState(false);
   const [displayPct, setDisplayPct] = useState(0);
+  const [posterUrl, setPosterUrl] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setPosterUrl(null);
+    posterFor(title.title, title.release_year, title.type).then(url => {
+      if (!cancelled) setPosterUrl(url);
+    });
+    return () => { cancelled = true; };
+  }, [title.title, title.release_year, title.type]);
 
   // Trigger shimmer + match-percentage count-up only once the card has
   // actually finished its own entrance fade and is visible on screen —
@@ -47,7 +58,14 @@ export default function TitleCard({ title, reason, rank, similarity }) {
 
   return (
     <div className="tc" ref={cardRef} onClick={() => navigate(`/title/${encodeURIComponent(title.title)}`)}>
-      <div className="tc__poster" style={{ background: genreGradient(title.genres) }}>
+      <div
+        className="tc__poster"
+        style={{
+          background: posterUrl
+            ? `linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.55)), url(${posterUrl}) center/cover no-repeat`
+            : genreGradient(title.genres),
+        }}
+      >
         <div className="tc__scrim" />
         {revealed && <div className="tc__shimmer" />}
         {rank && <span className="tc__rank">#{rank}</span>}
