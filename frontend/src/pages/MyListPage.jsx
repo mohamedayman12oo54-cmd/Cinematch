@@ -30,7 +30,7 @@ function useCountUp(target, active) {
 }
 
 export default function MyListPage() {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const { showToast } = useToast();
 
   const [items, setItems] = useState([]);
@@ -43,12 +43,19 @@ export default function MyListPage() {
 
   useEffect(() => {
     let cancelled = false;
-    favoritesApi.listFavorites(user.email).then(res => {
-      if (!cancelled) {
-        setItems(res.data);
-        setLoading(false);
-      }
-    });
+    favoritesApi.listFavorites(user.email)
+      .then(res => {
+        if (!cancelled) {
+          setItems(res.data);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setItems([]);
+          setLoading(false);
+        }
+      });
     return () => { cancelled = true; };
   }, [user.email]);
 
@@ -56,6 +63,7 @@ export default function MyListPage() {
     setRemovingTitle(t);
     await favoritesApi.removeFavorite(user.email, t);
     showToast('Removed from My List');
+    refreshUser();
     setTimeout(() => {
       setItems(items => items.filter(i => i.title !== t));
       setRemovingTitle(null);
