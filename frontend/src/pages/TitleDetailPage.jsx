@@ -7,6 +7,7 @@ import { useToast } from '../context/ToastContext';
 import * as titlesApi from '../api/titles';
 import * as favoritesApi from '../api/favorites';
 import * as historyApi from '../api/history';
+import { backdropFor } from '../api/tmdb';
 import { genreGradient, genreAccent } from '../utils/palette';
 import {
   scoresFor, overviewFor, movieInfoFor, castFor,
@@ -17,7 +18,7 @@ import './TitleDetailPage.css';
 export default function TitleDetailPage() {
   const { title } = useParams();
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, refreshUser } = useAuth();
   const { showToast } = useToast();
 
   const [detail, setDetail] = useState(null);
@@ -27,12 +28,14 @@ export default function TitleDetailPage() {
   const [favBusy, setFavBusy] = useState(false);
   const [watchBusy, setWatchBusy] = useState(false);
   const [parallax, setParallax] = useState(0);
+  const [backdropUrl, setBackdropUrl] = useState(null);
   const heroRef = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     setNotFound(false);
+    setBackdropUrl(null);
 
     Promise.all([
       titlesApi.getTitleDetail(title, user?.email),
@@ -42,6 +45,8 @@ export default function TitleDetailPage() {
         if (cancelled) return;
         setDetail(detailRes.data);
         setRecs(recsRes.data.results);
+        backdropFor(detailRes.data.title, detailRes.data.release_year, detailRes.data.type)
+          .then(url => { if (!cancelled) setBackdropUrl(url); });
       })
       .catch(() => { if (!cancelled) setNotFound(true); })
       .finally(() => { if (!cancelled) setLoading(false); });
@@ -59,14 +64,16 @@ export default function TitleDetailPage() {
     if (!isAuthenticated) return navigate('/');
     setFavBusy(true);
     try {
-      const res = await favoritesApi.toggleFavorite(user.email, {
-        title: detail.title,
-        type: detail.type,
-        genres: detail.genres,
-        release_year: detail.release_year,
-      });
-      setDetail(d => ({ ...d, is_favorite: res.action === 'added' }));
-      showToast(res.message);
+      if (detail.is_favorite) {
+        const res = await favoritesApi.removeFavorite(user.email, detail.title);
+        setDetail(d => ({ ...d, is_favorite: false }));
+        showToast(res.message);
+      } else {
+        const res = await favoritesApi.addFavorite(detail.title);
+        setDetail(d => ({ ...d, is_favorite: true }));
+        showToast(res.message);
+      }
+      refreshUser();
     } finally {
       setFavBusy(false);
     }
@@ -84,6 +91,7 @@ export default function TitleDetailPage() {
       });
       setDetail(d => ({ ...d, is_watched: true }));
       showToast(res.message);
+      refreshUser();
     } finally {
       setWatchBusy(false);
     }
@@ -134,7 +142,12 @@ export default function TitleDetailPage() {
       <section className="td-hero" ref={heroRef}>
         <div
           className="td-hero__bg"
-          style={{ background: genreGradient(detail.genres, 150), transform: `translateY(${parallax}px)` }}
+          style={{
+            background: backdropUrl
+              ? `linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.35)), url(${backdropUrl}) center/cover no-repeat`
+              : genreGradient(detail.genres, 150),
+            transform: `translateY(${parallax}px)`,
+          }}
         />
         <div className="td-hero__scrim" />
 

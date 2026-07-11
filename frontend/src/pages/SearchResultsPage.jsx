@@ -14,12 +14,19 @@ export default function SearchResultsPage() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    titlesApi.search(q, 24).then(res => {
-      if (!cancelled) {
-        setResults(res.data);
-        setLoading(false);
-      }
-    });
+    titlesApi.search(q, 24)
+      .then(res => {
+        if (!cancelled) {
+          setResults(res.data);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setResults([]);
+          setLoading(false);
+        }
+      });
     return () => { cancelled = true; };
   }, [q]);
 

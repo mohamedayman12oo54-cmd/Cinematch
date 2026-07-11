@@ -53,13 +53,20 @@ export default function DashboardPage() {
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([favoritesApi.listFavorites(user.email), historyApi.listHistory(user.email)]).then(([favRes, histRes]) => {
-      if (cancelled) return;
-      setFavorites(favRes.data);
-      setHistory(histRes.data);
-      setAiSearches(mockAiSearchHistory(user.email));
-      setLoading(false);
-    });
+    Promise.all([favoritesApi.listFavorites(user.email), historyApi.listHistory(user.email)])
+      .then(([favRes, histRes]) => {
+        if (cancelled) return;
+        setFavorites(favRes.data);
+        setHistory(histRes.data);
+        setAiSearches(mockAiSearchHistory(user.email));
+        setLoading(false);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setFavorites([]);
+        setHistory([]);
+        setLoading(false);
+      });
     return () => { cancelled = true; };
   }, [user.email]);
 
@@ -132,7 +139,7 @@ export default function DashboardPage() {
           </div>
           <div className="db__hero-actions">
             <button type="button" className="db-btn" onClick={() => showToast('Profile editing is coming soon')}>Edit Profile</button>
-            <button type="button" className="db-btn db-btn--outline" onClick={() => showToast('Settings are coming soon')}>Settings</button>
+            <button type="button" className="db-btn db-btn--outline" onClick={() => navigate('/settings')}>Settings</button>
           </div>
         </section>
 

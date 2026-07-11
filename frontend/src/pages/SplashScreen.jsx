@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './SplashScreen.css';
 
 const STEPS = [0, 8, 17, 31, 46, 58, 74, 89, 100];
 
 export default function SplashScreen() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [stepIndex, setStepIndex] = useState(0);
   const [fadeOut, setFadeOut] = useState(false);
 
@@ -22,9 +24,9 @@ export default function SplashScreen() {
 
   useEffect(() => {
     if (!fadeOut) return;
-    const t = setTimeout(() => navigate('/welcome'), 500);
+    const t = setTimeout(() => navigate(isAuthenticated ? '/home' : '/welcome'), 500);
     return () => clearTimeout(t);
-  }, [fadeOut, navigate]);
+  }, [fadeOut, navigate, isAuthenticated]);
 
   return (
     <div className={`splash ${fadeOut ? 'splash--out' : ''}`}>

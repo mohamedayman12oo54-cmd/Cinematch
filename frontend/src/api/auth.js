@@ -25,14 +25,35 @@ export function me() {
   return apiClient.get('/auth/me');
 }
 
-// NOTE: not in the current API contract — coordinate the exact route/shape
-// with the backend team before wiring the real branch. Mocked here so the
-// full auth flow (including "forgot password") is demoable end to end.
+// POST /auth/refresh  (protected) - refresh JWT token
+export function refreshToken() {
+  if (USE_MOCK) {
+    return new Promise(resolve => setTimeout(() => resolve({ 
+      status: 'success', 
+      data: { 
+        token: 'new_mock_token_' + Date.now(),
+        token_type: 'bearer',
+        expires_in: 3600
+      } 
+    }), 500));
+  }
+  return apiClient.post('/auth/refresh');
+}
+
+// ⚠️ الـ endpoints دي (forgot/reset password) مش موجودة في الـ API Contract
+// اللي الباك بعتهولنا خالص. لو حاولنا نبعتلها، هتاخد 404 أو حاجة غير متوقعة.
+// لحد ما فريق الباك يضيفها فعلياً، بنرجع رسالة واضحة بدل محاولة فاشلة صامتة.
+const NOT_IMPLEMENTED = () =>
+  Promise.reject({
+    status: 'error',
+    message: 'الخدمة دي لسه مش متاحة من السيرفر. كلم فريق الباك إند لإضافتها.',
+  });
+
 export function requestPasswordReset(email) {
   if (USE_MOCK) {
     return new Promise(resolve => setTimeout(() => resolve({ status: 'success' }), 700));
   }
-  return apiClient.post('/auth/forgot-password', { email });
+  return NOT_IMPLEMENTED();
 }
 
 export function resetPassword({ token, password, password_confirmation }) {
@@ -47,5 +68,5 @@ export function resetPassword({ token, password, password_confirmation }) {
       }, 700);
     });
   }
-  return apiClient.post('/auth/reset-password', { token, password, password_confirmation });
+  return NOT_IMPLEMENTED();
 }
