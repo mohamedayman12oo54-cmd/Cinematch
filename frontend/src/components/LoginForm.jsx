@@ -39,7 +39,8 @@ export default function LoginForm({ onSubmit, onSwitchToRegister, entrance }) {
       await onSubmit({ email, password });
       setSuccess(true);
     } catch (err) {
-      setFormError(err?.message || 'Sign-in failed. Please try again.');
+      const base = err?.message || 'Sign-in failed. Please try again.';
+      setFormError(err?.retry_after ? `${base} (${err.retry_after}s)` : base);
       triggerShake();
     } finally {
       setLoading(false);
