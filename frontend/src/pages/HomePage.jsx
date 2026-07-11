@@ -27,6 +27,7 @@ export default function HomePage() {
   const [stage, setStage] = useState(null);
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [serviceDown, setServiceDown] = useState(false);
 
   useEffect(() => {
     let i = 0;
@@ -44,12 +45,21 @@ export default function HomePage() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    homeApi.getHome(user?.email).then(res => {
-      if (cancelled) return;
-      setStage(res.data.stage);
-      setSections(res.data.sections);
-      setLoading(false);
-    });
+    setServiceDown(false);
+    homeApi.getHome(user?.email)
+      .then(res => {
+        if (cancelled) return;
+        setStage(res.data.stage);
+        setSections(res.data.sections);
+        setLoading(false);
+      })
+      .catch(err => {
+        if (cancelled) return;
+        if (err?.status === 'error' && err?.message?.toLowerCase().includes('unavailable')) {
+          setServiceDown(true);
+        }
+        setLoading(false);
+      });
     return () => { cancelled = true; };
   }, [user?.email]);
 
@@ -101,18 +111,31 @@ export default function HomePage() {
           </>
         )}
 
-        {!loading && sections.map((section, sIdx) => (
-          <section key={section.key} className="row">
-            <h2 className="row__title">{section.title}</h2>
-            <div className="row__track">
-              {section.items.map((item, i) => (
-                <div className="row__item" key={item.title} style={{ animationDelay: `${sIdx * 80 + i * 45}ms` }}>
-                  <TitleCard title={item} reason={item.reason} />
-                </div>
-              ))}
-            </div>
-          </section>
-        ))}
+        {!loading && serviceDown && (
+          <p className="bp__empty">الخدمة غير متاحة حالياً، حاول تاني كمان شوية</p>
+        )}
+
+        {!loading && !serviceDown && sections.length === 0 && (
+          <p className="bp__empty">Start exploring to get recommendations</p>
+        )}
+
+        {!loading && !serviceDown && sections.map((section, sIdx) => {
+          // items: [] -> الباك بيقولنا نخفي السكشن ده بالكامل
+          if (!section.items || section.items.length === 0) return null;
+
+          return (
+            <section key={section.type ?? sIdx} className="row">
+              <h2 className="row__title">{section.title}</h2>
+              <div className="row__track">
+                {section.items.map((item, i) => (
+                  <div className="row__item" key={item.title} style={{ animationDelay: `${sIdx * 80 + i * 45}ms` }}>
+                    <TitleCard title={item} reason={item.reason} similarity={item.similarity_score} />
+                  </div>
+                ))}
+              </div>
+            </section>
+          );
+        })}
       </main>
     </div>
   );
