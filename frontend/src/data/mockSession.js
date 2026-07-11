@@ -52,7 +52,7 @@ export async function mockLogin({ email, password }) {
   return {
     status: 'success',
     data: {
-      user: { id: found.id, email: found.email },
+      user: { id: found.id, email: found.email, stage: 'stranger' },
       token: fakeToken(email),
       token_type: 'bearer',
       expires_in: 3600,
@@ -150,4 +150,13 @@ export function mockSaveAiSearch(email, query) {
   all[email] = list.slice(0, 8);
   write(AI_SEARCH_KEY, all);
   return all[email];
+}
+
+// تاريخ تسجيل وهمي بس ثابت لكل إيميل (مش بيتغير بين الفتحات) - مفيش
+// endpoint حقيقي بيرجع "تاريخ إنشاء الحساب" في الكونتراكت، فده للعرض
+// التجريبي بس (وضع USE_MOCK)
+export function mockUserCreatedAt(email) {
+  const users = read(USERS_KEY, []);
+  const found = users.find(u => u.email === email);
+  return found?.createdAt || new Date().toISOString();
 }

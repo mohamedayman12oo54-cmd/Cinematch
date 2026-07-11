@@ -13,6 +13,8 @@ import MyListPage from './pages/MyListPage';
 import HistoryPage from './pages/HistoryPage';
 import RecommendPage from './pages/RecommendPage';
 import TrendingPage from './pages/TrendingPage';
+import DashboardPage from './pages/DashboardPage';
+import SettingsPage from './pages/SettingsPage';
 import ProtectedRoute from './context/ProtectedRoute';
 import RouteProgress from './components/RouteProgress';
 import { useAuth } from './context/AuthContext';
@@ -56,6 +58,8 @@ export default function App() {
       <Route path="/title/:title" element={<ProtectedRoute><TitleDetailPage /></ProtectedRoute>} />
       <Route path="/favorites" element={<ProtectedRoute><MyListPage /></ProtectedRoute>} />
       <Route path="/history" element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
+      <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+      <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
 
       <Route path="*" element={<AuthPage />} />
       </Routes>
