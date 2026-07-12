@@ -160,6 +160,20 @@
   animation: gate-fade-up 0.6s ease 2.3s forwards;
 }
 
+.gate__skip {
+  display: block;
+  margin: 18px auto 0;
+  background: transparent;
+  border: none;
+  color: #b3b3b3;
+  font-size: 0.9rem;
+  cursor: pointer;
+  opacity: 0;
+  animation: gate-fade-up 0.6s ease 2.0s forwards;
+}
+
+.gate__skip:hover { color: #fff; }
+
 .gate__legal-link { color: #e50914; text-decoration: none; }
 .gate__legal-link:hover { text-decoration: underline; }
 
@@ -172,6 +186,7 @@
 .gate--instant .gate__kicker,
 .gate--instant .gate__description,
 .gate--instant .gate__actions,
+.gate--instant .gate__skip,
 .gate--instant .gate__legal {
   animation: none;
   opacity: 1;

@@ -1,0 +1,23 @@
+# Machine Learning
+*.pkl
+*.joblib
+*.h5
+*.pt
+*.pth
+
+# React
+node_modules/
+dist/
+build/
+
+# Laravel
+vendor/
+
+# Environment
+.env
+.env.*
+
+# Python
+__pycache__/
+venv/
+.venv/

@@ -10,6 +10,8 @@ export default function ProtectedRoute({ children }) {
     return null;
   }
 
-  if (!isAuthenticated) return <Navigate to="/welcome" replace />;
+  // محتاج حساب عشان تدخل الصفحة دي (My List, History, Dashboard, Settings)
+  // -> وديه على طول لصفحة تسجيل الدخول، مش لصفحة الترحيب
+  if (!isAuthenticated) return <Navigate to="/signin" state={{ mode: 'login' }} replace />;
   return children;
 }
