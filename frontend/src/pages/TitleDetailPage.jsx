@@ -61,7 +61,10 @@ export default function TitleDetailPage() {
   }, []);
 
   async function handleToggleFavorite() {
-    if (!isAuthenticated) return navigate('/');
+    if (!isAuthenticated) {
+      showToast('Sign in to add titles to your list');
+      return navigate('/signin', { state: { mode: 'login' } });
+    }
     setFavBusy(true);
     try {
       if (detail.is_favorite) {
@@ -69,7 +72,12 @@ export default function TitleDetailPage() {
         setDetail(d => ({ ...d, is_favorite: false }));
         showToast(res.message);
       } else {
-        const res = await favoritesApi.addFavorite(detail.title);
+        const res = await favoritesApi.addFavorite(user.email, {
+          title: detail.title,
+          type: detail.type,
+          genres: detail.genres,
+          release_year: detail.release_year,
+        });
         setDetail(d => ({ ...d, is_favorite: true }));
         showToast(res.message);
       }
@@ -80,7 +88,10 @@ export default function TitleDetailPage() {
   }
 
   async function handleMarkWatched() {
-    if (!isAuthenticated) return navigate('/');
+    if (!isAuthenticated) {
+      showToast('Sign in to track what you\u2019ve watched');
+      return navigate('/signin', { state: { mode: 'login' } });
+    }
     setWatchBusy(true);
     try {
       const res = await historyApi.markWatched(user.email, {
