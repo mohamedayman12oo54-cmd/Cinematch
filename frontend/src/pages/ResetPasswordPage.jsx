@@ -45,7 +45,7 @@ export default function ResetPasswordPage() {
       <AuthBackground />
 
       <header className="nf-header">
-        <Link to="/welcome" className="nf-logo__text" style={{ textDecoration: 'none' }}>CINEMATCH</Link>
+        <Link to="/home" className="nf-logo__text" style={{ textDecoration: 'none' }}>CINEMATCH</Link>
       </header>
 
       <main className="nf-main">
