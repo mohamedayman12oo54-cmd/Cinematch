@@ -260,8 +260,20 @@
   z-index: 5;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 22px 4%;
 }
+
+.nf-back-home {
+  background: transparent;
+  border: none;
+  color: #b3b3b3;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 8px 4px;
+}
+
+.nf-back-home:hover { color: #fff; }
 
 .nf-logo__text {
   font-family: 'Bebas Neue', sans-serif;
@@ -305,11 +317,10 @@
   background: linear-gradient(90deg, transparent, var(--nf-red), transparent);
 }
 
-/* Only the very first card (right after the shutter opens) gets the
-   delayed fade-in. Cards revealed by switching modes appear instantly —
-   the curtain wipe already handles that transition, so no extra delay. */
+/* Card fades in right away now — the cinematic shutter reveal happens on
+   its own dedicated screen before Home, not on this page anymore. */
 .nf-card--entrance {
-  animation: nf-card-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 2.1s both;
+  animation: nf-card-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
 }
 
 @keyframes nf-card-in {

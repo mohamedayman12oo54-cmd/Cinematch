@@ -13,13 +13,7 @@ export default function AuthPage() {
 
   const [mode, setMode] = useState(location.state?.mode === 'register' ? 'register' : 'login');
   const [curtainActive, setCurtainActive] = useState(false);
-  const [introPlaying, setIntroPlaying] = useState(true);
   const [hasSwitchedOnce, setHasSwitchedOnce] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIntroPlaying(false), 1600);
-    return () => clearTimeout(timer);
-  }, []);
 
   function switchMode(nextMode) {
     if (nextMode === mode) return;
@@ -45,15 +39,12 @@ export default function AuthPage() {
 
   return (
     <div className="nf-page">
-      <div className={`nf-shutter ${introPlaying ? 'nf-shutter--play' : 'nf-shutter--done'}`} aria-hidden="true">
-        <div className="nf-shutter__bar nf-shutter__bar--top" />
-        <div className="nf-shutter__bar nf-shutter__bar--bottom" />
-        <div className="nf-shutter__brand"><span>CINEMATCH</span></div>
-      </div>
-
       <AuthBackground />
 
       <header className="nf-header">
+        <button type="button" className="nf-back-home" onClick={() => navigate('/home')}>
+          &larr; Back to Home
+        </button>
         <span className="nf-logo__text">CINEMATCH</span>
       </header>
 

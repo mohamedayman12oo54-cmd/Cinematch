@@ -33,7 +33,7 @@ const STAGE = {
 };
 
 export default function RecommendPage() {
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
 
@@ -46,8 +46,13 @@ export default function RecommendPage() {
   const textareaRef = useRef(null);
 
   useEffect(() => {
+    // الزائر (من غير تسجيل دخول) مش هيكون عنده سجل بحث محفوظ - سيبه فاضي
+    if (!user?.email) {
+      setRecent([]);
+      return;
+    }
     setRecent(mockAiSearchHistory(user.email));
-  }, [user.email]);
+  }, [user?.email]);
 
   useEffect(() => {
     if (stage !== STAGE.LOADING) return;
@@ -69,7 +74,7 @@ export default function RecommendPage() {
       setUnderstood(understood);
       setResults(results);
       setStage(results.length ? STAGE.RESULTS : STAGE.EMPTY);
-      setRecent(mockSaveAiSearch(user.email, q));
+      if (user?.email) setRecent(mockSaveAiSearch(user.email, q));
     }, LOADING_LINES.length * 500 + 300);
   }
 

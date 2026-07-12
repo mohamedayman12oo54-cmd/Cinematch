@@ -18,17 +18,19 @@ export async function listFavorites(email) {
   return { ...res, data: (res.data || []).map(normalizeEntry) };
 }
 
-// POST /favorites — الباك محتاج بس { title_name } (مش الأوبجكت كامل)
-export function addFavorite(title) {
+// POST /favorites — الباك محتاج بس { title_name } في الـ request الحقيقي.
+// بناخد كمان email + باقي بيانات العنوان عشان لو المشروع شغال من غير باك
+// حقيقي (USE_MOCK) يقدر يخزنها في المحاكاة المحلية بنفس شكل البيانات
+export function addFavorite(email, entry) {
+  const title = typeof entry === 'string' ? entry : entry?.title;
+  if (USE_MOCK) return mockToggleFavorite(email, typeof entry === 'string' ? { title } : entry);
   return apiClient.post('/favorites', { title_name: title });
 }
 
 // دالة قديمة كانت بتبعت أوبجكت كامل غلط - سايبينها للتوافق مع أي كود
-// تاني بينادّيها، بس دلوقتي بتاخد بس الاسم وتبعته صح
+// تاني بينادّيها
 export function toggleFavorite(email, entry) {
-  if (USE_MOCK) return mockToggleFavorite(email, entry);
-  const title = typeof entry === 'string' ? entry : entry?.title;
-  return addFavorite(title);
+  return addFavorite(email, entry);
 }
 
 // DELETE /favorites/{title} — remove from favorites (protected)
