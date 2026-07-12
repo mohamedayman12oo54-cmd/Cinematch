@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="560" viewBox="0 0 1100 560">
+  <rect width="1100" height="560" fill="#1e1e2e"/>
+  <text x="550" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Q2 :- TmdbService directly or MovieMetadataProvider Interface?</text>
+  <line x1="60" y1="55" x2="1040" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- MVP: Direct -->
+  <rect x="50" y="72" width="470" height="260" rx="6" fill="#11111b" stroke="#a6e3a1" stroke-width="1.4"/>
+  <text x="285" y="96" font-size="15" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">✅  MVP:  Use TmdbService directly</text>
+  <line x1="70" y1="104" x2="500" y2="104" stroke="#a6e3a1" stroke-width="0.7"/>
+  <text x="70" y="134" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">class TmdbService</text>
+  <text x="70" y="158" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  direct implementation, no abstraction needed</text>
+  <text x="70" y="180" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  simpler code, easier to understand</text>
+  <text x="70" y="202" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  YAGNI: "You Aren't Gonna Need It"</text>
+  <text x="70" y="224" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  only one provider needed right now</text>
+  <text x="70" y="246" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  extra interface = complexity for no reason</text>
+  <rect x="70" y="286" width="400" height="30" rx="4" fill="#181825" stroke="#a6e3a1" stroke-width="0.8"/>
+  <text x="270" y="306" font-size="13" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Current recommendation</text>
+
+  <!-- Future: Interface -->
+  <rect x="580" y="72" width="470" height="260" rx="6" fill="#11111b" stroke="#fab387" stroke-width="1.3"/>
+  <text x="815" y="96" font-size="15" fill="#fab387" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">★  Future:  Add Interface when needed</text>
+  <line x1="600" y1="104" x2="1030" y2="104" stroke="#fab387" stroke-width="0.7"/>
+  <text x="600" y="134" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">interface MovieMetadataProvider</text>
+  <text x="600" y="158" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  add when a second provider is needed</text>
+  <text x="600" y="180" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  e.g. adding IMDb or Rotten Tomatoes</text>
+  <text x="600" y="202" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  at that point: Refactor TmdbService</text>
+  <text x="600" y="224" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  to implement MovieMetadataProvider</text>
+  <text x="600" y="246" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  swap providers without breaking callers</text>
+  <rect x="600" y="286" width="420" height="30" rx="4" fill="#181825" stroke="#fab387" stroke-width="0.8"/>
+  <text x="810" y="306" font-size="13" fill="#fab387" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">★  Add if/when a second source is needed</text>
+
+  <!-- Code visual -->
+  <rect x="50" y="352" width="1000" height="120" rx="6" fill="#11111b" stroke="#313244" stroke-width="1.1"/>
+  <text x="550" y="376" font-size="14" fill="#cdd6f4" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Now vs Later :-</text>
+  <line x1="70" y1="384" x2="1030" y2="384" stroke="#313244" stroke-width="0.6"/>
+  <text x="80" y="408" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">Now:</text>
+  <text x="160" y="408" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">class TmdbService { ... }</text>
+  <text x="160" y="428" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">// simple, direct, does the job</text>
+  <text x="80" y="454" font-size="13" fill="#fab387" font-family="Excalifont, 'Comic Sans MS', cursive">Later:</text>
+  <text x="160" y="454" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">interface MovieMetadataProvider  ←  class TmdbService implements it</text>
+  <text x="160" y="466" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">// refactor only when the need actually exists</text>
+
+  <line x1="50" y1="488" x2="1050" y2="488" stroke="#313244" stroke-width="0.7"/>
+  <text x="550" y="504" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB Integration  —  Q2: TmdbService vs Interface</text>
+</svg>

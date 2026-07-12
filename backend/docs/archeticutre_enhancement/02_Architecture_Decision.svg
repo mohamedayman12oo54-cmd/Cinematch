@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680">
+  <rect width="1200" height="680" fill="#1e1e2e"/>
+  <text x="600" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Architecture Decision :- Is TMDB the right choice?</text>
+  <line x1="60" y1="55" x2="1140" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- Alternative 1 -->
+  <rect x="50" y="72" width="340" height="240" rx="6" fill="#11111b" stroke="#f38ba8" stroke-width="1.3"/>
+  <text x="220" y="96" font-size="14" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">✗  Alternative 1</text>
+  <text x="220" y="116" font-size="13" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Add fields to CSV Dataset</text>
+  <line x1="70" y1="124" x2="380" y2="124" stroke="#f38ba8" stroke-width="0.7"/>
+  <text x="70" y="148" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">✗  ML Engineer must update model</text>
+  <text x="70" y="170" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">✗  Dataset becomes bloated</text>
+  <text x="70" y="192" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">✗  ML distracted from its job</text>
+  <text x="70" y="222" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Mixing responsibilities —</text>
+  <text x="70" y="240" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">ML should rank, not store images</text>
+  <text x="70" y="296" font-size="12" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">❌  Rejected</text>
+
+  <!-- Alternative 2 -->
+  <rect x="430" y="72" width="340" height="240" rx="6" fill="#11111b" stroke="#f38ba8" stroke-width="1.3"/>
+  <text x="600" y="96" font-size="14" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">✗  Alternative 2</text>
+  <text x="600" y="116" font-size="13" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Store movies in our own DB</text>
+  <line x1="450" y1="124" x2="760" y2="124" stroke="#f38ba8" stroke-width="0.7"/>
+  <text x="450" y="148" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">✗  We are not a Movie Database</text>
+  <text x="450" y="170" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">✗  High maintenance cost</text>
+  <text x="450" y="192" font-size="13" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">✗  Data goes stale over time</text>
+  <text x="450" y="222" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Building something that already</text>
+  <text x="450" y="240" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">exists and is done better</text>
+  <text x="450" y="296" font-size="12" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">❌  Rejected</text>
+
+  <!-- Alternative 3: TMDB -->
+  <rect x="810" y="72" width="340" height="240" rx="6" fill="#11111b" stroke="#a6e3a1" stroke-width="1.5"/>
+  <text x="980" y="96" font-size="14" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Alternative 3  ( Chosen )</text>
+  <text x="980" y="116" font-size="13" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB as Second Source</text>
+  <line x1="830" y1="124" x2="1140" y2="124" stroke="#a6e3a1" stroke-width="0.7"/>
+  <text x="830" y="148" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">✅  ML stays focused on ranking</text>
+  <text x="830" y="170" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">✅  TMDB handles Presentation</text>
+  <text x="830" y="192" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Laravel is Orchestrator</text>
+  <text x="830" y="214" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">✅  No duplication of data</text>
+  <text x="830" y="236" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Industry Standard Architecture</text>
+  <text x="980" y="296" font-size="13" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Chosen</text>
+
+  <!-- Architecture visual -->
+  <rect x="50" y="330" width="1100" height="220" rx="6" fill="#11111b" stroke="#89b4fa" stroke-width="1.3"/>
+  <text x="600" y="354" font-size="16" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Architecture :- Single Responsibility</text>
+  <line x1="70" y1="362" x2="1130" y2="362" stroke="#89b4fa" stroke-width="0.7"/>
+
+  <!-- Nodes -->
+  <rect x="80" y="380" width="180" height="54" rx="4" fill="#181825" stroke="#cba6f7" stroke-width="1.2"/>
+  <text x="170" y="403" font-size="14" fill="#cba6f7" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">ML Model</text>
+  <text x="170" y="423" font-size="11" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Recommendations</text>
+  <text x="170" y="461" font-size="11" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">ranking + similarity</text>
+
+  <rect x="370" y="380" width="180" height="54" rx="4" fill="#181825" stroke="#89b4fa" stroke-width="1.2"/>
+  <text x="460" y="403" font-size="14" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Laravel</text>
+  <text x="460" y="423" font-size="11" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Orchestrator</text>
+  <text x="460" y="461" font-size="11" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">merge + serve</text>
+
+  <rect x="660" y="380" width="180" height="54" rx="4" fill="#181825" stroke="#f9e2af" stroke-width="1.2"/>
+  <text x="750" y="403" font-size="14" fill="#f9e2af" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB</text>
+  <text x="750" y="423" font-size="11" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Presentation</text>
+  <text x="750" y="461" font-size="11" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">posters + metadata</text>
+
+  <rect x="950" y="380" width="180" height="54" rx="4" fill="#181825" stroke="#94e2d5" stroke-width="1.2"/>
+  <text x="1040" y="403" font-size="14" fill="#94e2d5" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Frontend</text>
+  <text x="1040" y="423" font-size="11" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Display</text>
+  <text x="1040" y="461" font-size="11" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">one merged response</text>
+
+  <!-- Arrows -->
+  <line x1="260" y1="407" x2="370" y2="407" stroke="#cba6f7" stroke-width="1.5"/>
+  <polygon points="370,407 358,401 358,413" fill="#cba6f7"/>
+  <line x1="550" y1="407" x2="660" y2="407" stroke="#89b4fa" stroke-width="1.5"/>
+  <polygon points="660,407 648,401 648,413" fill="#89b4fa"/>
+  <line x1="840" y1="407" x2="950" y2="407" stroke="#f9e2af" stroke-width="1.5"/>
+  <polygon points="950,407 938,401 938,413" fill="#f9e2af"/>
+
+  <text x="315" y="398" font-size="11" fill="#cba6f7" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">ranks</text>
+  <text x="605" y="398" font-size="11" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">enriches</text>
+  <text x="895" y="398" font-size="11" fill="#f9e2af" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">merges</text>
+
+  <text x="600" y="530" font-size="13" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Each service does one thing — Netflix / Plex use the same pattern</text>
+
+  <line x1="50" y1="560" x2="1150" y2="560" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="576" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB Integration  —  Architecture Decision</text>
+</svg>

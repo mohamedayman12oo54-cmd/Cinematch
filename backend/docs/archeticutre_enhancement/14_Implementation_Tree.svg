@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="780" viewBox="0 0 1300 780">
+  <rect width="1300" height="780" fill="#1e1e2e"/>
+  <text x="650" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Implementation Tree :- TMDB Integration</text>
+  <line x1="60" y1="55" x2="1240" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+  <text x="650" y="74" font-size="14" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Build order — each phase depends on the previous</text>
+
+  <!-- Phase 1 -->
+  <rect x="50" y="88" width="1200" height="68" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="122" r="14" fill="#94e2d5"/>
+  <text x="82" y="127" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">1</text>
+  <text x="108" y="116" font-size="17" fill="#94e2d5" font-family="Excalifont, 'Comic Sans MS', cursive">Migration</text>
+  <text x="400" y="116" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">database/migrations/</text>
+  <line x1="82" y1="136" x2="82" y2="148" stroke="#94e2d5" stroke-width="0.6"/>
+  <line x1="82" y1="142" x2="102" y2="142" stroke="#94e2d5" stroke-width="0.6"/>
+  <text x="110" y="147" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">title_tmdb_mappings table  —  id, title_name, release_year, tmdb_id, tmdb_type, poster_path, backdrop_path, created_at</text>
+
+  <!-- Phase 2 -->
+  <rect x="50" y="168" width="1200" height="140" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="196" r="14" fill="#f9e2af"/>
+  <text x="82" y="201" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">2</text>
+  <text x="108" y="194" font-size="17" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">TmdbService</text>
+  <text x="400" y="194" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">app/Services/TmdbService.php</text>
+  <line x1="82" y1="210" x2="82" y2="300" stroke="#f9e2af" stroke-width="0.6"/>
+  <line x1="82" y1="224" x2="102" y2="224" stroke="#f9e2af" stroke-width="0.6"/>
+  <text x="110" y="229" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">findByTitle(title, year, type)</text>
+  <text x="560" y="229" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  search TMDB for matching record</text>
+  <line x1="82" y1="248" x2="102" y2="248" stroke="#f9e2af" stroke-width="0.6"/>
+  <text x="110" y="253" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">getDetails(tmdbId, type)</text>
+  <text x="560" y="253" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  fetch full details  ( overview, cast, trailer, vote_average )</text>
+  <line x1="82" y1="272" x2="102" y2="272" stroke="#f9e2af" stroke-width="0.6"/>
+  <text x="110" y="277" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">getPosterUrl(posterPath)</text>
+  <text x="560" y="277" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  build full image URL from path</text>
+  <line x1="82" y1="292" x2="102" y2="292" stroke="#f9e2af" stroke-width="0.6"/>
+  <text x="110" y="297" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">getTrailerKey(tmdbId, type)</text>
+  <text x="560" y="297" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  YouTube trailer key</text>
+
+  <!-- Phase 3 -->
+  <rect x="50" y="320" width="1200" height="120" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="348" r="14" fill="#cba6f7"/>
+  <text x="82" y="353" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">3</text>
+  <text x="108" y="346" font-size="17" fill="#cba6f7" font-family="Excalifont, 'Comic Sans MS', cursive">TmdbMappingService</text>
+  <text x="480" y="346" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">app/Services/TmdbMappingService.php</text>
+  <line x1="82" y1="362" x2="82" y2="432" stroke="#cba6f7" stroke-width="0.6"/>
+  <line x1="82" y1="374" x2="102" y2="374" stroke="#cba6f7" stroke-width="0.6"/>
+  <text x="110" y="379" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">resolve(title, year, type)</text>
+  <text x="420" y="379" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  Check Cache  →  Check DB  →  Call TMDB API  →  Save to both</text>
+  <line x1="82" y1="402" x2="102" y2="402" stroke="#cba6f7" stroke-width="0.6"/>
+  <text x="110" y="407" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">getPostersForTitles(titles[])</text>
+  <text x="420" y="407" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  bulk poster fetch  ( 10 parallel calls for recommendations )</text>
+  <text x="110" y="430" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Hybrid strategy:  Cache first  →  DB  →  TMDB API as last resort</text>
+
+  <!-- Phase 4 -->
+  <rect x="50" y="452" width="1200" height="82" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="480" r="14" fill="#a6e3a1"/>
+  <text x="82" y="485" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">4</text>
+  <text x="108" y="478" font-size="17" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">Update TitleController</text>
+  <text x="520" y="478" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">app/Http/Controllers/Api/TitleController.php</text>
+  <line x1="82" y1="494" x2="82" y2="526" stroke="#a6e3a1" stroke-width="0.6"/>
+  <line x1="82" y1="505" x2="102" y2="505" stroke="#a6e3a1" stroke-width="0.6"/>
+  <text x="110" y="510" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">show()</text>
+  <text x="260" y="510" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  ML + TMDB full merge  ( parallel calls )</text>
+  <line x1="82" y1="522" x2="102" y2="522" stroke="#a6e3a1" stroke-width="0.6"/>
+  <text x="110" y="527" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">recommendations()</text>
+  <text x="360" y="527" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  ML + TMDB poster only per result</text>
+
+  <!-- Phase 5 -->
+  <rect x="50" y="546" width="590" height="68" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="574" r="14" fill="#fab387"/>
+  <text x="82" y="579" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">5</text>
+  <text x="108" y="572" font-size="17" fill="#fab387" font-family="Excalifont, 'Comic Sans MS', cursive">Update HomeService</text>
+  <line x1="82" y1="588" x2="82" y2="606" stroke="#fab387" stroke-width="0.6"/>
+  <line x1="82" y1="597" x2="102" y2="597" stroke="#fab387" stroke-width="0.6"/>
+  <text x="110" y="602" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Each section item gets  poster_url  via getPostersForTitles()</text>
+
+  <!-- Phase 6 -->
+  <rect x="660" y="546" width="590" height="68" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="692" cy="574" r="14" fill="#f38ba8"/>
+  <text x="692" y="579" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">6</text>
+  <text x="718" y="572" font-size="17" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">Update Resources</text>
+  <line x1="692" y1="588" x2="692" y2="606" stroke="#f38ba8" stroke-width="0.6"/>
+  <line x1="692" y1="597" x2="712" y2="597" stroke="#f38ba8" stroke-width="0.6"/>
+  <text x="720" y="602" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">TitleDetailResource  →  adds TMDB fields  |  RecommendationItemResource  →  adds poster_url</text>
+
+  <!-- Phase 7 -->
+  <rect x="50" y="626" width="1200" height="88" rx="6" fill="#11111b" stroke="#cdd6f4" stroke-width="1.1"/>
+  <circle cx="82" cy="654" r="14" fill="#89b4fa"/>
+  <text x="82" y="659" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">7</text>
+  <text x="108" y="652" font-size="17" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">Tests</text>
+  <text x="280" y="652" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">tests/Feature/</text>
+  <line x1="82" y1="668" x2="82" y2="706" stroke="#89b4fa" stroke-width="0.6"/>
+  <line x1="82" y1="676" x2="102" y2="676" stroke="#89b4fa" stroke-width="0.6"/>
+  <text x="110" y="681" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">TmdbServiceTest</text>
+  <text x="400" y="681" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  TMDB API calls, error handling</text>
+  <line x1="82" y1="694" x2="102" y2="694" stroke="#89b4fa" stroke-width="0.6"/>
+  <text x="110" y="699" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">TmdbMappingTest</text>
+  <text x="400" y="699" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  Cache + DB + fallback logic</text>
+  <line x1="82" y1="706" x2="102" y2="706" stroke="#89b4fa" stroke-width="0.6"/>
+  <text x="110" y="711" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">TitleController Integration Tests</text>
+  <text x="500" y="711" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  merged response shape + Graceful Degradation</text>
+
+  <line x1="50" y1="730" x2="1250" y2="730" stroke="#313244" stroke-width="0.7"/>
+  <text x="650" y="746" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB Integration  —  Implementation Tree</text>
+</svg>

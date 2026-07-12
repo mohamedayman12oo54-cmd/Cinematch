@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="720" viewBox="0 0 1300 720">
+  <rect width="1300" height="720" fill="#1e1e2e"/>
+  <text x="650" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Q5 :- How does the Response Merger work?</text>
+  <line x1="60" y1="55" x2="1240" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+  <text x="650" y="74" font-size="14" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Frontend sees one clean response  —  Frontend does not know data came from two sources</text>
+
+  <!-- ML Data -->
+  <rect x="50" y="88" width="340" height="280" rx="6" fill="#11111b" stroke="#cba6f7" stroke-width="1.3"/>
+  <text x="220" y="112" font-size="14" fill="#cba6f7" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">1.  From ML Model :-</text>
+  <line x1="70" y1="120" x2="380" y2="120" stroke="#cba6f7" stroke-width="0.7"/>
+  <rect x="70" y="130" width="300" height="222" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <text x="85" y="154" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">"title":            "Breaking Bad",</text>
+  <text x="85" y="176" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">"type":             "TV Show",</text>
+  <text x="85" y="198" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">"genres":           ["Crime","Drama"],</text>
+  <text x="85" y="220" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">"release_year":     2008,</text>
+  <text x="85" y="242" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">"similarity_score": 0.98,</text>
+  <text x="85" y="266" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">// text fields only</text>
+  <text x="85" y="286" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">// no images, no overview</text>
+
+  <!-- TMDB Enrichment -->
+  <rect x="450" y="88" width="340" height="280" rx="6" fill="#11111b" stroke="#f9e2af" stroke-width="1.3"/>
+  <text x="620" y="112" font-size="14" fill="#f9e2af" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">2.  From TMDB  ( Enrichment ) :-</text>
+  <line x1="470" y1="120" x2="780" y2="120" stroke="#f9e2af" stroke-width="0.7"/>
+  <rect x="470" y="130" width="300" height="222" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <text x="485" y="154" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">"poster_url":   "https://image.tmdb...",</text>
+  <text x="485" y="176" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">"backdrop_url": "https://image.tmdb...",</text>
+  <text x="485" y="198" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">"overview":     "A chemistry teacher...",</text>
+  <text x="485" y="220" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">"vote_average": 9.5,</text>
+  <text x="485" y="242" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">"cast":         ["Bryan Cranston",...],</text>
+  <text x="485" y="264" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">"trailer_key":  "WhesaQXLuRY"</text>
+  <text x="485" y="286" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">// from Cache or TMDB API call</text>
+
+  <!-- Merge arrow -->
+  <text x="840" y="245" font-size="30" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">+</text>
+  <text x="840" y="275" font-size="13" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Merge</text>
+
+  <!-- Merged response -->
+  <rect x="900" y="88" width="360" height="280" rx="6" fill="#11111b" stroke="#a6e3a1" stroke-width="1.4"/>
+  <text x="1080" y="112" font-size="14" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">3.  Merged Response  →  Frontend</text>
+  <line x1="920" y1="120" x2="1240" y2="120" stroke="#a6e3a1" stroke-width="0.7"/>
+  <rect x="920" y="130" width="320" height="222" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <text x="935" y="154" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">"title":        "Breaking Bad",</text>
+  <text x="935" y="174" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">"type":         "TV Show",</text>
+  <text x="935" y="194" font-size="12" fill="#cba6f7" font-family="Excalifont, 'Comic Sans MS', cursive">"genres":       ["Crime","Drama"],</text>
+  <text x="935" y="214" font-size="12" fill="#cba6f7" font-family="Excalifont, 'Comic Sans MS', cursive">"release_year": 2008,</text>
+  <text x="935" y="238" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">"poster_url":   "https://...",</text>
+  <text x="935" y="258" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">"overview":     "A chemistry teacher...",</text>
+  <text x="935" y="278" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">"vote_average": 9.5,</text>
+  <text x="935" y="298" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">"cast":         ["Bryan Cranston",...]</text>
+  <text x="935" y="340" font-size="11" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">// one clean response to Frontend</text>
+
+  <!-- Merge Logic in Laravel -->
+  <rect x="50" y="390" width="1200" height="250" rx="6" fill="#11111b" stroke="#89b4fa" stroke-width="1.3"/>
+  <text x="650" y="414" font-size="15" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Merge Logic in Laravel :-</text>
+  <line x1="70" y1="422" x2="1230" y2="422" stroke="#89b4fa" stroke-width="0.7"/>
+
+  <circle cx="90" cy="454" r="14" fill="#cba6f7"/>
+  <text x="90" y="459" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">1</text>
+  <text x="116" y="459" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Fetch ML data  ( recommendation results )</text>
+
+  <circle cx="90" cy="490" r="14" fill="#f9e2af"/>
+  <text x="90" y="495" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">2</text>
+  <text x="116" y="495" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Fetch TMDB data  ( from Cache or DB or TMDB API )</text>
+
+  <circle cx="90" cy="526" r="14" fill="#a6e3a1"/>
+  <text x="90" y="531" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">3</text>
+  <text x="116" y="531" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">If TMDB missing  →  fallback to ML data only  ( Graceful Degradation )</text>
+
+  <circle cx="90" cy="562" r="14" fill="#89b4fa"/>
+  <text x="90" y="567" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">4</text>
+  <text x="116" y="567" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Merge ML  →  TMDB  →  return one unified response</text>
+
+  <circle cx="90" cy="598" r="14" fill="#94e2d5"/>
+  <text x="90" y="603" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">5</text>
+  <text x="116" y="603" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Frontend receives one clean merged response  —  unaware of two sources</text>
+
+  <line x1="50" y1="660" x2="1250" y2="660" stroke="#313244" stroke-width="0.7"/>
+  <text x="650" y="676" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB Integration  —  Q5: Response Merger</text>
+</svg>
