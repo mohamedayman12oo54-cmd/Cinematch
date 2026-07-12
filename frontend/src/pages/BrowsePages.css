@@ -128,7 +128,8 @@
   font-family: monospace;
 }
 
-.hdr__profile { position: relative; }
+.hdr__profile { position: relative; display: flex; align-items: center; gap: 10px; }
+.hdr__dashboard-btn { white-space: nowrap; }
 
 .hdr__avatar {
   width: 32px;
@@ -610,4 +611,53 @@
   .hdr__nav { display: none; }
   .row__item { width: 150px; }
   .results__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Guest sign-in / create-account buttons in the header (added) */
+.hdr__auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hdr__auth-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.hdr__auth-btn--ghost {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.hdr__auth-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.hdr__auth-btn--solid {
+  background: #e50914;
+  color: #fff;
+}
+
+.hdr__auth-btn--solid:hover {
+  background: #c40812;
+}
+
+.hdr__mobile-auth {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+}
+
+.hdr__mobile-auth .hdr__auth-btn {
+  width: 100%;
+  padding: 12px;
+  text-align: center;
 }
