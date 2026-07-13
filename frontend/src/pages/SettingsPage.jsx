@@ -24,7 +24,7 @@ export default function SettingsPage() {
     setLoggingOut(true);
     try {
       await logout();
-      navigate('/welcome');
+      navigate('/home');
     } finally {
       setLoggingOut(false);
     }
