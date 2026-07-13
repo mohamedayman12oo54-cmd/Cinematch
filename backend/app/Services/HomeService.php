@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\TmdbMediaType;
 use App\Exceptions\MlConnectionException;
 use App\Exceptions\MlTimeoutException;
 use App\Models\Favorite;
@@ -46,7 +47,10 @@ class HomeService
         'Black Mirror',
     ];
 
-    public function __construct(private readonly MLClientService $mlClientService) {}
+    public function __construct(
+        private readonly MLClientService $mlClientService,
+        private readonly TmdbMappingService $tmdbMappingService,
+    ) {}
 
     // ======= Entry Point =======
 
@@ -56,7 +60,10 @@ class HomeService
     public function getHome(?User $user): array
     {
         if (! $user instanceof User) {
-            return ['stage' => 'stranger', 'sections' => [$this->getPopularSection(collect(), collect())]];
+            return [
+                'stage' => 'stranger',
+                'sections' => $this->attachPosters([$this->getPopularSection(collect(), collect())]),
+            ];
         }
 
         $favorites = $user->favorites()->orderByDesc('added_at')->get();
@@ -64,15 +71,64 @@ class HomeService
 
         $stage = $this->resolveStage($favorites->count() + $watched->count());
 
-        return [
-            'stage' => $stage,
-            'sections' => match ($stage) {
-                'stranger' => [$this->getPopularSection($watched, $favorites)],
-                'explorer' => $this->buildExplorerSections($favorites, $watched),
-                'regular' => $this->buildRegularSections($favorites, $watched),
-                'loyal' => $this->buildLoyalSections($favorites, $watched),
-            },
-        ];
+        $sections = match ($stage) {
+            'stranger' => [$this->getPopularSection($watched, $favorites)],
+            'explorer' => $this->buildExplorerSections($favorites, $watched),
+            'regular' => $this->buildRegularSections($favorites, $watched),
+            'loyal' => $this->buildLoyalSections($favorites, $watched),
+        };
+
+        return ['stage' => $stage, 'sections' => $this->attachPosters($sections)];
+    }
+
+    // ======= TMDB Enrichment =======
+
+    /**
+     * Attaches poster_url to every item across every section in a single
+     * batch call — one getPostersForTitles() for the whole Home feed
+     * rather than one per section, so a title appearing in two sections
+     * (or 40 items across 4 sections) never costs more than one lookup
+     * each, and never more than one parallel TMDB round trip total for
+     * whatever is left after Cache/DB (see TmdbMappingService, Phase 7:
+     * "Pay special attention to performance, batch operations, N+1
+     * problems, cache usage").
+     *
+     * @param  array<int, array{type: string, title: string, items: array<int, array<string, mixed>>}>  $sections
+     * @return array<int, array{type: string, title: string, items: array<int, array<string, mixed>>}>
+     */
+    private function attachPosters(array $sections): array
+    {
+        $entries = [];
+
+        foreach ($sections as $section) {
+            foreach ($section['items'] as $item) {
+                $type = TmdbMediaType::tryFromLabel($item['type']);
+
+                if ($type instanceof TmdbMediaType) {
+                    $entries[$item['title']] = [
+                        'title' => $item['title'],
+                        'release_year' => $item['release_year'],
+                        'type' => $type,
+                    ];
+                }
+            }
+        }
+
+        if ($entries === []) {
+            return $sections;
+        }
+
+        $posterByTitle = $this->tmdbMappingService->getPostersForTitles(array_values($entries));
+
+        foreach ($sections as &$section) {
+            foreach ($section['items'] as &$item) {
+                $item['poster_url'] = $posterByTitle[$item['title']] ?? null;
+            }
+        }
+
+        unset($section, $item);
+
+        return $sections;
     }
 
     // ======= Stage Resolution =======
