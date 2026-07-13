@@ -82,6 +82,18 @@ class TmdbMappingService
      * misses are searched, and those searches fire in parallel via
      * TmdbService::findManyByTitle() rather than one at a time.
      *
+     * Known limitation: the result (and internal batching) is keyed by
+     * title alone, matching how both current callers (RecommendationItemResource,
+     * HomeService::attachPosters) look posters back up — by `$item['title']`,
+     * not `(title, release_year)`. Two entries sharing the exact same title
+     * string but a different release_year within a *single* batch would
+     * collide onto one key. Deliberately not fixed here: neither caller
+     * currently keys its own item-to-poster lookup by year either, ML result
+     * sets don't emit the same title twice in one response, and resolve()
+     * (Title Details, where a specific title+year is requested directly)
+     * is unaffected. Would need release_year threaded through both callers'
+     * lookups too if this ever becomes a real requirement.
+     *
      * @param  array<int, array{title: string, release_year: ?int, type: TmdbMediaType}>  $titles
      * @return array<string, ?string> poster_url keyed by title
      */
@@ -239,11 +251,16 @@ class TmdbMappingService
     }
 
     /**
+     * The shape returned whenever TMDB enrichment couldn't be resolved —
+     * a safe default callers can merge in directly. Also used by
+     * TitleController when the ML type label itself can't even be mapped
+     * to TMDB's movie/tv vocabulary, without needing a cache key for it.
+     *
      * @return array{poster_url: null, backdrop_url: null, overview: null, vote_average: null, runtime: null, cast: array<empty, empty>, trailer_key: null, tmdb_available: false}
      */
-    private function rememberUnavailable(string $cacheKey): array
+    public function unavailable(): array
     {
-        $result = [
+        return [
             'poster_url' => null,
             'backdrop_url' => null,
             'overview' => null,
@@ -253,6 +270,14 @@ class TmdbMappingService
             'trailer_key' => null,
             'tmdb_available' => false,
         ];
+    }
+
+    /**
+     * @return array{poster_url: null, backdrop_url: null, overview: null, vote_average: null, runtime: null, cast: array<empty, empty>, trailer_key: null, tmdb_available: false}
+     */
+    private function rememberUnavailable(string $cacheKey): array
+    {
+        $result = $this->unavailable();
 
         Cache::put($cacheKey, $result, now()->addHours(self::NEGATIVE_CACHE_TTL_HOURS));
 
