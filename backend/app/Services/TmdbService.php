@@ -182,7 +182,7 @@ class TmdbService
             'append_to_response' => 'credits,videos',
         ]);
 
-        if ($response === null) {
+        if (! $response instanceof Response) {
             return null;
         }
 

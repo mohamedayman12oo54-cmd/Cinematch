@@ -47,7 +47,7 @@ class TmdbMappingService
 
         $mapping = $this->findOrCreateMapping($title, $releaseYear, $type);
 
-        if ($mapping === null) {
+        if (! $mapping instanceof TitleTmdbMapping) {
             return $this->rememberUnavailable($cacheKey);
         }
 

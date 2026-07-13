@@ -97,7 +97,7 @@ class TitleController extends Controller
     {
         $type = TmdbMediaType::tryFromLabel($mlTypeLabel);
 
-        if ($type === null) {
+        if (! $type instanceof TmdbMediaType) {
             return $this->tmdbMappingService->unavailable();
         }
 
