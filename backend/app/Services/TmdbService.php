@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Enums\TmdbMediaType;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\Pool;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -75,6 +76,67 @@ class TmdbService
             'poster_path' => $match['poster_path'] ?? null,
             'backdrop_path' => $match['backdrop_path'] ?? null,
         ];
+    }
+
+    /**
+     * Batch version of findByTitle() — fires one search request per entry in
+     * parallel via Http::pool(), instead of N sequential round trips. Used
+     * for poster-only bulk lookups (Recommendations/Home) where matching
+     * many titles one at a time would multiply latency by the result count.
+     *
+     * @param  array<string, array{title: string, release_year: ?int, type: TmdbMediaType}>  $entries  keyed by caller-chosen key (e.g. the title itself)
+     * @return array<string, array{tmdb_id: int, poster_path: ?string, backdrop_path: ?string}|null> keyed the same as $entries
+     */
+    public function findManyByTitle(array $entries): array
+    {
+        if ($entries === []) {
+            return [];
+        }
+
+        if (blank(config('services.tmdb.token'))) {
+            return array_fill_keys(array_keys($entries), null);
+        }
+
+        try {
+            /** @var array<string, Response|ConnectionException> $responses */
+            $responses = Http::pool(fn (Pool $pool): array => collect($entries)
+                ->map(fn (array $entry, string $key) => $pool->as($key)
+                    ->baseUrl(config('services.tmdb.base_url'))
+                    ->withToken(config('services.tmdb.token'))
+                    ->acceptJson()
+                    ->timeout(config('services.tmdb.timeout'))
+                    ->get('/search/'.$entry['type']->value, ['query' => $entry['title'], 'include_adult' => false]))
+                ->all());
+        } catch (Throwable $e) {
+            Log::warning('TMDB batch search failed.', ['error' => $e->getMessage()]);
+
+            return array_fill_keys(array_keys($entries), null);
+        }
+
+        $results = [];
+
+        foreach ($entries as $key => $entry) {
+            $response = $responses[$key] ?? null;
+            $candidates = $response instanceof Response && $response->successful() ? ($response->json('results') ?? []) : [];
+
+            if ($candidates === []) {
+                $results[$key] = null;
+
+                continue;
+            }
+
+            $match = $entry['release_year'] === null
+                ? $candidates[0]
+                : $this->bestYearMatch($candidates, $entry['release_year'], $entry['type']);
+
+            $results[$key] = $match === null ? null : [
+                'tmdb_id' => $match['id'],
+                'poster_path' => $match['poster_path'] ?? null,
+                'backdrop_path' => $match['backdrop_path'] ?? null,
+            ];
+        }
+
+        return $results;
     }
 
     /**
