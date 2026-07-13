@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\TitleType;
 use App\Enums\TmdbMediaType;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Concerns\ResolvesOptionalAuthUser;
@@ -17,7 +16,6 @@ use App\Services\TmdbMappingService;
 use App\Services\UserSignalService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use ValueError;
 
 class TitleController extends Controller
 {
@@ -67,7 +65,7 @@ class TitleController extends Controller
                 ->map(fn (array $item): array => [
                     'title' => $item['title'],
                     'release_year' => $item['release_year'] ?? null,
-                    'type' => $this->tmdbTypeFor($item['type']),
+                    'type' => TmdbMediaType::tryFromLabel($item['type']),
                 ])
                 ->filter(fn (array $entry): bool => $entry['type'] instanceof TmdbMediaType)
                 ->all(),
@@ -97,29 +95,12 @@ class TitleController extends Controller
      */
     private function resolveTmdb(string $title, ?int $releaseYear, string $mlTypeLabel): array
     {
-        $type = $this->tmdbTypeFor($mlTypeLabel);
+        $type = TmdbMediaType::tryFromLabel($mlTypeLabel);
 
         if ($type === null) {
             return $this->tmdbMappingService->unavailable();
         }
 
         return $this->tmdbMappingService->resolve($title, $releaseYear, $type);
-    }
-
-    /**
-     * Maps the ML layer's human-readable type label ("Movie" / "TV Show")
-     * to TMDB's own vocabulary ("movie" / "tv") — the "Movie vs TV Show
-     * Conflict" edge case is resolved by trusting ML's type rather than
-     * TMDB's multi-search. Returns null (never throws) for a label ML
-     * isn't documented to send, so an unexpected value degrades to
-     * "TMDB unavailable" instead of a 500.
-     */
-    private function tmdbTypeFor(string $mlTypeLabel): ?TmdbMediaType
-    {
-        try {
-            return TmdbMediaType::fromTitleType(TitleType::fromLabel($mlTypeLabel));
-        } catch (ValueError) {
-            return null;
-        }
     }
 }

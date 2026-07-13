@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
+use ValueError;
+
 enum TmdbMediaType: string
 {
     case Movie = 'movie';
@@ -30,5 +32,20 @@ enum TmdbMediaType: string
             TitleType::Movie => self::Movie,
             TitleType::TvShow => self::Tv,
         };
+    }
+
+    /**
+     * Convenience wrapper around fromTitleType() + TitleType::fromLabel()
+     * for callers that only have ML's raw label ("Movie" / "TV Show") and
+     * want TMDB enrichment to degrade gracefully — rather than throw — for
+     * a label ML isn't documented to send.
+     */
+    public static function tryFromLabel(string $label): ?self
+    {
+        try {
+            return self::fromTitleType(TitleType::fromLabel($label));
+        } catch (ValueError) {
+            return null;
+        }
     }
 }
