@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="580" viewBox="0 0 1200 580">
+  <rect width="1200" height="580" fill="#1e1e2e"/>
+  <text x="600" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Q6 :- Most important TMDB fields?</text>
+  <line x1="60" y1="55" x2="1140" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- Priority 1 -->
+  <rect x="50" y="72" width="350" height="230" rx="6" fill="#11111b" stroke="#f38ba8" stroke-width="1.5"/>
+  <rect x="70" y="80" width="140" height="26" rx="4" fill="#f38ba8"/>
+  <text x="140" y="97" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Priority 1 — Required (UX)</text>
+  <line x1="70" y1="114" x2="380" y2="114" stroke="#f38ba8" stroke-width="0.7"/>
+
+  <text x="70" y="140" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">├─  poster_path</text>
+  <text x="70" y="162" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">      →  main visual for every card</text>
+  <text x="70" y="186" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">├─  backdrop_path</text>
+  <text x="70" y="208" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">      →  hero / page background image</text>
+  <text x="70" y="232" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">├─  overview</text>
+  <text x="70" y="254" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">      →  plot summary / description</text>
+  <text x="70" y="278" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">└─  vote_average</text>
+  <text x="70" y="298" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">      →  rating shown to users</text>
+
+  <!-- Priority 2 -->
+  <rect x="450" y="72" width="350" height="230" rx="6" fill="#11111b" stroke="#f9e2af" stroke-width="1.4"/>
+  <rect x="470" y="80" width="140" height="26" rx="4" fill="#f9e2af"/>
+  <text x="540" y="97" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Priority 2 — Adds value</text>
+  <line x1="470" y1="114" x2="780" y2="114" stroke="#f9e2af" stroke-width="0.7"/>
+
+  <text x="470" y="140" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">├─  cast</text>
+  <text x="470" y="162" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">      →  top 5 actors — engagement</text>
+  <text x="470" y="186" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">├─  trailer_key</text>
+  <text x="470" y="208" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">      →  YouTube video key</text>
+  <text x="470" y="232" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">└─  runtime</text>
+  <text x="470" y="254" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">      →  movie length in minutes</text>
+
+  <!-- Priority 3 -->
+  <rect x="850" y="72" width="300" height="230" rx="6" fill="#11111b" stroke="#6c7086" stroke-width="1.2"/>
+  <rect x="870" y="80" width="140" height="26" rx="4" fill="#6c7086"/>
+  <text x="940" y="97" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Priority 3 — Optional</text>
+  <line x1="870" y1="114" x2="1130" y2="114" stroke="#6c7086" stroke-width="0.7"/>
+
+  <text x="870" y="140" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">├─  production_companies</text>
+  <text x="870" y="162" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">      →  studio info</text>
+  <text x="870" y="186" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">├─  spoken_languages</text>
+  <text x="870" y="208" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">      →  language list</text>
+  <text x="870" y="232" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">└─  collection_info</text>
+  <text x="870" y="254" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">      →  franchise / series data</text>
+
+  <!-- Implementation order -->
+  <rect x="50" y="322" width="1100" height="180" rx="6" fill="#11111b" stroke="#89b4fa" stroke-width="1.2"/>
+  <text x="600" y="346" font-size="15" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Implementation order :-</text>
+  <line x1="70" y1="354" x2="1130" y2="354" stroke="#89b4fa" stroke-width="0.7"/>
+
+  <rect x="70" y="368" width="320" height="100" rx="4" fill="#181825" stroke="#f38ba8" stroke-width="0.9"/>
+  <text x="230" y="390" font-size="13" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Phase 1 — MVP</text>
+  <text x="90" y="412" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">poster_path  +  backdrop_path</text>
+  <text x="90" y="432" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">overview  +  vote_average</text>
+  <text x="90" y="452" font-size="11" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  stored in DB mapping table</text>
+
+  <rect x="430" y="368" width="320" height="100" rx="4" fill="#181825" stroke="#f9e2af" stroke-width="0.9"/>
+  <text x="590" y="390" font-size="13" fill="#f9e2af" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Phase 2 — Enhance</text>
+  <text x="450" y="412" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">cast  (top 5)  +  trailer_key</text>
+  <text x="450" y="432" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">runtime</text>
+  <text x="450" y="452" font-size="11" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  fetched live, not stored</text>
+
+  <rect x="790" y="368" width="320" height="100" rx="4" fill="#181825" stroke="#6c7086" stroke-width="0.9"/>
+  <text x="950" y="390" font-size="13" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Phase 3 — Nice to have</text>
+  <text x="810" y="412" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">production_companies</text>
+  <text x="810" y="432" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">spoken_languages  +  collection</text>
+  <text x="810" y="452" font-size="11" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  add only if needed</text>
+
+  <line x1="50" y1="518" x2="1150" y2="518" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="534" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB Integration  —  Q6: Important Fields</text>
+</svg>

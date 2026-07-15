@@ -8,6 +8,17 @@ use App\Models\Favorite;
 use App\Models\User;
 use App\Models\WatchedTitle;
 use App\Services\MLClientService;
+use App\Services\TmdbMappingService;
+
+// TMDB enrichment is orthogonal to everything this file tests (stage
+// resolution, ranking, filtering) — stub it to "no posters" by default so
+// every test here runs without ever touching the real TMDB API. Poster
+// attachment itself is covered in HomeTmdbEnrichmentTest.
+beforeEach(function () {
+    $this->mock(TmdbMappingService::class, function ($mock) {
+        $mock->shouldReceive('getPostersForTitles')->andReturn([]);
+    });
+});
 
 // ======= Helpers =======
 

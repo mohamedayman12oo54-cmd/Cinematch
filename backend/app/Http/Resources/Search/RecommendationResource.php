@@ -10,16 +10,21 @@ use Override;
 
 /**
  * Wraps the raw MLClientService::getRecommendations() envelope, mapping each
- * result through RecommendationItemResource with its own per-title signals.
+ * result through RecommendationItemResource with its own per-title signals
+ * and poster.
  */
 class RecommendationResource extends JsonResource
 {
     /**
      * @param  array{query: string, matched_title: string, total: int, results: array<int, array<string, mixed>>}  $resource
      * @param  array<string, array{is_favorite: bool, is_watched: bool}>|null  $signalsByTitle  null for guests
+     * @param  array<string, ?string>  $posterByTitle  from TmdbMappingService::getPostersForTitles()
      */
-    public function __construct(array $resource, private readonly ?array $signalsByTitle = null)
-    {
+    public function __construct(
+        array $resource,
+        private readonly ?array $signalsByTitle,
+        private readonly array $posterByTitle,
+    ) {
         parent::__construct($resource);
     }
 
@@ -37,6 +42,7 @@ class RecommendationResource extends JsonResource
                 ->map(fn (array $item) => (new RecommendationItemResource(
                     $item,
                     $this->signalsByTitle[$item['title']] ?? null,
+                    $this->posterByTitle[$item['title']] ?? null,
                 ))->resolve($request))
                 ->all(),
         ];

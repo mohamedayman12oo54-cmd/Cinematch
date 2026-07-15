@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+  <rect width="1200" height="760" fill="#1e1e2e"/>
+  <text x="600" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Full Flow :- Title Detail Page Request</text>
+  <line x1="60" y1="55" x2="1140" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+  <text x="600" y="74" font-size="14" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">User opens "Breaking Bad" page — what happens inside Laravel</text>
+
+  <!-- Step 1 -->
+  <rect x="50" y="88" width="400" height="52" rx="6" fill="#11111b" stroke="#94e2d5" stroke-width="1.3"/>
+  <text x="250" y="112" font-size="15" fill="#94e2d5" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">User opens "Breaking Bad" page</text>
+  <text x="250" y="132" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Click / navigate to title detail</text>
+
+  <!-- Arrow down -->
+  <line x1="250" y1="140" x2="250" y2="166" stroke="#cdd6f4" stroke-width="1.3"/>
+  <polygon points="250,170 244,158 256,158" fill="#cdd6f4"/>
+
+  <!-- Step 2 -->
+  <rect x="50" y="170" width="400" height="52" rx="6" fill="#11111b" stroke="#f9e2af" stroke-width="1.3"/>
+  <text x="250" y="192" font-size="15" fill="#f9e2af" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">GET /api/titles/Breaking Bad</text>
+  <text x="250" y="212" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">HTTP request to Laravel</text>
+
+  <line x1="250" y1="222" x2="250" y2="248" stroke="#cdd6f4" stroke-width="1.3"/>
+  <polygon points="250,252 244,240 256,240" fill="#cdd6f4"/>
+
+  <!-- Step 3 -->
+  <rect x="50" y="252" width="400" height="52" rx="6" fill="#11111b" stroke="#cba6f7" stroke-width="1.3"/>
+  <text x="250" y="274" font-size="15" fill="#cba6f7" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TitleController::show()</text>
+  <text x="250" y="294" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Thin controller — delegates work</text>
+
+  <line x1="250" y1="304" x2="250" y2="330" stroke="#cdd6f4" stroke-width="1.3"/>
+  <polygon points="250,334 244,322 256,322" fill="#cdd6f4"/>
+
+  <!-- Parallel calls box -->
+  <rect x="50" y="334" width="700" height="210" rx="6" fill="#11111b" stroke="#89b4fa" stroke-width="1.4"/>
+  <text x="400" y="358" font-size="14" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Parallel Calls  ( fired simultaneously ) :-</text>
+  <line x1="70" y1="366" x2="730" y2="366" stroke="#89b4fa" stroke-width="0.7"/>
+
+  <!-- Left: ML -->
+  <rect x="70" y="376" width="290" height="148" rx="4" fill="#181825" stroke="#cba6f7" stroke-width="1.0"/>
+  <text x="215" y="398" font-size="13" fill="#cba6f7" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">1. ML: getTitleDetail()</text>
+  <text x="88" y="420" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  title, type, genres, rating,</text>
+  <text x="88" y="440" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">    country, release_year, director</text>
+  <text x="88" y="464" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Direct ML call — always fresh</text>
+  <text x="88" y="500" font-size="12" fill="#cba6f7" font-family="Excalifont, 'Comic Sans MS', cursive">Returns: ML data object</text>
+
+  <!-- Right: TMDB -->
+  <rect x="398" y="376" width="300" height="148" rx="4" fill="#181825" stroke="#f9e2af" stroke-width="1.0"/>
+  <text x="548" y="398" font-size="13" fill="#f9e2af" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">2. TMDB: resolve()</text>
+  <line x1="418" y1="406" x2="688" y2="406" stroke="#313244" stroke-width="0.5"/>
+  <text x="418" y="424" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">├─  Cache?  →  return immediately</text>
+  <text x="418" y="444" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">├─  DB?    →  return + warm cache</text>
+  <text x="418" y="464" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">└─  TMDB API:</text>
+  <text x="438" y="482" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">    search(title, year)</text>
+  <text x="438" y="498" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">    getDetails(tmdbId)</text>
+  <text x="438" y="514" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">    save to DB + Cache</text>
+
+  <!-- Step 5 -->
+  <line x1="400" y1="544" x2="400" y2="570" stroke="#cdd6f4" stroke-width="1.3"/>
+  <polygon points="400,574 394,562 406,562" fill="#cdd6f4"/>
+
+  <rect x="50" y="574" width="700" height="52" rx="6" fill="#11111b" stroke="#a6e3a1" stroke-width="1.3"/>
+  <text x="400" y="598" font-size="15" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Merge ML + TMDB data</text>
+  <text x="400" y="616" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">If TMDB failed  →  ML data only  ( Graceful Degradation,  tmdb_available: false )</text>
+
+  <line x1="400" y1="626" x2="400" y2="652" stroke="#cdd6f4" stroke-width="1.3"/>
+  <polygon points="400,656 394,644 406,644" fill="#cdd6f4"/>
+
+  <rect x="50" y="656" width="700" height="42" rx="6" fill="#11111b" stroke="#f38ba8" stroke-width="1.2"/>
+  <text x="400" y="680" font-size="14" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TitleDetailResource  →  formats merged response</text>
+
+  <line x1="400" y1="698" x2="400" y2="720" stroke="#cdd6f4" stroke-width="1.3"/>
+  <polygon points="400,724 394,712 406,712" fill="#cdd6f4"/>
+
+  <rect x="50" y="724" width="700" height="42" rx="6" fill="#11111b" stroke="#94e2d5" stroke-width="1.3"/>
+  <text x="400" y="748" font-size="14" fill="#94e2d5" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Single clean response  →  Frontend</text>
+
+  <!-- Side legend -->
+  <rect x="790" y="88" width="360" height="280" rx="6" fill="#181825" stroke="#313244" stroke-width="1.1"/>
+  <text x="970" y="112" font-size="14" fill="#f9e2af" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Performance :-</text>
+  <line x1="810" y1="120" x2="1130" y2="120" stroke="#313244" stroke-width="0.6"/>
+  <text x="810" y="148" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Parallel calls:</text>
+  <text x="810" y="170" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">ML + TMDB resolve fired together</text>
+  <text x="810" y="190" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  max(ML_time, TMDB_time)</text>
+  <text x="810" y="210" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  not sequential addition</text>
+  <text x="810" y="238" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Cache hit (warm):</text>
+  <text x="810" y="260" font-size="12" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB resolve ≈ 1ms</text>
+  <text x="810" y="282" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  practically free</text>
+  <text x="810" y="310" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">First call (cold):</text>
+  <text x="810" y="330" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB API ≈ 100–200ms</text>
+  <text x="810" y="350" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  saved to Cache + DB after</text>
+
+  <rect x="790" y="388" width="360" height="190" rx="6" fill="#181825" stroke="#313244" stroke-width="1.1"/>
+  <text x="970" y="412" font-size="14" fill="#f38ba8" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Graceful Degradation :-</text>
+  <line x1="810" y1="420" x2="1130" y2="420" stroke="#313244" stroke-width="0.6"/>
+  <text x="810" y="448" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">If TMDB fails at any step:</text>
+  <text x="810" y="470" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  ML data returned normally</text>
+  <text x="810" y="492" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  TMDB fields set to null</text>
+  <text x="810" y="514" font-size="12" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">→  tmdb_available: false</text>
+  <text x="810" y="536" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  Frontend shows fallback UI</text>
+  <text x="810" y="558" font-size="11" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">App never crashes — always returns something</text>
+
+  <line x1="50" y1="724" x2="1150" y2="724" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="740" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB Integration  —  Full Flow</text>
+</svg>

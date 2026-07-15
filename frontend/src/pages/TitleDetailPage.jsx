@@ -8,6 +8,7 @@ import * as titlesApi from '../api/titles';
 import * as favoritesApi from '../api/favorites';
 import * as historyApi from '../api/history';
 import { backdropFor } from '../api/tmdb';
+import { getErrorMessage, isNotFoundError } from '../utils/errors';
 import { genreGradient, genreAccent } from '../utils/palette';
 import {
   scoresFor, overviewFor, movieInfoFor, castFor,
@@ -25,6 +26,7 @@ export default function TitleDetailPage() {
   const [recs, setRecs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [loadError, setLoadError] = useState(null);
   const [favBusy, setFavBusy] = useState(false);
   const [watchBusy, setWatchBusy] = useState(false);
   const [parallax, setParallax] = useState(0);
@@ -35,6 +37,7 @@ export default function TitleDetailPage() {
     let cancelled = false;
     setLoading(true);
     setNotFound(false);
+    setLoadError(null);
     setBackdropUrl(null);
 
     Promise.all([
@@ -48,7 +51,14 @@ export default function TitleDetailPage() {
         backdropFor(detailRes.data.title, detailRes.data.release_year, detailRes.data.type)
           .then(url => { if (!cancelled) setBackdropUrl(url); });
       })
-      .catch(() => { if (!cancelled) setNotFound(true); })
+      .catch(err => {
+        if (cancelled) return;
+        if (isNotFoundError(err)) {
+          setNotFound(true);
+        } else {
+          setLoadError(getErrorMessage(err, "Couldn't load this title right now. Please try again."));
+        }
+      })
       .finally(() => { if (!cancelled) setLoading(false); });
 
     return () => { cancelled = true; };
@@ -134,6 +144,17 @@ export default function TitleDetailPage() {
         <Header />
         <main className="bp__main">
           <p className="bp__empty">Couldn't find &ldquo;{title}&rdquo; in the catalog.</p>
+        </main>
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="bp">
+        <Header />
+        <main className="bp__main">
+          <p className="bp__empty">{loadError}</p>
         </main>
       </div>
     );

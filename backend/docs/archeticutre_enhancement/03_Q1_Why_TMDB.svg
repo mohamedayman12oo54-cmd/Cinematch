@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="500" viewBox="0 0 1100 500">
+  <rect width="1100" height="500" fill="#1e1e2e"/>
+  <text x="550" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Q1 :- Is TMDB the right decision?</text>
+  <line x1="60" y1="55" x2="1040" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- Answer: Yes -->
+  <rect x="50" y="72" width="1000" height="58" rx="6" fill="#11111b" stroke="#a6e3a1" stroke-width="1.4"/>
+  <text x="75" y="95" font-size="15" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">✅  Yes — and here is why :-</text>
+  <text x="75" y="118" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB is the correct architectural choice for presentation data — not a workaround</text>
+
+  <!-- 5 reasons -->
+  <rect x="50" y="144" width="470" height="240" rx="6" fill="#11111b" stroke="#313244" stroke-width="1.1"/>
+  <text x="285" y="167" font-size="14" fill="#f9e2af" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">5 Reasons :-</text>
+  <line x1="70" y1="175" x2="500" y2="175" stroke="#f9e2af" stroke-width="0.7"/>
+
+  <circle cx="80" cy="200" r="13" fill="#89b4fa"/>
+  <text x="80" y="205" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">1</text>
+  <text x="106" y="205" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Trusted API  +  free  (up to limits)</text>
+
+  <circle cx="80" cy="234" r="13" fill="#a6e3a1"/>
+  <text x="80" y="239" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">2</text>
+  <text x="106" y="239" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Single Responsibility  —  ML = rank,  TMDB = display</text>
+
+  <circle cx="80" cy="268" r="13" fill="#fab387"/>
+  <text x="80" y="273" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">3</text>
+  <text x="106" y="273" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Laravel stays as Orchestration Layer only</text>
+
+  <circle cx="80" cy="302" r="13" fill="#cba6f7"/>
+  <text x="80" y="307" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">4</text>
+  <text x="106" y="307" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Frontend needs only one data source</text>
+
+  <circle cx="80" cy="336" r="13" fill="#f9e2af"/>
+  <text x="80" y="341" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">5</text>
+  <text x="106" y="341" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Industry Standard  —  Netflix / Plex use the same pattern</text>
+
+  <!-- Who uses it -->
+  <rect x="580" y="144" width="470" height="240" rx="6" fill="#11111b" stroke="#94e2d5" stroke-width="1.2"/>
+  <text x="815" y="167" font-size="14" fill="#94e2d5" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Who uses TMDB in production :-</text>
+  <line x1="600" y1="175" x2="1030" y2="175" stroke="#94e2d5" stroke-width="0.7"/>
+  <text x="610" y="210" font-size="14" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Netflix</text>
+  <text x="730" y="210" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  metadata enrichment</text>
+  <text x="610" y="240" font-size="14" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Plex</text>
+  <text x="730" y="240" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  library poster fetching</text>
+  <text x="610" y="270" font-size="14" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Kodi</text>
+  <text x="730" y="270" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  movie info display</text>
+  <text x="610" y="300" font-size="14" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Emby</text>
+  <text x="730" y="300" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  media server metadata</text>
+  <text x="815" y="358" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">All use TMDB as a presentation layer</text>
+
+  <!-- Summary -->
+  <rect x="50" y="402" width="1000" height="52" rx="6" fill="#181825" stroke="#89b4fa" stroke-width="1.1"/>
+  <text x="550" y="432" font-size="13" fill="#cdd6f4" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB is not a workaround — it is the correct tool for this job</text>
+  <text x="550" y="446" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Using it means less code to maintain and a better product</text>
+
+  <line x1="50" y1="468" x2="1050" y2="468" stroke="#313244" stroke-width="0.7"/>
+  <text x="550" y="484" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB Integration  —  Q1: Is TMDB the right choice?</text>
+</svg>

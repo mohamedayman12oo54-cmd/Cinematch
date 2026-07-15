@@ -42,4 +42,25 @@ return [
         'timeout' => (int) env('ML_TIMEOUT', 10),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | TMDB (The Movie Database)
+    |--------------------------------------------------------------------------
+    |
+    | Presentation-layer enrichment only (posters, backdrops, overview, cast,
+    | trailer, vote_average) — never a hard dependency of the recommendation
+    | pipeline. See docs/archeticutre_enhancement/ for the full design.
+    |
+    */
+
+    'tmdb' => [
+        'base_url' => env('TMDB_BASE_URL', 'https://api.themoviedb.org/3'),
+        'image_base_url' => env('TMDB_IMAGE_BASE_URL', 'https://image.tmdb.org/t/p'),
+        'token' => env('TMDB_API_TOKEN'),
+        'timeout' => (int) env('TMDB_TIMEOUT', 5),
+        'cache_ttl_hours' => (int) env('TMDB_CACHE_TTL_HOURS', 24),
+        'poster_size' => env('TMDB_POSTER_SIZE', 'w500'),
+        'backdrop_size' => env('TMDB_BACKDROP_SIZE', 'original'),
+    ],
+
 ];

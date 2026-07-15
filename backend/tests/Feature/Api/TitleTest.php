@@ -8,6 +8,28 @@ use App\Models\Favorite;
 use App\Models\User;
 use App\Models\WatchedTitle;
 use App\Services\MLClientService;
+use App\Services\TmdbMappingService;
+
+// TMDB enrichment is orthogonal to everything this file tests (ML wiring,
+// user_signals, error mapping) — stub it to "unavailable" by default so
+// every test here runs without ever touching the real TMDB API. TMDB
+// merge/matching/fallback behavior itself is covered in
+// TitleTmdbIntegrationTest.
+beforeEach(function () {
+    $this->mock(TmdbMappingService::class, function ($mock) {
+        $mock->shouldReceive('resolve')->andReturn([
+            'poster_url' => null,
+            'backdrop_url' => null,
+            'overview' => null,
+            'vote_average' => null,
+            'runtime' => null,
+            'cast' => [],
+            'trailer_key' => null,
+            'tmdb_available' => false,
+        ]);
+        $mock->shouldReceive('getPostersForTitles')->andReturn([]);
+    });
+});
 
 // ======= Helpers =======
 

@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="760" viewBox="0 0 1300 760">
+  <rect width="1300" height="760" fill="#1e1e2e"/>
+  <text x="650" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Q8 :- Important Edge Cases</text>
+  <line x1="60" y1="55" x2="1240" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- Case 1 -->
+  <rect x="50" y="72" width="580" height="130" rx="6" fill="#11111b" stroke="#f38ba8" stroke-width="1.2"/>
+  <circle cx="80" cy="100" r="14" fill="#f38ba8"/>
+  <text x="80" y="105" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">1</text>
+  <text x="108" y="98" font-size="15" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">Duplicate Titles</text>
+  <text x="80" y="124" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">"The Office"  →  exists as US version and UK version</text>
+  <line x1="70" y1="134" x2="616" y2="134" stroke="#313244" stroke-width="0.5"/>
+  <text x="80" y="154" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Solution:</text>
+  <text x="160" y="154" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Match using:  Title + Release Year + Type</text>
+  <text x="160" y="174" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">More specific match = correct TMDB record</text>
+  <text x="80" y="196" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">tmdb_mappings table stores: title_name + release_year + tmdb_id + tmdb_type</text>
+
+  <!-- Case 2 -->
+  <rect x="690" y="72" width="560" height="130" rx="6" fill="#11111b" stroke="#f9e2af" stroke-width="1.2"/>
+  <circle cx="720" cy="100" r="14" fill="#f9e2af"/>
+  <text x="720" y="105" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">2</text>
+  <text x="748" y="98" font-size="15" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Remakes</text>
+  <text x="720" y="124" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">"Lion King" 1994  vs  "Lion King" 2019  — different TMDB records</text>
+  <line x1="710" y1="134" x2="1236" y2="134" stroke="#313244" stroke-width="0.5"/>
+  <text x="720" y="154" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Solution:</text>
+  <text x="800" y="154" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Release Year field solves this correctly</text>
+  <text x="800" y="174" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Both ML and TMDB search use year to disambiguate</text>
+
+  <!-- Case 3 -->
+  <rect x="50" y="224" width="580" height="130" rx="6" fill="#11111b" stroke="#fab387" stroke-width="1.2"/>
+  <circle cx="80" cy="252" r="14" fill="#fab387"/>
+  <text x="80" y="257" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">3</text>
+  <text x="108" y="250" font-size="15" fill="#fab387" font-family="Excalifont, 'Comic Sans MS', cursive">Localized Titles</text>
+  <text x="80" y="276" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Some titles have different names in TMDB vs ML dataset</text>
+  <line x1="70" y1="286" x2="616" y2="286" stroke="#313244" stroke-width="0.5"/>
+  <text x="80" y="306" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Solution:</text>
+  <text x="160" y="306" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Normalize — or strip special chars — try variations</text>
+  <text x="160" y="326" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Fuzzy match as fallback if exact match fails</text>
+
+  <!-- Case 4 -->
+  <rect x="690" y="224" width="560" height="130" rx="6" fill="#11111b" stroke="#cba6f7" stroke-width="1.2"/>
+  <circle cx="720" cy="252" r="14" fill="#cba6f7"/>
+  <text x="720" y="257" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">4</text>
+  <text x="748" y="250" font-size="15" fill="#cba6f7" font-family="Excalifont, 'Comic Sans MS', cursive">Movie vs TV Show Conflict</text>
+  <text x="720" y="276" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">"Breaking Bad"  →  ML says TV Show,  TMDB search finds both Movie and TV</text>
+  <line x1="710" y1="286" x2="1236" y2="286" stroke="#313244" stroke-width="0.5"/>
+  <text x="720" y="306" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Solution:</text>
+  <text x="800" y="306" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Use type from ML  →  map to TMDB search type</text>
+  <text x="800" y="326" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Movie/TV Show from ML maps to movie/tv in TMDB</text>
+
+  <!-- Case 5 -->
+  <rect x="50" y="376" width="580" height="130" rx="6" fill="#11111b" stroke="#a6e3a1" stroke-width="1.2"/>
+  <circle cx="80" cy="404" r="14" fill="#a6e3a1"/>
+  <text x="80" y="409" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">5</text>
+  <text x="108" y="402" font-size="15" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">Missing TMDB Record</text>
+  <text x="80" y="428" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">Obscure or old title not found in TMDB database</text>
+  <line x1="70" y1="438" x2="616" y2="438" stroke="#313244" stroke-width="0.5"/>
+  <text x="80" y="458" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Solution:</text>
+  <text x="160" y="458" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Graceful Degradation  →  return ML data only</text>
+  <text x="160" y="478" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">poster_url = null,  overview = null  — Frontend handles nulls</text>
+
+  <!-- Case 6 -->
+  <rect x="690" y="376" width="560" height="130" rx="6" fill="#11111b" stroke="#94e2d5" stroke-width="1.2"/>
+  <circle cx="720" cy="404" r="14" fill="#94e2d5"/>
+  <text x="720" y="409" font-size="13" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">6</text>
+  <text x="748" y="402" font-size="15" fill="#94e2d5" font-family="Excalifont, 'Comic Sans MS', cursive">Wrong TMDB Match</text>
+  <text x="720" y="428" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB returns wrong result for a similar name</text>
+  <line x1="710" y1="438" x2="1236" y2="438" stroke="#313244" stroke-width="0.5"/>
+  <text x="720" y="458" font-size="12" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">Solution:</text>
+  <text x="800" y="458" font-size="12" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">Validate release_year  (allow ±1 year tolerance)</text>
+  <text x="800" y="478" font-size="12" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">If validation fails  →  treat as missing  →  Graceful Degradation</text>
+
+  <!-- Summary -->
+  <rect x="50" y="528" width="1200" height="126" rx="6" fill="#181825" stroke="#89b4fa" stroke-width="1.2"/>
+  <text x="650" y="552" font-size="14" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Golden Rule for all edge cases :-</text>
+  <line x1="70" y1="560" x2="1230" y2="560" stroke="#89b4fa" stroke-width="0.6"/>
+  <text x="80" y="586" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB enrichment is always optional  —  if it fails for any reason:</text>
+  <text x="80" y="608" font-size="13" fill="#a6e3a1" font-family="Excalifont, 'Comic Sans MS', cursive">→  Return ML data only  ( Graceful Degradation )</text>
+  <text x="80" y="630" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  poster_url / backdrop_url / overview = null  —  Frontend always handles null fields</text>
+  <text x="80" y="648" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  App still works  —  just without images</text>
+
+  <line x1="50" y1="672" x2="1250" y2="672" stroke="#313244" stroke-width="0.7"/>
+  <text x="650" y="688" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB Integration  —  Q8: Edge Cases</text>
+</svg>

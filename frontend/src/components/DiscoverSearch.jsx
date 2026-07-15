@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { searchCatalog } from '../data/catalog';
+import { useDebouncedSearch } from '../hooks/useDebouncedSearch';
 
 export default function DiscoverSearch() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function DiscoverSearch() {
     return () => document.removeEventListener('mousedown', onOutside);
   }, []);
 
-  const results = value.trim().length >= 2 ? searchCatalog(value, 6) : [];
+  const { results } = useDebouncedSearch(value, { limit: 6 });
 
   function submit(q) {
     const query = (q ?? value).trim();
