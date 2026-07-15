@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560">
+  <rect width="1200" height="560" fill="#1e1e2e"/>
+  <text x="600" y="44" font-size="26" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Response Changes :- Recommendation Item  ( Before vs After )</text>
+  <line x1="60" y1="55" x2="1140" y2="55" stroke="#89b4fa" stroke-width="1.5"/>
+
+  <!-- BEFORE -->
+  <rect x="50" y="72" width="480" height="310" rx="6" fill="#11111b" stroke="#6c7086" stroke-width="1.3"/>
+  <rect x="68" y="80" width="80" height="24" rx="4" fill="#6c7086"/>
+  <text x="108" y="96" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Before</text>
+  <text x="290" y="120" font-size="14" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Each item in recommendations :-</text>
+  <line x1="70" y1="128" x2="518" y2="128" stroke="#6c7086" stroke-width="0.7"/>
+  <rect x="70" y="136" width="440" height="220" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <text x="88" y="162" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">{</text>
+  <text x="88" y="184" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">    "title":            "Better Call Saul",</text>
+  <text x="88" y="206" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">    "type":             "TV Show",</text>
+  <text x="88" y="228" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">    "release_year":     2015,</text>
+  <text x="88" y="250" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">    "similarity_score": 0.98,</text>
+  <text x="88" y="272" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">    "user_signals":     null</text>
+  <text x="88" y="294" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">}</text>
+  <text x="290" y="372" font-size="12" fill="#f38ba8" font-family="Excalifont, 'Comic Sans MS', cursive">No poster  →  blank cards in UI</text>
+
+  <!-- Arrow -->
+  <text x="590" y="240" font-size="36" fill="#89b4fa" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">→</text>
+  <text x="590" y="272" font-size="12" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">+ poster_url</text>
+
+  <!-- AFTER -->
+  <rect x="670" y="72" width="480" height="310" rx="6" fill="#11111b" stroke="#a6e3a1" stroke-width="1.4"/>
+  <rect x="688" y="80" width="80" height="24" rx="4" fill="#a6e3a1"/>
+  <text x="728" y="96" font-size="12" fill="#1e1e2e" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">After</text>
+  <text x="910" y="120" font-size="14" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Each item in recommendations :-</text>
+  <line x1="690" y1="128" x2="1138" y2="128" stroke="#a6e3a1" stroke-width="0.7"/>
+  <rect x="690" y="136" width="440" height="220" rx="4" fill="#181825" stroke="#313244" stroke-width="0.8"/>
+  <text x="708" y="162" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">{</text>
+  <text x="708" y="184" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">    "title":            "Better Call Saul",</text>
+  <text x="708" y="206" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">    "type":             "TV Show",</text>
+  <text x="708" y="228" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">    "release_year":     2015,</text>
+  <text x="708" y="250" font-size="13" fill="#89b4fa" font-family="Excalifont, 'Comic Sans MS', cursive">    "similarity_score": 0.98,</text>
+  <text x="708" y="272" font-size="13" fill="#f9e2af" font-family="Excalifont, 'Comic Sans MS', cursive">    "poster_url":       "https://image.tmdb.org/t/p/w500/...",</text>
+  <text x="708" y="294" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">    "user_signals":     null</text>
+  <text x="708" y="314" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">}</text>
+
+  <text x="910" y="372" font-size="12" fill="#a6e3a1" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">poster per card  →  visual recommendations</text>
+
+  <!-- Note box -->
+  <rect x="50" y="404" width="1100" height="100" rx="6" fill="#181825" stroke="#f9e2af" stroke-width="1.1"/>
+  <text x="600" y="428" font-size="14" fill="#f9e2af" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">Notes :-</text>
+  <line x1="70" y1="436" x2="1130" y2="436" stroke="#f9e2af" stroke-width="0.6"/>
+  <text x="80" y="460" font-size="13" fill="#cdd6f4" font-family="Excalifont, 'Comic Sans MS', cursive">→  Only  poster_url  added to recommendations  —  NOT full TMDB data</text>
+  <text x="80" y="482" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  10 parallel TMDB calls per recommendations request  —  all cached after first call</text>
+  <text x="80" y="502" font-size="13" fill="#6c7086" font-family="Excalifont, 'Comic Sans MS', cursive">→  poster_url = null if TMDB unavailable  ( Graceful Degradation  —  Frontend shows placeholder )</text>
+
+  <line x1="50" y1="518" x2="1150" y2="518" stroke="#313244" stroke-width="0.7"/>
+  <text x="600" y="534" font-size="12" fill="#6c7086" text-anchor="middle" font-family="Excalifont, 'Comic Sans MS', cursive">TMDB Integration  —  Recommendation Item Changes</text>
+</svg>
