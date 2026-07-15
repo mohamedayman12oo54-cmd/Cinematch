@@ -7,13 +7,17 @@ import { useToast } from '../context/ToastContext';
 import * as titlesApi from '../api/titles';
 import * as favoritesApi from '../api/favorites';
 import * as historyApi from '../api/history';
-import { backdropFor } from '../api/tmdb';
 import { genreGradient, genreAccent } from '../utils/palette';
-import {
-  scoresFor, overviewFor, movieInfoFor, castFor,
-  recommendationReasonsFor, reviewsFor, aiSummaryFor,
-} from '../utils/enrich';
 import './TitleDetailPage.css';
+
+// 148 -> "2h 28min"
+function formatRuntime(minutes) {
+  if (minutes === null || minutes === undefined) return null;
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  if (h === 0) return `${m}min`;
+  return m === 0 ? `${h}h` : `${h}h ${m}min`;
+}
 
 export default function TitleDetailPage() {
   const { title } = useParams();
@@ -28,14 +32,15 @@ export default function TitleDetailPage() {
   const [favBusy, setFavBusy] = useState(false);
   const [watchBusy, setWatchBusy] = useState(false);
   const [parallax, setParallax] = useState(0);
-  const [backdropUrl, setBackdropUrl] = useState(null);
+  const [playingTrailer, setPlayingTrailer] = useState(false);
   const heroRef = useRef(null);
+  const trailerRef = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     setNotFound(false);
-    setBackdropUrl(null);
+    setPlayingTrailer(false);
 
     Promise.all([
       titlesApi.getTitleDetail(title, user?.email),
@@ -45,8 +50,6 @@ export default function TitleDetailPage() {
         if (cancelled) return;
         setDetail(detailRes.data);
         setRecs(recsRes.data.results);
-        backdropFor(detailRes.data.title, detailRes.data.release_year, detailRes.data.type)
-          .then(url => { if (!cancelled) setBackdropUrl(url); });
       })
       .catch(() => { if (!cancelled) setNotFound(true); })
       .finally(() => { if (!cancelled) setLoading(false); });
@@ -113,6 +116,12 @@ export default function TitleDetailPage() {
     showToast('Link copied to clipboard');
   }
 
+  function handleWatchTrailer() {
+    if (!detail?.trailer_key) return;
+    setPlayingTrailer(true);
+    trailerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
   if (loading) {
     return (
       <div className="bp">
@@ -139,12 +148,13 @@ export default function TitleDetailPage() {
     );
   }
 
-  const scores = scoresFor(detail.title);
-  const info = movieInfoFor(detail);
-  const cast = castFor(detail);
-  const reasons = recommendationReasonsFor(detail);
-  const reviews = reviewsFor(detail);
   const accent = genreAccent(detail.genres);
+  const genreList = detail.genres ? detail.genres.split(',').map(g => g.trim()).filter(Boolean) : [];
+  const hasBackdrop = detail.tmdb_available && detail.backdrop_url;
+  const runtime = formatRuntime(detail.runtime);
+  const voteAverage = detail.vote_average != null ? Number(detail.vote_average).toFixed(1) : null;
+  const cast = Array.isArray(detail.cast) ? detail.cast : [];
+  const hasTrailer = detail.tmdb_available && Boolean(detail.trailer_key);
 
   return (
     <div className="bp" style={{ '--td-accent': accent }}>
@@ -154,8 +164,8 @@ export default function TitleDetailPage() {
         <div
           className="td-hero__bg"
           style={{
-            background: backdropUrl
-              ? `linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.35)), url(${backdropUrl}) center/cover no-repeat`
+            background: hasBackdrop
+              ? `linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.35)), url(${detail.backdrop_url}) center/cover no-repeat`
               : genreGradient(detail.genres, 150),
             transform: `translateY(${parallax}px)`,
           }}
@@ -166,26 +176,31 @@ export default function TitleDetailPage() {
           <h1 className="td-hero__title">{detail.title}</h1>
 
           <div className="td-hero__score-badges">
-            <span className="td-score-badge">IMDb {scores.imdb}</span>
-            <span className="td-score-badge">Rotten Tomatoes {scores.rottenTomatoes}%</span>
-            <span className="td-score-badge td-score-badge--ai">AI Match {scores.aiMatch}%</span>
+            {voteAverage && <span className="td-score-badge td-score-badge--ai">TMDB {voteAverage}/10</span>}
+            {detail.rating && <span className="td-score-badge">{detail.rating}</span>}
           </div>
 
           <div className="td-hero__genre-caps">
-            {detail.genres.split(',').map(g => (
-              <span key={g} className="td-genre-cap">{g.trim()}</span>
+            {genreList.map(g => (
+              <span key={g} className="td-genre-cap">{g}</span>
             ))}
           </div>
 
           <div className="td-hero__meta">
-            <span className="td-hero__badge">{detail.rating}</span>
             <span>{detail.release_year}</span>
             <span>{detail.type}</span>
+            {runtime && <span>{runtime}</span>}
             <span>{detail.country}</span>
           </div>
 
           <div className="td-hero__actions">
-            <button type="button" className="td-btn td-btn--play">
+            <button
+              type="button"
+              className="td-btn td-btn--play"
+              onClick={handleWatchTrailer}
+              disabled={!hasTrailer}
+              title={hasTrailer ? 'Watch Trailer' : 'Trailer not available'}
+            >
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
               Watch Trailer
             </button>
@@ -233,77 +248,73 @@ export default function TitleDetailPage() {
       <main className="td-body">
         <section className="td-section">
           <h2 className="td-section__title">Overview</h2>
-          <p className="td-overview">{overviewFor(detail)}</p>
+          <p className="td-overview">{detail.overview || 'No overview available for this title yet.'}</p>
         </section>
 
         <section className="td-section">
           <h2 className="td-section__title">Movie Information</h2>
           <div className="td-info-grid">
-            <div className="td-info-card"><span>Release Year</span><strong>{info.releaseYear}</strong></div>
-            <div className="td-info-card"><span>Runtime</span><strong>{info.runtime}</strong></div>
-            <div className="td-info-card"><span>Language</span><strong>{info.language}</strong></div>
-            <div className="td-info-card"><span>Country</span><strong>{info.country}</strong></div>
-            <div className="td-info-card"><span>Director</span><strong>{info.director}</strong></div>
-            <div className="td-info-card"><span>Studio</span><strong>{info.studio}</strong></div>
+            <div className="td-info-card"><span>Release Year</span><strong>{detail.release_year}</strong></div>
+            <div className="td-info-card"><span>Runtime</span><strong>{runtime || '—'}</strong></div>
+            <div className="td-info-card"><span>Rating</span><strong>{detail.rating || '—'}</strong></div>
+            <div className="td-info-card"><span>Country</span><strong>{detail.country || '—'}</strong></div>
+            <div className="td-info-card"><span>Director</span><strong>{detail.director || '—'}</strong></div>
+            <div className="td-info-card"><span>TMDB Score</span><strong>{voteAverage ? `${voteAverage}/10` : '—'}</strong></div>
           </div>
         </section>
 
-        <section className="td-section td-score-section">
-          <h2 className="td-section__title">Why We Recommend It</h2>
-          <div className="td-score-layout">
-            <div className="td-score-ring">
-              <svg viewBox="0 0 120 120">
-                <circle cx="60" cy="60" r="52" className="td-score-ring__track" />
-                <circle
-                  cx="60" cy="60" r="52"
-                  className="td-score-ring__fill"
-                  style={{ strokeDasharray: `${2 * Math.PI * 52}`, strokeDashoffset: `${2 * Math.PI * 52 * (1 - scores.aiMatch / 100)}` }}
-                />
-              </svg>
-              <span className="td-score-ring__label">{scores.aiMatch}%</span>
-            </div>
-
-            <ul className="td-reasons">
-              {reasons.map(r => (
-                <li key={r}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  {r}
-                </li>
+        {cast.length > 0 && (
+          <section className="td-section">
+            <h2 className="td-section__title">Cast</h2>
+            <div className="td-cast-grid">
+              {cast.map(name => (
+                <div className="td-cast-card" key={name}>
+                  <div className="td-cast-avatar">{name.split(' ').map(n => n[0]).join('').slice(0, 2)}</div>
+                  <p className="td-cast-name">{name}</p>
+                </div>
               ))}
-            </ul>
-          </div>
-        </section>
+            </div>
+          </section>
+        )}
 
-        <section className="td-section">
-          <h2 className="td-section__title">Cast</h2>
-          <div className="td-cast-grid">
-            {cast.map(c => (
-              <div className="td-cast-card" key={c.name}>
-                <div className="td-cast-avatar">{c.name.split(' ').map(n => n[0]).join('')}</div>
-                <p className="td-cast-name">{c.name}</p>
-                <p className="td-cast-role">{c.role}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="td-section">
+        <section className="td-section" ref={trailerRef}>
           <h2 className="td-section__title">Trailer</h2>
-          <div className="td-trailer" style={{ background: genreGradient(detail.genres, 120) }}>
-            <button type="button" className="td-trailer__play" title="Play trailer">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
-            </button>
-          </div>
-        </section>
-
-        <section className="td-section">
-          <h2 className="td-section__title">Screenshots</h2>
-          <div className="td-gallery">
-            {[60, 110, 200, 260].map(angle => (
-              <div key={angle} className="td-gallery__tile" style={{ background: genreGradient(detail.genres, angle) }} />
-            ))}
+          <div className="td-trailer" style={!hasTrailer ? { background: genreGradient(detail.genres, 120) } : undefined}>
+            {hasTrailer ? (
+              playingTrailer ? (
+                <iframe
+                  className="td-trailer__frame"
+                  src={`https://www.youtube.com/embed/${detail.trailer_key}?autoplay=1`}
+                  title={`${detail.title} trailer`}
+                  allow="accelerate; autoplay; encrypted-media; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <>
+                  <img
+                    className="td-trailer__thumb"
+                    src={`https://img.youtube.com/vi/${detail.trailer_key}/hqdefault.jpg`}
+                    alt=""
+                    loading="lazy"
+                  />
+                  <button
+                    type="button"
+                    className="td-trailer__play"
+                    title="Play trailer"
+                    onClick={() => setPlayingTrailer(true)}
+                  >
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                  </button>
+                </>
+              )
+            ) : (
+              <div className="td-trailer__empty">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M8 5v14l11-7z" opacity="0.5" />
+                </svg>
+                <p>No trailer available for this title yet</p>
+              </div>
+            )}
           </div>
         </section>
 
@@ -316,33 +327,6 @@ export default function TitleDetailPage() {
               </div>
             ))}
           </div>
-        </section>
-
-        <section className="td-section">
-          <h2 className="td-section__title">Reviews</h2>
-          <div className="td-reviews">
-            {reviews.map(r => (
-              <div className="td-review-card" key={r.name}>
-                <div className="td-review-head">
-                  <span className="td-review-avatar">{r.name[0]}</span>
-                  <span className="td-review-name">{r.name}</span>
-                  <span className="td-review-stars">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <svg key={i} viewBox="0 0 24 24" fill={i < r.rating ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.5">
-                        <path d="m12 3 2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L12 17l-5.6 3 1.4-6.2-4.8-4.3 6.4-.6z" strokeLinejoin="round" />
-                      </svg>
-                    ))}
-                  </span>
-                </div>
-                <p className="td-review-comment">{r.comment}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="td-ai-summary">
-          <p className="td-ai-summary__label">AI Summary</p>
-          <p className="td-ai-summary__text">{aiSummaryFor(detail)}</p>
         </section>
 
         <footer className="td-footer">More stories are waiting for you...</footer>
