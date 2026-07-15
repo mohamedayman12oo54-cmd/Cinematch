@@ -36,7 +36,7 @@ export function AuthProvider({ children }) {
     }
     authApi.me()
       .then(res => {
-        if (res) setUser(res.data);
+        if (res) setUser(res.data.user);
       })
       .catch(() => {
         // التوكن مش صالح (وفشل الـ refresh التلقائي جوه apiClient كمان) - امسحه
@@ -52,7 +52,7 @@ export function AuthProvider({ children }) {
   async function refreshUser() {
     try {
       const res = await authApi.me();
-      if (res) setUser(res.data);
+      if (res) setUser(res.data.user);
     } catch {
       // لو فشلت، سيب القيمة القديمة - مش لازم نطرد المستخدم عشان تحديث بسيط فشل
     }

@@ -1,7 +1,7 @@
 import { apiClient, USE_MOCK } from './client';
 import { searchCatalog, findByTitle, recommendationsFor } from '../data/catalog';
 import { mockIsFavorite, mockIsWatched } from '../data/mockSession';
-import { posterFor } from './tmdb';
+import { posterFor, backdropFor } from './tmdb';
 
 // GET /search?q=&limit=
 export async function search(query, limit = 12) {
@@ -30,6 +30,9 @@ function flattenUserSignals(item) {
   return {
     ...item,
     genres: normalizeGenres(item.genres),
+    // الباك بيرجع similarity_score (مش similarity) في RecommendationItemResource -
+    // بنضيفها كـ alias عشان الكومبوننتس اللي بتقرا item.similarity تفضل شغالة
+    similarity: item.similarity_score ?? item.similarity,
     is_favorite: signals ? Boolean(signals.is_favorite) : false,
     is_watched: signals ? Boolean(signals.is_watched) : false,
   };
@@ -40,6 +43,10 @@ export async function getTitleDetail(title, currentUserEmail) {
   if (USE_MOCK) {
     const found = findByTitle(title);
     if (!found) throw { status: 'error', message: 'Title not found.' };
+    const [poster_url, backdrop_url] = await Promise.all([
+      posterFor(found.title, found.release_year, found.type),
+      backdropFor(found.title, found.release_year, found.type),
+    ]);
     return {
       status: 'success',
       data: {
@@ -50,6 +57,14 @@ export async function getTitleDetail(title, currentUserEmail) {
         country: found.country,
         release_year: found.release_year,
         director: found.director,
+        poster_url,
+        backdrop_url,
+        overview: found.overview || null,
+        vote_average: found.vote_average ?? null,
+        runtime: found.runtime ?? null,
+        cast: found.cast || [],
+        trailer_key: found.trailer_key || null,
+        tmdb_available: Boolean(poster_url || backdrop_url),
         is_favorite: currentUserEmail ? mockIsFavorite(currentUserEmail, found.title) : null,
         is_watched: currentUserEmail ? mockIsWatched(currentUserEmail, found.title) : null,
       },
@@ -75,38 +90,6 @@ export async function getRecommendations(title, n = 10, authenticated = false) {
       reason: authenticated ? `Because you liked ${seed.title}` : null,
     }));
     return { status: 'success', data: { matched_title: seed.title, results } };
-  }
-  const res = await apiClient.get(`/recommendations/${encodeURIComponent(title)}`, { params: { n } });
-  return {
-    ...res,
-    data: {
-      ...res.data,
-      results: (res.data.results || []).map(flattenUserSignals),
-    },
-  };
-}
-
-// GET /recommendations/{title}?n={n} — ML recommendations based on a title
-export async function getMLRecommendations(title, n = 10) {
-  if (USE_MOCK) {
-    const seed = findByTitle(title);
-    if (!seed) throw { status: 'error', message: 'Title not found.' };
-    const results = recommendationsFor(seed, n).map((t, i) => ({
-      title: t.title,
-      type: t.type,
-      release_year: t.release_year,
-      similarity_score: t.similarity || 0.85,
-      user_signals: null,
-    }));
-    return { 
-      status: 'success', 
-      data: { 
-        query: title,
-        matched_title: seed.title,
-        total: results.length,
-        results 
-      } 
-    };
   }
   const res = await apiClient.get(`/recommendations/${encodeURIComponent(title)}`, { params: { n } });
   return {
