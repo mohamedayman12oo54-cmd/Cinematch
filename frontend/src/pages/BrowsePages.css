@@ -50,7 +50,10 @@
   gap: 8px;
   text-decoration: none;
   justify-self: start;
+  flex-shrink: 0;
 }
+
+.hdr__brand-icon { flex-shrink: 0; }
 
 .hdr__brand-icon {
   width: 22px;
@@ -129,7 +132,6 @@
 }
 
 .hdr__profile { position: relative; display: flex; align-items: center; gap: 10px; }
-.hdr__dashboard-btn { white-space: nowrap; }
 
 .hdr__avatar {
   width: 32px;
@@ -242,6 +244,91 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* Guest sign-in / create-account buttons in the header */
+.hdr__auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hdr__auth-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.hdr__auth-btn--ghost {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.hdr__auth-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.hdr__auth-btn--solid {
+  background: #e50914;
+  color: #fff;
+}
+
+.hdr__auth-btn--solid:hover {
+  background: #c40812;
+}
+
+/* Compact icon + dropdown replacing the two auth buttons on narrow screens */
+.hdr__auth-compact { position: relative; display: none; }
+
+.hdr__auth-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.hdr__auth-icon:hover { background: rgba(255, 255, 255, 0.14); }
+.hdr__auth-icon svg { width: 18px; height: 18px; }
+
+.hdr__auth-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 180px;
+  background: rgba(20, 20, 20, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+  pointer-events: none;
+  transform-origin: top right;
+  transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.8);
+  z-index: 20;
+}
+
+.hdr__auth-menu--open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.hdr__auth-menu .hdr__auth-btn { width: 100%; text-align: center; }
+
 /* ================= Command palette ================= */
 .cmdk-backdrop {
   position: fixed;
@@ -333,9 +420,16 @@
 }
 
 @media (max-width: 680px) {
+  .hdr__inner {
+    display: flex;
+    justify-content: space-between;
+  }
+  .hdr__nav { display: none; }
   .hdr__hamburger { display: flex; }
   .hdr__mobile-panel { display: flex; }
   .hdr__search-trigger-text, .hdr__kbd { display: none; }
+  .hdr__auth-buttons { display: none; }
+  .hdr__auth-compact { display: block; }
 }
 
 /* ================= Page body ================= */
@@ -608,56 +702,6 @@
 }
 
 @media (max-width: 640px) {
-  .hdr__nav { display: none; }
   .row__item { width: 150px; }
   .results__grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-/* Guest sign-in / create-account buttons in the header (added) */
-.hdr__auth-buttons {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.hdr__auth-btn {
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid transparent;
-  white-space: nowrap;
-}
-
-.hdr__auth-btn--ghost {
-  background: transparent;
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-.hdr__auth-btn--ghost:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.hdr__auth-btn--solid {
-  background: #e50914;
-  color: #fff;
-}
-
-.hdr__auth-btn--solid:hover {
-  background: #c40812;
-}
-
-.hdr__mobile-auth {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 16px;
-}
-
-.hdr__mobile-auth .hdr__auth-btn {
-  width: 100%;
-  padding: 12px;
-  text-align: center;
 }

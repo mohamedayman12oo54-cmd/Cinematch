@@ -40,10 +40,7 @@ apiClient.interceptors.response.use(
   res => res.data,
   async err => {
     const originalRequest = err.config;
-    const payload = {
-      ...(err.response?.data || { status: 'error', message: 'Network error' }),
-      httpStatus: err.response?.status,
-    };
+    const payload = err.response?.data || { status: 'error', message: 'Network error' };
 
     const isAuthEndpoint = AUTH_ENDPOINTS_NO_REFRESH.some(path =>
       originalRequest?.url?.includes(path)
