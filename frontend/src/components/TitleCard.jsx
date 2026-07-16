@@ -13,11 +13,16 @@ export default function TitleCard({ title, reason, rank, similarity }) {
   useEffect(() => {
     let cancelled = false;
     setPosterUrl(null);
-    posterFor(title.title, title.release_year, title.type).then(url => {
-      if (!cancelled) setPosterUrl(url);
-    });
+    // Prefer poster_url from backend response, fallback to client-side TMDB lookup
+    if (title.poster_url) {
+      setPosterUrl(title.poster_url);
+    } else {
+      posterFor(title.title, title.release_year, title.type).then(url => {
+        if (!cancelled) setPosterUrl(url);
+      });
+    }
     return () => { cancelled = true; };
-  }, [title.title, title.release_year, title.type]);
+  }, [title.title, title.release_year, title.type, title.poster_url]);
 
   // Trigger shimmer + match-percentage count-up only once the card has
   // actually finished its own entrance fade and is visible on screen —
@@ -82,6 +87,7 @@ export default function TitleCard({ title, reason, rank, similarity }) {
 
           <div className="tc__meta">
             {targetPct && <span className="tc__match">{displayPct}% Match</span>}
+            {title.vote_average && <span className="tc__rating">★ {title.vote_average.toFixed(1)}</span>}
             {title.release_year && <span>{title.release_year}</span>}
             {title.type && <span>{title.type}</span>}
           </div>

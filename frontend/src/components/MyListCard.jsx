@@ -10,11 +10,16 @@ export default function MyListCard({ item, onRemove, onRate, onHoverGenre }) {
   useEffect(() => {
     let cancelled = false;
     setPosterUrl(null);
-    posterFor(item.title, item.release_year, item.type).then(url => {
-      if (!cancelled) setPosterUrl(url);
-    });
+    // Prefer poster_url from backend response, fallback to client-side TMDB lookup
+    if (item.poster_url) {
+      setPosterUrl(item.poster_url);
+    } else {
+      posterFor(item.title, item.release_year, item.type).then(url => {
+        if (!cancelled) setPosterUrl(url);
+      });
+    }
     return () => { cancelled = true; };
-  }, [item.title, item.release_year, item.type]);
+  }, [item.title, item.release_year, item.type, item.poster_url]);
 
   return (
     <div
