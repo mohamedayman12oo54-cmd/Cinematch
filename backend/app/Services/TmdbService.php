@@ -43,12 +43,12 @@ class TmdbService
      * 10_Q8_EdgeCases.svg — wrong matches are treated as missing rather than
      * returned).
      *
-     * TMDB's search response already includes poster_path/backdrop_path, so
-     * this is returned alongside the id — callers that only need a poster
-     * (bulk recommendations/home lookups) never need a second getDetails()
-     * round trip just to get the image.
+     * TMDB's search response already includes poster_path/backdrop_path and
+     * vote_average, so these are returned alongside the id — callers that
+     * only need card-level metadata (bulk recommendations/home/favorites/
+     * history lookups) never need a second getDetails() round trip.
      *
-     * @return array{tmdb_id: int, poster_path: ?string, backdrop_path: ?string}|null
+     * @return array{tmdb_id: int, poster_path: ?string, backdrop_path: ?string, vote_average: ?float}|null
      */
     public function findByTitle(string $title, ?int $releaseYear, TmdbMediaType $type): ?array
     {
@@ -71,11 +71,7 @@ class TmdbService
             return null;
         }
 
-        return [
-            'tmdb_id' => $match['id'],
-            'poster_path' => $match['poster_path'] ?? null,
-            'backdrop_path' => $match['backdrop_path'] ?? null,
-        ];
+        return $this->cardMetadataFrom($match);
     }
 
     /**
@@ -85,7 +81,7 @@ class TmdbService
      * many titles one at a time would multiply latency by the result count.
      *
      * @param  array<string, array{title: string, release_year: ?int, type: TmdbMediaType}>  $entries  keyed by caller-chosen key (e.g. the title itself)
-     * @return array<string, array{tmdb_id: int, poster_path: ?string, backdrop_path: ?string}|null> keyed the same as $entries
+     * @return array<string, array{tmdb_id: int, poster_path: ?string, backdrop_path: ?string, vote_average: ?float}|null> keyed the same as $entries
      */
     public function findManyByTitle(array $entries): array
     {
@@ -129,14 +125,24 @@ class TmdbService
                 ? $candidates[0]
                 : $this->bestYearMatch($candidates, $entry['release_year'], $entry['type']);
 
-            $results[$key] = $match === null ? null : [
-                'tmdb_id' => $match['id'],
-                'poster_path' => $match['poster_path'] ?? null,
-                'backdrop_path' => $match['backdrop_path'] ?? null,
-            ];
+            $results[$key] = $match === null ? null : $this->cardMetadataFrom($match);
         }
 
         return $results;
+    }
+
+    /**
+     * @param  array<string, mixed>  $match  a single raw TMDB search result item
+     * @return array{tmdb_id: int, poster_path: ?string, backdrop_path: ?string, vote_average: ?float}
+     */
+    private function cardMetadataFrom(array $match): array
+    {
+        return [
+            'tmdb_id' => $match['id'],
+            'poster_path' => $match['poster_path'] ?? null,
+            'backdrop_path' => $match['backdrop_path'] ?? null,
+            'vote_average' => isset($match['vote_average']) ? (float) $match['vote_average'] : null,
+        ];
     }
 
     /**

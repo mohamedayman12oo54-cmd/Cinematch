@@ -73,37 +73,50 @@ class TmdbMappingService
         return $result;
     }
 
-    // ======= Poster-Only Bulk Lookup (Recommendations / Home) =======
+    // ======= Card Metadata Bulk Lookup (Recommendations / Home / Favorites / History) =======
 
     /**
-     * Lightweight enrichment for lists: only ever resolves poster_url, and
-     * a Cache/DB hit never calls TMDB at all (poster_path is stored
-     * directly on the mapping row). Only titles that are cache- and DB-
-     * misses are searched, and those searches fire in parallel via
-     * TmdbService::findManyByTitle() rather than one at a time.
+     * Lightweight enrichment for lists/cards: poster_url + vote_average only
+     * — never the full resolve() payload (overview/cast/trailer/runtime),
+     * which would mean one details call per item instead of one shared
+     * batch search. A Cache or DB hit never calls TMDB at all for
+     * poster_url (poster_path is stored directly on the mapping row); only
+     * titles that are cache- and DB-misses are searched, and those searches
+     * fire in parallel via TmdbService::findManyByTitle() rather than one
+     * at a time.
+     *
+     * vote_average is intentionally *not* persisted to title_tmdb_mappings
+     * (unlike poster_path/backdrop_path) — a rating drifts over time the
+     * way an image path never does, so it's only ever cached, alongside
+     * poster_url, with the same TTL as everything else TMDB. One real
+     * consequence: a DB hit (mapping already known, search skipped) has no
+     * fresh source for vote_average once its cache entry expires, and
+     * returns null for it rather than paying for an extra request just for
+     * a rating on a card. poster_url is unaffected either way.
      *
      * Known limitation: the result (and internal batching) is keyed by
-     * title alone, matching how both current callers (RecommendationItemResource,
-     * HomeService::attachPosters) look posters back up — by `$item['title']`,
-     * not `(title, release_year)`. Two entries sharing the exact same title
-     * string but a different release_year within a *single* batch would
-     * collide onto one key. Deliberately not fixed here: neither caller
-     * currently keys its own item-to-poster lookup by year either, ML result
-     * sets don't emit the same title twice in one response, and resolve()
-     * (Title Details, where a specific title+year is requested directly)
-     * is unaffected. Would need release_year threaded through both callers'
-     * lookups too if this ever becomes a real requirement.
+     * title alone, matching how every current caller (RecommendationItemResource,
+     * HomeService::attachCardMetadata, FavoriteController, WatchedTitleController)
+     * looks metadata back up — by `$item['title']`, not `(title, release_year)`.
+     * Two entries sharing the exact same title string but a different
+     * release_year within a *single* batch would collide onto one key.
+     * Deliberately not fixed here: no current caller keys its own lookup by
+     * year either, ML result sets don't emit the same title twice in one
+     * response, and resolve() (Title Details, where a specific title+year
+     * is requested directly) is unaffected. Would need release_year
+     * threaded through every caller's lookup too if this ever becomes a
+     * real requirement.
      *
      * @param  array<int, array{title: string, release_year: ?int, type: TmdbMediaType}>  $titles
-     * @return array<string, ?string> poster_url keyed by title
+     * @return array<string, array{poster_url: ?string, vote_average: ?float}> keyed by title
      */
-    public function getPostersForTitles(array $titles): array
+    public function getCardMetadataForTitles(array $titles): array
     {
         $results = [];
         $pending = [];
 
         foreach ($titles as $entry) {
-            $cacheKey = $this->posterCacheKey($entry['title'], $entry['release_year']);
+            $cacheKey = $this->cardMetadataCacheKey($entry['title'], $entry['release_year']);
 
             if (Cache::has($cacheKey)) {
                 $results[$entry['title']] = Cache::get($cacheKey);
@@ -127,9 +140,9 @@ class TmdbMappingService
             $mapping = $existingMappings[$title] ?? null;
 
             if ($mapping instanceof TitleTmdbMapping) {
-                $posterUrl = $this->tmdbService->posterUrl($mapping->poster_path);
-                Cache::put($p['cache_key'], $posterUrl, now()->addHours($this->cacheTtlHours()));
-                $results[$title] = $posterUrl;
+                $metadata = ['poster_url' => $this->tmdbService->posterUrl($mapping->poster_path), 'vote_average' => null];
+                Cache::put($p['cache_key'], $metadata, now()->addHours($this->cacheTtlHours()));
+                $results[$title] = $metadata;
 
                 continue;
             }
@@ -146,20 +159,23 @@ class TmdbMappingService
 
         foreach ($stillPending as $title => $p) {
             $match = $matches[$title] ?? null;
-            $posterUrl = null;
+            $metadata = ['poster_url' => null, 'vote_average' => null];
 
             if ($match !== null) {
                 $this->persistMapping($title, $p['entry']['release_year'], $p['entry']['type'], $match);
-                $posterUrl = $this->tmdbService->posterUrl($match['poster_path']);
+                $metadata = [
+                    'poster_url' => $this->tmdbService->posterUrl($match['poster_path']),
+                    'vote_average' => $match['vote_average'],
+                ];
             }
 
             Cache::put(
                 $p['cache_key'],
-                $posterUrl,
+                $metadata,
                 now()->addHours($match !== null ? $this->cacheTtlHours() : self::NEGATIVE_CACHE_TTL_HOURS),
             );
 
-            $results[$title] = $posterUrl;
+            $results[$title] = $metadata;
         }
 
         return $results;
@@ -240,9 +256,9 @@ class TmdbMappingService
         return 'tmdb:details:'.mb_strtolower($title).':'.($releaseYear ?? 'unknown');
     }
 
-    private function posterCacheKey(string $title, ?int $releaseYear): string
+    private function cardMetadataCacheKey(string $title, ?int $releaseYear): string
     {
-        return 'tmdb:poster:'.mb_strtolower($title).':'.($releaseYear ?? 'unknown');
+        return 'tmdb:card:'.mb_strtolower($title).':'.($releaseYear ?? 'unknown');
     }
 
     private function cacheTtlHours(): int
