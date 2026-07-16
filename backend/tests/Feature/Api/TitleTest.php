@@ -27,7 +27,7 @@ beforeEach(function () {
             'trailer_key' => null,
             'tmdb_available' => false,
         ]);
-        $mock->shouldReceive('getPostersForTitles')->andReturn([]);
+        $mock->shouldReceive('getCardMetadataForTitles')->andReturn([]);
     });
 });
 

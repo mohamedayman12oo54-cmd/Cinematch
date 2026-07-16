@@ -6,27 +6,36 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Concerns\ResolvesAuthUser;
+use App\Http\Controllers\Concerns\ResolvesPosterUrls;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFavoriteRequest;
 use App\Http\Resources\FavoriteResource;
+use App\Models\Favorite;
 use App\Services\FavoriteService;
+use App\Services\TmdbMappingService;
 use Illuminate\Http\JsonResponse;
 
 class FavoriteController extends Controller
 {
     use ResolvesAuthUser;
+    use ResolvesPosterUrls;
 
-    public function __construct(private readonly FavoriteService $favoriteService) {}
+    public function __construct(
+        private readonly FavoriteService $favoriteService,
+        private readonly TmdbMappingService $tmdbMappingService,
+    ) {}
 
     // GET /api/favorites
     public function index(): JsonResponse
     {
         $favorites = $this->favoriteService->getFavorites($this->user());
+        $posterByTitle = $this->posterUrlByTitle($this->tmdbMappingService, $favorites);
 
-        return ApiResponse::success(
-            FavoriteResource::collection($favorites),
-            extra: ['meta' => ['total' => $favorites->count()]],
-        );
+        $data = $favorites
+            ->map(fn (Favorite $favorite) => (new FavoriteResource($favorite, $posterByTitle[$favorite->title_name] ?? null))->resolve())
+            ->all();
+
+        return ApiResponse::success($data, extra: ['meta' => ['total' => $favorites->count()]]);
     }
 
     // POST /api/favorites
@@ -44,7 +53,10 @@ class FavoriteController extends Controller
             };
         }
 
-        return ApiResponse::created(new FavoriteResource($result['favorite']), 'Added to Favorites');
+        $favorite = $result['favorite'];
+        $posterByTitle = $this->posterUrlByTitle($this->tmdbMappingService, collect([$favorite]));
+
+        return ApiResponse::created(new FavoriteResource($favorite, $posterByTitle[$favorite->title_name] ?? null), 'Added to Favorites');
     }
 
     // DELETE /api/favorites/{title_name}

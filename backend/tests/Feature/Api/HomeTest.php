@@ -16,7 +16,7 @@ use App\Services\TmdbMappingService;
 // attachment itself is covered in HomeTmdbEnrichmentTest.
 beforeEach(function () {
     $this->mock(TmdbMappingService::class, function ($mock) {
-        $mock->shouldReceive('getPostersForTitles')->andReturn([]);
+        $mock->shouldReceive('getCardMetadataForTitles')->andReturn([]);
     });
 });
 

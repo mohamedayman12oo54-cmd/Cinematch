@@ -6,24 +6,36 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Concerns\ResolvesAuthUser;
+use App\Http\Controllers\Concerns\ResolvesPosterUrls;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreWatchedTitleRequest;
 use App\Http\Resources\WatchedTitleResource;
+use App\Models\WatchedTitle;
+use App\Services\TmdbMappingService;
 use App\Services\WatchedTitleService;
 use Illuminate\Http\JsonResponse;
 
 class WatchedTitleController extends Controller
 {
     use ResolvesAuthUser;
+    use ResolvesPosterUrls;
 
-    public function __construct(private readonly WatchedTitleService $watchedTitleService) {}
+    public function __construct(
+        private readonly WatchedTitleService $watchedTitleService,
+        private readonly TmdbMappingService $tmdbMappingService,
+    ) {}
 
     // GET /api/history
     public function index(): JsonResponse
     {
         $history = $this->watchedTitleService->getHistory($this->user());
+        $posterByTitle = $this->posterUrlByTitle($this->tmdbMappingService, $history);
 
-        return ApiResponse::success(WatchedTitleResource::collection($history));
+        $data = $history
+            ->map(fn (WatchedTitle $watchedTitle) => (new WatchedTitleResource($watchedTitle, $posterByTitle[$watchedTitle->title_name] ?? null))->resolve())
+            ->all();
+
+        return ApiResponse::success($data);
     }
 
     // POST /api/history
@@ -41,7 +53,10 @@ class WatchedTitleController extends Controller
             };
         }
 
-        return ApiResponse::created(new WatchedTitleResource($result['watchedTitle']), 'Marked as Watched');
+        $watchedTitle = $result['watchedTitle'];
+        $posterByTitle = $this->posterUrlByTitle($this->tmdbMappingService, collect([$watchedTitle]));
+
+        return ApiResponse::created(new WatchedTitleResource($watchedTitle, $posterByTitle[$watchedTitle->title_name] ?? null), 'Marked as Watched');
     }
 
     // DELETE /api/history/{title_name}

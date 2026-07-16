@@ -62,7 +62,7 @@ class HomeService
         if (! $user instanceof User) {
             return [
                 'stage' => 'stranger',
-                'sections' => $this->attachPosters([$this->getPopularSection(collect(), collect())]),
+                'sections' => $this->attachCardMetadata([$this->getPopularSection(collect(), collect())]),
             ];
         }
 
@@ -78,25 +78,25 @@ class HomeService
             'loyal' => $this->buildLoyalSections($favorites, $watched),
         };
 
-        return ['stage' => $stage, 'sections' => $this->attachPosters($sections)];
+        return ['stage' => $stage, 'sections' => $this->attachCardMetadata($sections)];
     }
 
     // ======= TMDB Enrichment =======
 
     /**
-     * Attaches poster_url to every item across every section in a single
-     * batch call — one getPostersForTitles() for the whole Home feed
-     * rather than one per section, so a title appearing in two sections
-     * (or 40 items across 4 sections) never costs more than one lookup
-     * each, and never more than one parallel TMDB round trip total for
-     * whatever is left after Cache/DB (see TmdbMappingService, Phase 7:
+     * Attaches poster_url + vote_average to every item across every section
+     * in a single batch call — one getCardMetadataForTitles() for the whole
+     * Home feed rather than one per section, so a title appearing in two
+     * sections (or 40 items across 4 sections) never costs more than one
+     * lookup each, and never more than one parallel TMDB round trip total
+     * for whatever is left after Cache/DB (see TmdbMappingService, Phase 7:
      * "Pay special attention to performance, batch operations, N+1
      * problems, cache usage").
      *
      * @param  array<int, array{type: string, title: string, items: array<int, array<string, mixed>>}>  $sections
      * @return array<int, array{type: string, title: string, items: array<int, array<string, mixed>>}>
      */
-    private function attachPosters(array $sections): array
+    private function attachCardMetadata(array $sections): array
     {
         $entries = [];
 
@@ -118,11 +118,12 @@ class HomeService
             return $sections;
         }
 
-        $posterByTitle = $this->tmdbMappingService->getPostersForTitles(array_values($entries));
+        $cardMetadataByTitle = $this->tmdbMappingService->getCardMetadataForTitles(array_values($entries));
 
         foreach ($sections as &$section) {
             foreach ($section['items'] as &$item) {
-                $item['poster_url'] = $posterByTitle[$item['title']] ?? null;
+                $item['poster_url'] = $cardMetadataByTitle[$item['title']]['poster_url'] ?? null;
+                $item['vote_average'] = $cardMetadataByTitle[$item['title']]['vote_average'] ?? null;
             }
         }
 
