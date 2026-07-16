@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { searchCatalog } from '../data/catalog';
+import * as titlesApi from '../api/titles';
 
 export default function DiscoverSearch() {
   const navigate = useNavigate();
   const [value, setValue] = useState('');
   const [focused, setFocused] = useState(false);
+  const [results, setResults] = useState([]);
   const wrapRef = useRef(null);
 
   useEffect(() => {
@@ -16,7 +17,17 @@ export default function DiscoverSearch() {
     return () => document.removeEventListener('mousedown', onOutside);
   }, []);
 
-  const results = value.trim().length >= 2 ? searchCatalog(value, 6) : [];
+  useEffect(() => {
+    let cancelled = false;
+    if (value.trim().length < 2) {
+      setResults([]);
+      return;
+    }
+    titlesApi.search(value, 6).then(res => {
+      if (!cancelled) setResults(res.data);
+    });
+    return () => { cancelled = true; };
+  }, [value]);
 
   function submit(q) {
     const query = (q ?? value).trim();

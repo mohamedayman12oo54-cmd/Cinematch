@@ -681,12 +681,7 @@
 }
 
 .tc__match { color: #46d369; font-weight: 700; }
-
-.tc__rating {
-  color: #f5c518;
-  font-weight: 700;
-  font-size: 0.85rem;
-}
+.tc__rating { color: #f5c518; font-weight: 700; }
 
 .tc__score-track {
   height: 3px;

@@ -13,8 +13,13 @@ export default function SearchResultsPage() {
 
   useEffect(() => {
     let cancelled = false;
+    if (q.trim().length < 2) {
+      setResults([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
-    titlesApi.search(q, 24)
+    titlesApi.search(q, 20)
       .then(res => {
         if (!cancelled) {
           setResults(res.data);

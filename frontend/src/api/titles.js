@@ -80,15 +80,17 @@ export async function getRecommendations(title, n = 10, authenticated = false) {
   if (USE_MOCK) {
     const seed = findByTitle(title);
     if (!seed) throw { status: 'error', message: 'Title not found.' };
-    const results = recommendationsFor(seed, n).map((t, i) => ({
+    const results = await Promise.all(recommendationsFor(seed, n).map(async (t, i) => ({
+      rank: i + 1,
       title: t.title,
       type: t.type,
+      genres: t.genres,
       release_year: t.release_year,
-      similarity_score: t.similarity,
-      poster_url: t.poster_url || null,
-      vote_average: t.vote_average || null,
-      user_signals: { is_favorite: false, is_watched: false },
-    }));
+      similarity: t.similarity,
+      poster_url: await posterFor(t.title, t.release_year, t.type),
+      vote_average: null, // only the real backend's TMDB enrichment provides this
+      reason: authenticated ? `Because you liked ${seed.title}` : null,
+    })));
     return { status: 'success', data: { matched_title: seed.title, results } };
   }
   const res = await apiClient.get(`/recommendations/${encodeURIComponent(title)}`, { params: { n } });
