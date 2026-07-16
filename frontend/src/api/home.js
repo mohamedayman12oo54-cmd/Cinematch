@@ -3,7 +3,15 @@ import CATALOG from '../data/catalog';
 import { mockFavorites, mockHistory } from '../data/mockSession';
 
 function toItem(t, reason = null) {
-  return { title: t.title, genres: t.genres, reason };
+  return {
+    title: t.title,
+    genres: t.genres,
+    release_year: t.release_year,
+    type: t.type,
+    reason,
+    poster_url: t.poster_url || null,
+    vote_average: t.vote_average || null,
+  };
 }
 
 function popularSection() {

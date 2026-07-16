@@ -7,6 +7,7 @@ function normalizeEntry(entry) {
     ...entry,
     title: entry.title_name ?? entry.title,
     type: entry.title_type ?? entry.type,
+    poster_url: entry.poster_url || null,
   };
 }
 

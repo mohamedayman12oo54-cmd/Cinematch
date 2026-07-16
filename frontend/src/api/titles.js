@@ -87,6 +87,8 @@ export async function getRecommendations(title, n = 10, authenticated = false) {
       genres: t.genres,
       release_year: t.release_year,
       similarity: t.similarity,
+      poster_url: t.poster_url || null,
+      vote_average: t.vote_average || null,
       reason: authenticated ? `Because you liked ${seed.title}` : null,
     }));
     return { status: 'success', data: { matched_title: seed.title, results } };
