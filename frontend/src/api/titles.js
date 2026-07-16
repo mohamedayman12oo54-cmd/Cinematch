@@ -103,8 +103,3 @@ export async function getRecommendations(title, n = 10, authenticated = false) {
   };
 }
 
-/** Attaches a real TMDB poster URL to a title object; resolves null if unavailable. */
-export async function withPoster(item) {
-  const url = await posterFor(item.title, item.release_year, item.type);
-  return { ...item, posterUrl: url };
-}
