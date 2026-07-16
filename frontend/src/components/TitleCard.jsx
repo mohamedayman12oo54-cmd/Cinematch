@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { genreGradient } from '../utils/palette';
-import { posterFor } from '../api/tmdb';
+import { posterFor, fallbackPoster } from '../api/tmdb';
 
 export default function TitleCard({ title, reason, rank, similarity }) {
   const navigate = useNavigate();
@@ -21,10 +21,10 @@ export default function TitleCard({ title, reason, rank, similarity }) {
     let cancelled = false;
     setFallbackPosterUrl(null);
     posterFor(title.title, title.release_year, title.type).then(url => {
-      if (!cancelled) setFallbackPosterUrl(url);
+      if (!cancelled) setFallbackPosterUrl(url || fallbackPoster(title.title, title.genres));
     });
     return () => { cancelled = true; };
-  }, [title.poster_url, title.title, title.release_year, title.type]);
+  }, [title.poster_url, title.title, title.release_year, title.type, title.genres]);
 
   // Trigger shimmer + match-percentage count-up only once the card has
   // actually finished its own entrance fade and is visible on screen —
