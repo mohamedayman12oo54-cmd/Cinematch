@@ -6,6 +6,17 @@ use App\Exceptions\MlConnectionException;
 use App\Models\User;
 use App\Models\WatchedTitle;
 use App\Services\MLClientService;
+use App\Services\TmdbMappingService;
+
+// TMDB enrichment is orthogonal to everything this file tests (ownership,
+// snapshotting, duplicate/not-found handling) — stub it to "no posters" by
+// default so every test here runs without ever touching the real TMDB API.
+// Poster enrichment itself is covered in WatchedTitleTmdbEnrichmentTest.
+beforeEach(function () {
+    $this->mock(TmdbMappingService::class, function ($mock) {
+        $mock->shouldReceive('getCardMetadataForTitles')->andReturn([]);
+    });
+});
 
 // ======= Helpers =======
 
