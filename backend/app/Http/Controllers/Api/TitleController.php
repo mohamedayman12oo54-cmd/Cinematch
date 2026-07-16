@@ -60,7 +60,7 @@ class TitleController extends Controller
             ? $this->userSignalService->signalsForMany($user, array_column($recommendations['results'], 'title'))
             : null;
 
-        $posterByTitle = $this->tmdbMappingService->getPostersForTitles(
+        $cardMetadataByTitle = $this->tmdbMappingService->getCardMetadataForTitles(
             collect($recommendations['results'])
                 ->map(fn (array $item): array => [
                     'title' => $item['title'],
@@ -71,14 +71,15 @@ class TitleController extends Controller
                 ->all(),
         );
 
-        return ApiResponse::success(new RecommendationResource($recommendations, $signalsByTitle, $posterByTitle));
+        return ApiResponse::success(new RecommendationResource($recommendations, $signalsByTitle, $cardMetadataByTitle));
     }
 
     /**
      * Only Title Details gets full TMDB enrichment (poster, backdrop,
      * overview, cast, trailer, vote_average, runtime) — Recommendations
-     * and Home only ever need a poster_url, which is far cheaper to
-     * resolve in bulk (see TmdbMappingService::getPostersForTitles()).
+     * and Home only ever need card-level metadata (poster_url +
+     * vote_average), which is far cheaper to resolve in bulk (see
+     * TmdbMappingService::getCardMetadataForTitles()).
      *
      * Note: unlike the idealized "fire ML + TMDB in parallel" flow in
      * docs/archeticutre_enhancement/15_Full_Flow.svg, this call is
