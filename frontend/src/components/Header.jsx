@@ -20,9 +20,11 @@ export default function Header() {
 
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [authMenuOpen, setAuthMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const profileRef = useRef(null);
+  const authMenuRef = useRef(null);
 
   useEffect(() => {
     function onScroll() { setScrolled(window.scrollY > 20); }
@@ -33,6 +35,7 @@ export default function Header() {
   useEffect(() => {
     function onOutside(e) {
       if (profileRef.current && !profileRef.current.contains(e.target)) setMenuOpen(false);
+      if (authMenuRef.current && !authMenuRef.current.contains(e.target)) setAuthMenuOpen(false);
     }
     document.addEventListener('mousedown', onOutside);
     return () => document.removeEventListener('mousedown', onOutside);
@@ -88,13 +91,6 @@ export default function Header() {
 
             {isAuthenticated ? (
               <div className="hdr__profile" ref={profileRef}>
-                <button
-                  type="button"
-                  className="hdr__auth-btn hdr__auth-btn--solid hdr__dashboard-btn"
-                  onClick={() => navigate('/dashboard')}
-                >
-                  Dashboard
-                </button>
                 <button type="button" className="hdr__avatar" onClick={() => setMenuOpen(m => !m)}>{initial}</button>
                 <div className={`hdr__profile-menu ${menuOpen ? 'hdr__profile-menu--open' : ''}`}>
                   <p className="hdr__profile-email">{user?.email}</p>
@@ -123,22 +119,54 @@ export default function Header() {
                 </div>
               </div>
             ) : (
-              <div className="hdr__auth-buttons">
-                <button
-                  type="button"
-                  className="hdr__auth-btn hdr__auth-btn--ghost"
-                  onClick={() => navigate('/signin', { state: { mode: 'login' } })}
-                >
-                  Sign In
-                </button>
-                <button
-                  type="button"
-                  className="hdr__auth-btn hdr__auth-btn--solid"
-                  onClick={() => navigate('/signin', { state: { mode: 'register' } })}
-                >
-                  Create Account
-                </button>
-              </div>
+              <>
+                <div className="hdr__auth-buttons">
+                  <button
+                    type="button"
+                    className="hdr__auth-btn hdr__auth-btn--ghost"
+                    onClick={() => navigate('/signin', { state: { mode: 'login' } })}
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    type="button"
+                    className="hdr__auth-btn hdr__auth-btn--solid"
+                    onClick={() => navigate('/signin', { state: { mode: 'register' } })}
+                  >
+                    Create Account
+                  </button>
+                </div>
+
+                <div className="hdr__auth-compact" ref={authMenuRef}>
+                  <button
+                    type="button"
+                    className="hdr__auth-icon"
+                    onClick={() => setAuthMenuOpen(o => !o)}
+                    aria-label="Account"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="12" cy="8" r="4" />
+                      <path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                  <div className={`hdr__auth-menu ${authMenuOpen ? 'hdr__auth-menu--open' : ''}`}>
+                    <button
+                      type="button"
+                      className="hdr__auth-btn hdr__auth-btn--ghost"
+                      onClick={() => { setAuthMenuOpen(false); navigate('/signin', { state: { mode: 'login' } }); }}
+                    >
+                      Sign In
+                    </button>
+                    <button
+                      type="button"
+                      className="hdr__auth-btn hdr__auth-btn--solid"
+                      onClick={() => { setAuthMenuOpen(false); navigate('/signin', { state: { mode: 'register' } }); }}
+                    >
+                      Create Account
+                    </button>
+                  </div>
+                </div>
+              </>
             )}
 
             <button type="button" className="hdr__hamburger" onClick={() => setMobileOpen(o => !o)} aria-label="Menu">
@@ -154,24 +182,6 @@ export default function Header() {
             {link.label}
           </NavLink>
         ))}
-        {!isAuthenticated && (
-          <div className="hdr__mobile-auth">
-            <button
-              type="button"
-              className="hdr__auth-btn hdr__auth-btn--ghost"
-              onClick={() => { setMobileOpen(false); navigate('/signin', { state: { mode: 'login' } }); }}
-            >
-              Sign In
-            </button>
-            <button
-              type="button"
-              className="hdr__auth-btn hdr__auth-btn--solid"
-              onClick={() => { setMobileOpen(false); navigate('/signin', { state: { mode: 'register' } }); }}
-            >
-              Create Account
-            </button>
-          </div>
-        )}
       </div>
 
       {paletteOpen && <CommandPalette onClose={() => setPaletteOpen(false)} />}

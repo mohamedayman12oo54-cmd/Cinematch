@@ -14,9 +14,7 @@ export default function SearchResultsPage() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    // SearchRequest caps `limit` at 20 (backend/app/Http/Requests/SearchRequest.php) —
-    // anything higher fails validation and the request comes back empty.
-    titlesApi.search(q, 20)
+    titlesApi.search(q, 24)
       .then(res => {
         if (!cancelled) {
           setResults(res.data);

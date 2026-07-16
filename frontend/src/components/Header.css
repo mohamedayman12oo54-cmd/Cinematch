@@ -80,6 +80,54 @@
 
 .hdr__auth-buttons { display: flex; gap: 10px; align-items: center; }
 
+/* Compact icon + dropdown, shown only on narrow screens (see media query below) */
+.hdr__auth-compact { position: relative; display: none; }
+
+.hdr__auth-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.hdr__auth-icon:hover { background: rgba(255, 255, 255, 0.15); }
+.hdr__auth-icon svg { width: 19px; height: 19px; }
+
+.hdr__auth-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 190px;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  z-index: 20;
+}
+
+.hdr__auth-menu--open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.hdr__auth-menu .hdr__auth-btn { width: 100%; justify-content: center; }
+
 .hdr__auth-btn {
   padding: 8px 16px;
   border-radius: 4px;
@@ -89,24 +137,34 @@
   transition: background 0.15s ease;
 }
 
-.hdr__auth-btn--secondary {
+.hdr__auth-btn--ghost {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.hdr__auth-btn--secondary:hover {
+.hdr__auth-btn--ghost:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
-.hdr__auth-btn--primary {
+.hdr__auth-btn--solid {
   background: #e50914;
   color: #fff;
   border: none;
 }
 
-.hdr__auth-btn--primary:hover {
+.hdr__auth-btn--solid:hover {
   background: #f6121d;
+}
+
+.hdr__dashboard-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hdr__dashboard-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .hdr__search-trigger {
@@ -259,6 +317,8 @@
   .hdr__nav { display: none; }
   .hdr__hamburger { display: flex; }
   .hdr__search-trigger span { display: none; }
+  .hdr__auth-buttons { display: none; }
+  .hdr__auth-compact { display: block; }
 }
 
 /* ================= Command Palette ================= */

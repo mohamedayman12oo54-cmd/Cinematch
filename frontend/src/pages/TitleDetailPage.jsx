@@ -29,7 +29,6 @@ export default function TitleDetailPage() {
   const [recs, setRecs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const [loadError, setLoadError] = useState(null);
   const [favBusy, setFavBusy] = useState(false);
   const [watchBusy, setWatchBusy] = useState(false);
   const [parallax, setParallax] = useState(0);
@@ -52,14 +51,7 @@ export default function TitleDetailPage() {
         setDetail(detailRes.data);
         setRecs(recsRes.data.results);
       })
-      .catch(err => {
-        if (cancelled) return;
-        if (isNotFoundError(err)) {
-          setNotFound(true);
-        } else {
-          setLoadError(getErrorMessage(err, "Couldn't load this title right now. Please try again."));
-        }
-      })
+      .catch(() => { if (!cancelled) setNotFound(true); })
       .finally(() => { if (!cancelled) setLoading(false); });
 
     return () => { cancelled = true; };

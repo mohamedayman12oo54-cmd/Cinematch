@@ -6,13 +6,19 @@
 
 html, body, #root {
   height: 100%;
+  width: 100%;
   margin: 0;
+  max-width: 100%;
 }
 
 body {
   background: #000;
   font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+img, svg, iframe, video {
+  max-width: 100%;
 }
 
 .route-progress {
