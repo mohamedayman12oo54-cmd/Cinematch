@@ -5,21 +5,22 @@ import { posterFor } from '../api/tmdb';
 
 export default function MyListCard({ item, onRemove, onRate, onHoverGenre }) {
   const navigate = useNavigate();
-  const [posterUrl, setPosterUrl] = useState(null);
+  const [fallbackPosterUrl, setFallbackPosterUrl] = useState(null);
+
+  // Favorites/History are enriched by the backend with a real poster_url
+  // (see tmdb_response_enrichment.md §4.4/4.5). Only fall back to a
+  // client-side lookup if it's missing (e.g. TMDB had no match).
+  const posterUrl = item.poster_url || fallbackPosterUrl;
 
   useEffect(() => {
+    if (item.poster_url) return;
     let cancelled = false;
-    setPosterUrl(null);
-    // Prefer poster_url from backend response, fallback to client-side TMDB lookup
-    if (item.poster_url) {
-      setPosterUrl(item.poster_url);
-    } else {
-      posterFor(item.title, item.release_year, item.type).then(url => {
-        if (!cancelled) setPosterUrl(url);
-      });
-    }
+    setFallbackPosterUrl(null);
+    posterFor(item.title, item.release_year, item.type).then(url => {
+      if (!cancelled) setFallbackPosterUrl(url);
+    });
     return () => { cancelled = true; };
-  }, [item.title, item.release_year, item.type, item.poster_url]);
+  }, [item.poster_url, item.title, item.release_year, item.type]);
 
   return (
     <div

@@ -1,21 +1,24 @@
 import { apiClient, USE_MOCK } from './client';
 import CATALOG from '../data/catalog';
 import { mockFavorites, mockHistory } from '../data/mockSession';
+import { posterFor } from './tmdb';
 
-function toItem(t, reason = null) {
+async function toItem(t, reason = null) {
+  const poster_url = await posterFor(t.title, t.release_year, t.type);
   return {
     title: t.title,
     type: t.type,
+    genres: t.genres,
     release_year: t.release_year,
-    similarity_score: t.similarity_score || null,
-    poster_url: t.poster_url || null,
-    vote_average: t.vote_average || null,
+    poster_url,
+    vote_average: null, // only the real backend's TMDB enrichment provides this
+    reason,
   };
 }
 
-function popularSection() {
+async function popularSection() {
   const shuffled = [...CATALOG].sort((a, b) => b.release_year - a.release_year).slice(0, 10);
-  return [{ key: 'popular', title: 'Popular on CineMatch', items: shuffled.map(t => toItem(t)) }];
+  return [{ key: 'popular', title: 'Popular on CineMatch', items: await Promise.all(shuffled.map(t => toItem(t))) }];
 }
 
 async function personalizedSections(email) {
@@ -31,7 +34,7 @@ async function personalizedSections(email) {
   else stage = 'loyal';
 
   if (signalCount === 0) {
-    return { stage, sections: popularSection() };
+    return { stage, sections: await popularSection() };
   }
 
   const seedTitles = new Set([...favorites, ...history].map(f => f.title));
@@ -46,8 +49,10 @@ async function personalizedSections(email) {
     {
       key: 'recommended_for_you',
       title: 'Recommended For You',
-      items: (recommended.length ? recommended : pool.slice(0, 10)).map(t =>
-        toItem(t, favorites[0] ? `Because you liked ${favorites[0].title}` : `Because you watched ${history[0]?.title}`)
+      items: await Promise.all(
+        (recommended.length ? recommended : pool.slice(0, 10)).map(t =>
+          toItem(t, favorites[0] ? `Because you liked ${favorites[0].title}` : `Because you watched ${history[0]?.title}`)
+        )
       ),
     },
   ];
@@ -56,7 +61,7 @@ async function personalizedSections(email) {
     sections.push({
       key: 'because_you_watched',
       title: `Because You Recently Watched ${history[0].title}`,
-      items: pool.slice(3, 11).map(t => toItem(t)),
+      items: await Promise.all(pool.slice(3, 11).map(t => toItem(t))),
     });
   }
 
@@ -64,7 +69,7 @@ async function personalizedSections(email) {
     sections.push({
       key: 'based_on_favorites',
       title: 'Based on Your Favorites',
-      items: pool.slice(6, 14).map(t => toItem(t)),
+      items: await Promise.all(pool.slice(6, 14).map(t => toItem(t))),
     });
   }
 
@@ -76,7 +81,7 @@ async function personalizedSections(email) {
 export async function getHome(email) {
   if (USE_MOCK) {
     if (!email) {
-      return { status: 'success', data: { stage: 'stranger', sections: popularSection() } };
+      return { status: 'success', data: { stage: 'stranger', sections: await popularSection() } };
     }
     const { stage, sections } = await personalizedSections(email);
     return { status: 'success', data: { stage, sections } };

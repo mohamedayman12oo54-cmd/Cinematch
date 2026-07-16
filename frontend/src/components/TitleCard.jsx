@@ -8,21 +8,23 @@ export default function TitleCard({ title, reason, rank, similarity }) {
   const cardRef = useRef(null);
   const [revealed, setRevealed] = useState(false);
   const [displayPct, setDisplayPct] = useState(0);
-  const [posterUrl, setPosterUrl] = useState(null);
+  const [fallbackPosterUrl, setFallbackPosterUrl] = useState(null);
+
+  // The backend now enriches Recommendations/Home/Favorites/History with a
+  // real poster_url (see tmdb_response_enrichment.md §4). Search results are
+  // deliberately left unenriched (latency-sensitive autocomplete), so for
+  // those - and only those - we still fall back to a client-side lookup.
+  const posterUrl = title.poster_url || fallbackPosterUrl;
 
   useEffect(() => {
+    if (title.poster_url) return;
     let cancelled = false;
-    setPosterUrl(null);
-    // Prefer poster_url from backend response, fallback to client-side TMDB lookup
-    if (title.poster_url) {
-      setPosterUrl(title.poster_url);
-    } else {
-      posterFor(title.title, title.release_year, title.type).then(url => {
-        if (!cancelled) setPosterUrl(url);
-      });
-    }
+    setFallbackPosterUrl(null);
+    posterFor(title.title, title.release_year, title.type).then(url => {
+      if (!cancelled) setFallbackPosterUrl(url);
+    });
     return () => { cancelled = true; };
-  }, [title.title, title.release_year, title.type, title.poster_url]);
+  }, [title.poster_url, title.title, title.release_year, title.type]);
 
   // Trigger shimmer + match-percentage count-up only once the card has
   // actually finished its own entrance fade and is visible on screen —
@@ -87,7 +89,7 @@ export default function TitleCard({ title, reason, rank, similarity }) {
 
           <div className="tc__meta">
             {targetPct && <span className="tc__match">{displayPct}% Match</span>}
-            {title.vote_average && <span className="tc__rating">★ {title.vote_average.toFixed(1)}</span>}
+            {title.vote_average != null && <span className="tc__rating">★ {Number(title.vote_average).toFixed(1)}</span>}
             {title.release_year && <span>{title.release_year}</span>}
             {title.type && <span>{title.type}</span>}
           </div>
