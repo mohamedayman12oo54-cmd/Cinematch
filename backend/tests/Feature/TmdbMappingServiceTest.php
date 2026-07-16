@@ -81,7 +81,7 @@ test('resolve searches, persists a new mapping, and caches the result on a total
     $this->tmdbService->shouldReceive('findByTitle')
         ->once()
         ->with('Whiplash', 2014, TmdbMediaType::Movie)
-        ->andReturn(['tmdb_id' => 244786, 'poster_path' => '/whiplash.jpg', 'backdrop_path' => '/whiplash-bg.jpg']);
+        ->andReturn(['tmdb_id' => 244786, 'poster_path' => '/whiplash.jpg', 'backdrop_path' => '/whiplash-bg.jpg', 'vote_average' => 8.5]);
     $this->tmdbService->shouldReceive('getDetails')->once()->with(244786, TmdbMediaType::Movie)->andReturn(tmdbDetails('Drumming intensifies.'));
     $this->tmdbService->shouldReceive('posterUrl')->andReturn('https://img/whiplash.jpg');
     $this->tmdbService->shouldReceive('backdropUrl')->andReturn('https://img/whiplash-bg.jpg');
@@ -128,7 +128,7 @@ test('resolve returns the unavailable shape and negative-caches when TMDB has no
 test('resolve still persists the mapping even if the details call fails after a successful match', function () {
     // A transient TMDB failure right after a good match shouldn't waste the
     // match itself — the next request can skip straight to a details retry.
-    $this->tmdbService->shouldReceive('findByTitle')->once()->andReturn(['tmdb_id' => 77, 'poster_path' => null, 'backdrop_path' => null]);
+    $this->tmdbService->shouldReceive('findByTitle')->once()->andReturn(['tmdb_id' => 77, 'poster_path' => null, 'backdrop_path' => null, 'vote_average' => null]);
     $this->tmdbService->shouldReceive('getDetails')->once()->andReturn(null);
 
     $result = $this->service->resolve('Flaky Title', 2020, TmdbMediaType::Movie);
@@ -158,49 +158,52 @@ test('resolve treats the same title with different release years as distinct rec
     expect($this->service->resolve('Lion King', 2019, TmdbMediaType::Movie)['overview'])->toBe('The remake.');
 });
 
-// === getPostersForTitles(): CACHE / DB / BATCH ===
+// === getCardMetadataForTitles(): CACHE / DB / BATCH ===
 
-test('getPostersForTitles returns a cached poster without touching DB or TMDB', function () {
-    Cache::put('tmdb:poster:inception:2010', 'https://img/inception.jpg', now()->addHour());
+test('getCardMetadataForTitles returns a cached poster + vote_average without touching DB or TMDB', function () {
+    Cache::put('tmdb:card:inception:2010', ['poster_url' => 'https://img/inception.jpg', 'vote_average' => 8.4], now()->addHour());
 
-    $result = $this->service->getPostersForTitles([
+    $result = $this->service->getCardMetadataForTitles([
         ['title' => 'Inception', 'release_year' => 2010, 'type' => TmdbMediaType::Movie],
     ]);
 
-    expect($result)->toBe(['Inception' => 'https://img/inception.jpg']);
+    expect($result)->toBe(['Inception' => ['poster_url' => 'https://img/inception.jpg', 'vote_average' => 8.4]]);
 });
 
-test('getPostersForTitles resolves from an existing DB mapping without any TMDB call', function () {
+test('getCardMetadataForTitles resolves poster_url from an existing DB mapping without any TMDB call, but vote_average is null', function () {
     TitleTmdbMapping::factory()->create([
         'title_name' => 'Whiplash', 'release_year' => 2014, 'tmdb_id' => 244786,
         'tmdb_type' => TmdbMediaType::Movie, 'poster_path' => '/w.jpg', 'backdrop_path' => null,
     ]);
     $this->tmdbService->shouldReceive('posterUrl')->once()->with('/w.jpg')->andReturn('https://img/w.jpg');
 
-    $result = $this->service->getPostersForTitles([
+    $result = $this->service->getCardMetadataForTitles([
         ['title' => 'Whiplash', 'release_year' => 2014, 'type' => TmdbMediaType::Movie],
     ]);
 
-    expect($result)->toBe(['Whiplash' => 'https://img/w.jpg']);
+    // vote_average isn't persisted to the mapping table (unlike poster_path),
+    // so a DB hit — which skips the search step entirely — has no fresh
+    // source for it and returns null rather than paying for an extra call.
+    expect($result)->toBe(['Whiplash' => ['poster_url' => 'https://img/w.jpg', 'vote_average' => null]]);
 });
 
-test('getPostersForTitles searches and persists a new mapping on a total miss', function () {
+test('getCardMetadataForTitles searches, persists a new mapping, and captures vote_average on a total miss', function () {
     $this->tmdbService->shouldReceive('findManyByTitle')
         ->once()
         ->with(['New Title' => ['title' => 'New Title', 'release_year' => 2022, 'type' => TmdbMediaType::Movie]])
-        ->andReturn(['New Title' => ['tmdb_id' => 5, 'poster_path' => '/n.jpg', 'backdrop_path' => null]]);
+        ->andReturn(['New Title' => ['tmdb_id' => 5, 'poster_path' => '/n.jpg', 'backdrop_path' => null, 'vote_average' => 7.1]]);
     $this->tmdbService->shouldReceive('posterUrl')->once()->with('/n.jpg')->andReturn('https://img/n.jpg');
 
-    $result = $this->service->getPostersForTitles([
+    $result = $this->service->getCardMetadataForTitles([
         ['title' => 'New Title', 'release_year' => 2022, 'type' => TmdbMediaType::Movie],
     ]);
 
-    expect($result)->toBe(['New Title' => 'https://img/n.jpg']);
+    expect($result)->toBe(['New Title' => ['poster_url' => 'https://img/n.jpg', 'vote_average' => 7.1]]);
     $this->assertDatabaseHas('title_tmdb_mappings', ['title_name' => 'New Title', 'tmdb_id' => 5]);
 });
 
-test('getPostersForTitles only searches the subset that is neither cached nor in the DB', function () {
-    Cache::put('tmdb:poster:cached title:2001', 'https://img/cached.jpg', now()->addHour());
+test('getCardMetadataForTitles only searches the subset that is neither cached nor in the DB', function () {
+    Cache::put('tmdb:card:cached title:2001', ['poster_url' => 'https://img/cached.jpg', 'vote_average' => 9.0], now()->addHour());
     TitleTmdbMapping::factory()->create([
         'title_name' => 'Db Title', 'release_year' => 2002, 'tmdb_id' => 1,
         'tmdb_type' => TmdbMediaType::Movie, 'poster_path' => '/db.jpg', 'backdrop_path' => null,
@@ -210,23 +213,23 @@ test('getPostersForTitles only searches the subset that is neither cached nor in
     $this->tmdbService->shouldReceive('findManyByTitle')
         ->once()
         ->with(['Miss Title' => ['title' => 'Miss Title', 'release_year' => 2003, 'type' => TmdbMediaType::Movie]])
-        ->andReturn(['Miss Title' => ['tmdb_id' => 3, 'poster_path' => '/miss.jpg', 'backdrop_path' => null]]);
+        ->andReturn(['Miss Title' => ['tmdb_id' => 3, 'poster_path' => '/miss.jpg', 'backdrop_path' => null, 'vote_average' => 6.2]]);
     $this->tmdbService->shouldReceive('posterUrl')->with('/miss.jpg')->andReturn('https://img/miss.jpg');
 
-    $result = $this->service->getPostersForTitles([
+    $result = $this->service->getCardMetadataForTitles([
         ['title' => 'Cached Title', 'release_year' => 2001, 'type' => TmdbMediaType::Movie],
         ['title' => 'Db Title', 'release_year' => 2002, 'type' => TmdbMediaType::Movie],
         ['title' => 'Miss Title', 'release_year' => 2003, 'type' => TmdbMediaType::Movie],
     ]);
 
     expect($result)->toBe([
-        'Cached Title' => 'https://img/cached.jpg',
-        'Db Title' => 'https://img/db.jpg',
-        'Miss Title' => 'https://img/miss.jpg',
+        'Cached Title' => ['poster_url' => 'https://img/cached.jpg', 'vote_average' => 9.0],
+        'Db Title' => ['poster_url' => 'https://img/db.jpg', 'vote_average' => null],
+        'Miss Title' => ['poster_url' => 'https://img/miss.jpg', 'vote_average' => 6.2],
     ]);
 });
 
-test('getPostersForTitles matches distinct titles in the same batch to their own TMDB record', function () {
+test('getCardMetadataForTitles matches distinct titles in the same batch to their own TMDB record', function () {
     $this->tmdbService->shouldReceive('findManyByTitle')
         ->once()
         ->with([
@@ -234,45 +237,45 @@ test('getPostersForTitles matches distinct titles in the same batch to their own
             'Whiplash' => ['title' => 'Whiplash', 'release_year' => 2014, 'type' => TmdbMediaType::Movie],
         ])
         ->andReturn([
-            'Inception' => ['tmdb_id' => 27205, 'poster_path' => '/inception.jpg', 'backdrop_path' => null],
-            'Whiplash' => ['tmdb_id' => 244786, 'poster_path' => '/whiplash.jpg', 'backdrop_path' => null],
+            'Inception' => ['tmdb_id' => 27205, 'poster_path' => '/inception.jpg', 'backdrop_path' => null, 'vote_average' => 8.4],
+            'Whiplash' => ['tmdb_id' => 244786, 'poster_path' => '/whiplash.jpg', 'backdrop_path' => null, 'vote_average' => 8.5],
         ]);
     $this->tmdbService->shouldReceive('posterUrl')->with('/inception.jpg')->andReturn('https://img/inception.jpg');
     $this->tmdbService->shouldReceive('posterUrl')->with('/whiplash.jpg')->andReturn('https://img/whiplash.jpg');
 
-    $result = $this->service->getPostersForTitles([
+    $result = $this->service->getCardMetadataForTitles([
         ['title' => 'Inception', 'release_year' => 2010, 'type' => TmdbMediaType::Movie],
         ['title' => 'Whiplash', 'release_year' => 2014, 'type' => TmdbMediaType::Movie],
     ]);
 
     expect($result)->toBe([
-        'Inception' => 'https://img/inception.jpg',
-        'Whiplash' => 'https://img/whiplash.jpg',
+        'Inception' => ['poster_url' => 'https://img/inception.jpg', 'vote_average' => 8.4],
+        'Whiplash' => ['poster_url' => 'https://img/whiplash.jpg', 'vote_average' => 8.5],
     ]);
 });
 
-test('getPostersForTitles collapses two entries sharing the same title in one batch onto one key (documented limitation)', function () {
-    // Known limitation (see the docblock on getPostersForTitles): the batch
-    // is keyed by title alone, so "Lion King" 1994 and 2019 in the *same*
-    // call collide — the second entry silently wins. Neither current
-    // caller (recommendations/home) can hit this in practice since ML
-    // result sets don't repeat a title within one response, but it's
-    // asserted here so a future change to that assumption doesn't silently
-    // start dropping data unnoticed.
+test('getCardMetadataForTitles collapses two entries sharing the same title in one batch onto one key (documented limitation)', function () {
+    // Known limitation (see the docblock on getCardMetadataForTitles): the
+    // batch is keyed by title alone, so "Lion King" 1994 and 2019 in the
+    // *same* call collide — the second entry silently wins. Neither current
+    // caller (recommendations/home/favorites/history) can hit this in
+    // practice since ML result sets don't repeat a title within one
+    // response, but it's asserted here so a future change to that
+    // assumption doesn't silently start dropping data unnoticed.
     $this->tmdbService->shouldReceive('findManyByTitle')
         ->once()
         ->with(['Lion King' => ['title' => 'Lion King', 'release_year' => 2019, 'type' => TmdbMediaType::Movie]])
-        ->andReturn(['Lion King' => ['tmdb_id' => 420818, 'poster_path' => '/2019.jpg', 'backdrop_path' => null]]);
+        ->andReturn(['Lion King' => ['tmdb_id' => 420818, 'poster_path' => '/2019.jpg', 'backdrop_path' => null, 'vote_average' => 7.1]]);
     $this->tmdbService->shouldReceive('posterUrl')->with('/2019.jpg')->andReturn('https://img/2019.jpg');
 
-    $result = $this->service->getPostersForTitles([
+    $result = $this->service->getCardMetadataForTitles([
         ['title' => 'Lion King', 'release_year' => 1994, 'type' => TmdbMediaType::Movie],
         ['title' => 'Lion King', 'release_year' => 2019, 'type' => TmdbMediaType::Movie],
     ]);
 
-    expect($result)->toBe(['Lion King' => 'https://img/2019.jpg']);
+    expect($result)->toBe(['Lion King' => ['poster_url' => 'https://img/2019.jpg', 'vote_average' => 7.1]]);
 });
 
-test('getPostersForTitles returns an empty array for an empty input', function () {
-    expect($this->service->getPostersForTitles([]))->toBe([]);
+test('getCardMetadataForTitles returns an empty array for an empty input', function () {
+    expect($this->service->getCardMetadataForTitles([]))->toBe([]);
 });

@@ -146,17 +146,17 @@ test('title detail returns tmdb_available false without ever calling TMDB when M
     $response->assertStatus(200)->assertJson(['data' => ['tmdb_available' => false]]);
 });
 
-// === RECOMMENDATIONS: POSTER MERGE ===
+// === RECOMMENDATIONS: CARD METADATA MERGE ===
 
-test('recommendations includes a poster_url per item from the batched TMDB lookup', function () {
+test('recommendations includes poster_url and vote_average per item from the batched TMDB lookup', function () {
     $this->mock(MLClientService::class, function ($mock) {
         $mock->shouldReceive('getRecommendations')->once()->andReturn(tmdbIntegrationBreakingBadRecommendations());
     });
     $this->mock(TmdbMappingService::class, function ($mock) {
-        $mock->shouldReceive('getPostersForTitles')
+        $mock->shouldReceive('getCardMetadataForTitles')
             ->once()
             ->with([['title' => 'Better Call Saul', 'release_year' => 2015, 'type' => TmdbMediaType::Tv]])
-            ->andReturn(['Better Call Saul' => 'https://image.tmdb.org/t/p/w500/bcs.jpg']);
+            ->andReturn(['Better Call Saul' => ['poster_url' => 'https://image.tmdb.org/t/p/w500/bcs.jpg', 'vote_average' => 8.7]]);
     });
 
     $response = $this->getJson('/api/recommendations/Breaking%20Bad');
@@ -164,23 +164,23 @@ test('recommendations includes a poster_url per item from the batched TMDB looku
     $response->assertStatus(200)->assertJson([
         'data' => [
             'results' => [
-                ['title' => 'Better Call Saul', 'poster_url' => 'https://image.tmdb.org/t/p/w500/bcs.jpg'],
+                ['title' => 'Better Call Saul', 'poster_url' => 'https://image.tmdb.org/t/p/w500/bcs.jpg', 'vote_average' => 8.7],
             ],
         ],
     ]);
 });
 
-test('recommendations sets poster_url null per item when the TMDB batch returns nothing', function () {
+test('recommendations sets poster_url and vote_average null per item when the TMDB batch returns nothing', function () {
     $this->mock(MLClientService::class, function ($mock) {
         $mock->shouldReceive('getRecommendations')->once()->andReturn(tmdbIntegrationBreakingBadRecommendations());
     });
     $this->mock(TmdbMappingService::class, function ($mock) {
-        $mock->shouldReceive('getPostersForTitles')->once()->andReturn([]);
+        $mock->shouldReceive('getCardMetadataForTitles')->once()->andReturn([]);
     });
 
     $response = $this->getJson('/api/recommendations/Breaking%20Bad');
 
     $response->assertStatus(200)->assertJson([
-        'data' => ['results' => [['title' => 'Better Call Saul', 'poster_url' => null]]],
+        'data' => ['results' => [['title' => 'Better Call Saul', 'poster_url' => null, 'vote_average' => null]]],
     ]);
 });

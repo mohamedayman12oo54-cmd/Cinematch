@@ -17,19 +17,20 @@ beforeEach(function () {
 /**
  * @return array<string, mixed>
  */
-function tmdbSearchResult(int $id, string $dateField, ?string $date, ?string $posterPath = '/poster.jpg', ?string $backdropPath = '/backdrop.jpg'): array
+function tmdbSearchResult(int $id, string $dateField, ?string $date, ?string $posterPath = '/poster.jpg', ?string $backdropPath = '/backdrop.jpg', ?float $voteAverage = 7.5): array
 {
     return [
         'id' => $id,
         $dateField => $date,
         'poster_path' => $posterPath,
         'backdrop_path' => $backdropPath,
+        'vote_average' => $voteAverage,
     ];
 }
 
 // === MATCHING (findByTitle) ===
 
-test('findByTitle returns the tmdb id and image paths for a matching movie', function () {
+test('findByTitle returns the tmdb id, image paths, and vote_average for a matching movie', function () {
     Http::fake([
         'api.themoviedb.org/3/search/movie*' => Http::response([
             'results' => [tmdbSearchResult(550, 'release_date', '1999-10-15')],
@@ -38,7 +39,7 @@ test('findByTitle returns the tmdb id and image paths for a matching movie', fun
 
     $match = $this->tmdbService->findByTitle('Fight Club', 1999, TmdbMediaType::Movie);
 
-    expect($match)->toBe(['tmdb_id' => 550, 'poster_path' => '/poster.jpg', 'backdrop_path' => '/backdrop.jpg']);
+    expect($match)->toBe(['tmdb_id' => 550, 'poster_path' => '/poster.jpg', 'backdrop_path' => '/backdrop.jpg', 'vote_average' => 7.5]);
 });
 
 test('findByTitle searches /search/tv for TV shows, keyed off first_air_date', function () {
