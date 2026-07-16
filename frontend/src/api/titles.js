@@ -81,15 +81,13 @@ export async function getRecommendations(title, n = 10, authenticated = false) {
     const seed = findByTitle(title);
     if (!seed) throw { status: 'error', message: 'Title not found.' };
     const results = recommendationsFor(seed, n).map((t, i) => ({
-      rank: i + 1,
       title: t.title,
       type: t.type,
-      genres: t.genres,
       release_year: t.release_year,
-      similarity: t.similarity,
+      similarity_score: t.similarity,
       poster_url: t.poster_url || null,
       vote_average: t.vote_average || null,
-      reason: authenticated ? `Because you liked ${seed.title}` : null,
+      user_signals: { is_favorite: false, is_watched: false },
     }));
     return { status: 'success', data: { matched_title: seed.title, results } };
   }

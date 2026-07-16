@@ -5,10 +5,9 @@ import { mockFavorites, mockHistory } from '../data/mockSession';
 function toItem(t, reason = null) {
   return {
     title: t.title,
-    genres: t.genres,
-    release_year: t.release_year,
     type: t.type,
-    reason,
+    release_year: t.release_year,
+    similarity_score: t.similarity_score || null,
     poster_url: t.poster_url || null,
     vote_average: t.vote_average || null,
   };
